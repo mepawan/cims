@@ -80,6 +80,4 @@ DerivedData
 
 # CUSTOM IGNORES #
 ##################
-application/config/database.php
-system/
 public/admin/version_html/
