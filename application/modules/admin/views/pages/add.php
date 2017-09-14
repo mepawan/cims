@@ -12,7 +12,15 @@
       
     <link rel="stylesheet" type="text/css" href="<?php echo ci_public('admin');?>vendors/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="<?php echo ci_public('admin');?>css/source/main.css">
-   
+	<link rel="stylesheet" type="text/css" href="<?php echo ci_public('admin');?>css/source/main.css">
+	<?php
+		if(isset($add_recaptcha_js) && $add_recaptcha_js){
+			echo '<script src="https://www.google.com/recaptcha/api.js"></script>';
+		}
+	?>
+	<script type="text/javascript">
+		var ci_base_url = '<?php echo ci_base_url();?>';
+	</script>
  </head>
   
 	<body class="theme-dark">

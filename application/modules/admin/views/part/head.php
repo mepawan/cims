@@ -50,6 +50,5 @@
 	<script type="text/javascript">
 		var ci_base_url = '<?php echo ci_base_url();?>';
 	</script>
-	</div>
     
 </head>

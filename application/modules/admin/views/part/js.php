@@ -40,6 +40,25 @@
 <script src="<?php echo ci_public('admin');?>vendors/hackertyper/hackertyper.js"></script>
 <script src="<?php echo ci_public('admin');?>vendors/jquery-countTo/jquery.countTo.js"></script>
 
+
+
+<!-- grapesjs ---->
+<script src="<?php echo ci_public('admin');?>grapesjs/js/filestack-0.1.12.js"></script>
+<script src="<?php echo ci_public('admin');?>grapesjs/js/editor.js"></script>
+    <script src="<?php echo ci_public('admin');?>grapesjs/js/perfect-scrollbar.min.js"></script>
+    <script src="<?php echo ci_public('admin');?>grapesjs/js/toastr.min.js"></script>
+  <script src="<?php echo ci_public('admin');?>grapesjs/dist/grapes.min.js?v0.10.2"></script>
+    <script src="<?php echo ci_public('admin');?>grapesjs/js/grapesjs-plugin-export.min.js"></script>
+    <script src="<?php echo ci_public('admin');?>grapesjs/js/grapesjs-plugin-filestack.min.js"></script>
+    <script src="<?php echo ci_public('admin');?>grapesjs/js/grapesjs-blocks-basic.min.js"></script>
+    <script src="<?php echo ci_public('admin');?>grapesjs/js/grapesjs-preset-webpage.js"></script>
+    <script src="<?php echo ci_public('admin');?>grapesjs/js/grapesjs-plugin-forms.min.js"></script>
+    <script src="<?php echo ci_public('admin');?>grapesjs/js/grapesjs-aviary.min.js"></script>
+    <script src="<?php echo ci_public('admin');?>grapesjs/js/grapesjs-navbar.min.js"></script>
+    <script src="<?php echo ci_public('admin');?>grapesjs/js/grapesjs-component-countdown.min.js"></script>
+    <script src="<?php echo ci_public('admin');?>grapesjs/js/custom.js"></script>
+
 <!-- Clean UI Scripts -->
 <script src="<?php echo ci_public('admin');?>js/common.js"></script>
 <script src="<?php echo ci_public('admin');?>js/demo.temp.js"></script>
+
