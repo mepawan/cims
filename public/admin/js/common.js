@@ -165,12 +165,12 @@ $(function(){
 		  if(title == ""){ $("#title").focus(); }
 		  else{
 			 $.ajax({
-					url: 'http://localhost/handsacross/admin/pages/save',
+					url: ci_base_url+'/admin/pages/save',
 					type: "POST",
 					data:  {html: html, css:css, title:title},
 					 
 					success: function(data){
-					  window.location = "http://localhost/handsacross/admin/pages";
+					  window.location = ci_base_url+"/admin/pages";
 					},
 					error: function(){} 	        
 			   });
