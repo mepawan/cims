@@ -109,6 +109,44 @@ class Pages extends MX_Controller {
 			//redirect('admin/settings');
 		}
 	}
+	public function edit($id = "null"){
+		
+        $this->data['entity'] = 'pages';
+        $this->data['heading'] = 'Edit';
+        $this->data['icon'] = 'icmn-file-text';
+		
+		if(is_numeric($id)){
+			$where = array( 'id' => $id);
+			$this->data['page'] = $this->Util_model->read('pages', array( 'where' => $where));
+		}
+		else{
+			$where = array( 'alias' => $id);
+			$this->data['page'] = $this->Util_model->read('pages', array( 'where' => $where));
+		
+		}
+				
+        $this->load->view('pages/edit',$this->data);
+    }
+    public function update(){
+		
+		//if(isset($_POST['title'])){
+			$userid = $this->ciauth->get_user_id();
+			
+			$alias = title_alias('pages', $_POST['title']);
+			
+			$data = array(
+						'id' => $_POST['id'],
+						'title' => $_POST['title'],
+						'content' => $_POST['html'],
+						'content_css' => $_POST['css'],
+						);
+			
+			$rs = $this->Util_model->update('pages', $data);
+			
+			redirect('admin/pages');
+		//}
+	}
+	
 	public function listdt(){
 		$filter = array_merge($_GET, $_POST);
 		$resp = $this->pvngen->get_dt($filter);
