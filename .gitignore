@@ -80,5 +80,8 @@ DerivedData
 
 # CUSTOM IGNORES #
 ##################
-
+.htaccess
+application/config/database.php
+application/cache/
+application/logs/
 public/admin/version_html/
