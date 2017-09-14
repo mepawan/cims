@@ -7,6 +7,7 @@ class Pages extends MX_Controller {
 		parent::__construct();
 		$this->load->library('Form_validation');
 		$this->load->helper('form');
+		$this->load->helper('general_helper');
 		$this->load->library('CIAuth');
 		if ( ! $this->ciauth->is_logged_in() || !($this->ciauth->is_admin() || $this->ciauth->is_superadmin())){
 			redirect('admin/auth', 'location');
@@ -47,8 +48,28 @@ class Pages extends MX_Controller {
         $this->load->view('pages/add',$this->data);
     }
 	public function save(){
+		
+		if(isset($_POST['title'])){
+			$userid = $this->ciauth->get_user_id();
+			
+			$alias = title_alias('pages', $_POST['title']);
+			
+			$data = array(
+						'title' => $_POST['title'],
+						'alias' => $alias,
+						'content' => $_POST['html'],
+						'content_css' => $_POST['css'],
+						'author' => $userid
+						);
+			
+			$rs = $this->Util_model->create('pages', $data);
+			
+			redirect('admin/pages');
+		}
+		
 		$postdata = $_POST;
-
+		
+		
 		if(isset($_FILES['logo']) && $_FILES['logo']['name'] && $_FILES['logo']['error'] == UPLOAD_ERR_OK){
 			if(file_exists(FCPATH.'public/upload/images/logo.png')){
 				unlink(FCPATH.'public/upload/images/logo.png');
@@ -85,9 +106,8 @@ class Pages extends MX_Controller {
 			echo json_encode($this->resp);
 			die;
 		} else {
-			redirect('admin/settings');
+			//redirect('admin/settings');
 		}
-		
 	}
 	public function listdt(){
 		$filter = array_merge($_GET, $_POST);

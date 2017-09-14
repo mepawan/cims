@@ -267,3 +267,27 @@ if (!function_exists('rowCSV')) {
         return $output . "\r\n";
     }
 }
+
+function title_alias($tbl, $title){
+	$ci =& get_instance();
+	$ci->load->model('Util_model');
+	
+	$title_alias = strtolower(str_replace(" ", "-", $title));
+	
+	$where = array( 'alias' => $title_alias);
+	$aliasall = $ci->Util_model->read($tbl, array( 'like' => $where));
+	$totle_result = count($aliasall);
+	
+	if(!empty($aliasall)){
+		$final_alias = $title_alias."-".$totle_result."";
+	}
+	else{
+		$final_alias = $title_alias;
+	}
+	
+	return $final_alias;
+}
+
+
+
+

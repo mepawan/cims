@@ -155,5 +155,26 @@ $(function(){
             $('.main-backdrop').removeClass('main-backdrop-showed')
         }
     });
+    
+    $(".save-button").click( function(event){
+		event.preventDefault();
+		const html = editor.getHtml();
+		  const css = editor.getCss();
+		  var title = $("#title").val();
+		  
+		  if(title == ""){ $("#title").focus(); }
+		  else{
+			 $.ajax({
+					url: 'http://localhost/handsacross/admin/pages/save',
+					type: "POST",
+					data:  {html: html, css:css, title:title},
+					 
+					success: function(data){
+					  window.location = "http://localhost/handsacross/admin/pages";
+					},
+					error: function(){} 	        
+			   });
+	   }
+	});
 
 });

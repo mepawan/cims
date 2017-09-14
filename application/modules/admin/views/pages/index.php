@@ -8,7 +8,7 @@
         <section class="panel panel-with-borders">
             <div class="panel-heading">
                 <div class="heading-buttons pull-right">
-                    <a href="<?php echo ci_base_url();?>pages/add" class="btn btn-success margin-inline">Add New Page</a>
+                    <a href="<?php echo ci_base_url();?>admin/pages/add" class="btn btn-success margin-inline">Add New Page</a>
                 </div>
                 <h3 class="messaging-title"><i class="left-menu-link-icon <?php echo $icon;?>"></i> <?php echo $heading;?></h3>
             </div>

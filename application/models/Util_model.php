@@ -22,7 +22,7 @@ class Util_model extends CI_Model{
 		return $this->db->insert_id();
     }
 	public function read($tbl, $params = array()){
-
+		
 		if(isset($params['where']) && $params['where']){
 			foreach($params['where'] as $k => $v){
 				if(is_numeric($k)){
@@ -45,6 +45,16 @@ class Util_model extends CI_Model{
 				$this->db->order_by($params['orderby'], $params['order']);
 			} else {
 				$this->db->order_by($params['orderby']);
+			}
+		}
+		if(isset($params['like']) && $params['like']){
+			foreach($params['like'] as $k => $v){
+				if(is_numeric($k)){
+					$this->db->where($v);
+				} else {
+					$this->db->like($k, $v);
+				}
+				
 			}
 		}
 		if(isset($params['limit']) && $params['limit']){
