@@ -227,6 +227,10 @@ body {
 
 .header_top {
 	border-bottom: 1px solid #ebebeb;
+	height: 60px;
+}
+section.header_bottom {
+    height: 155px;
 }
 .header_top .top_login {
 	border-right: solid 1px #ebebeb;
@@ -1217,3 +1221,104 @@ margin-bottom: 20px;
 
 
 
+/**************************inner pages **************************************/
+
+
+.banner_inner{
+	min-height:280px;
+	background-image:url(../images/bg-wide.jpg);
+background-repeat:no-repeat;
+background-position:center -200px;
+/*background-size;*/
+background-attachment:fixed;
+
+}
+
+.banner_inner h2 {
+	font-size:34px;
+	line-height: 38px;
+	text-transform: uppercase;
+	font-weight: 400;
+	letter-spacing: 1px;
+	position: relative;
+	padding: 10px 20px;
+	color: #333 !important;
+	text-align: center;
+	background-color: #fff;
+	display: table;
+	margin: 10% auto 0 auto;
+	font-family:'Museo500';
+}
+
+
+.left_bar {
+	float: left !important;
+	border-left: none;
+	padding-left: 0;
+	margin-left: 0;
+	margin-right: 0;
+	right: -1px !important;
+	padding-right: 30px;
+	border-right: solid 1px #ebebeb;
+	width: 100%;
+	padding-top: 47px;
+}
+
+.right_bar{
+	padding-top: 47px;
+
+}
+
+.left_bar ul {
+margin: 0;
+padding: 0;
+}
+
+.left_bar ul li{
+margin: 0;
+padding: 7px 0;
+list-style:none;
+border-top: 1px solid #e7e7e7;
+}
+
+.left_bar ul li a{
+display: block;
+color:#111;
+}
+
+.left_bar li a::before{
+content: "\f105";
+font-family: FontAwesome;
+font-weight: 400;
+font-style: normal;
+display: block;
+float: right;
+text-decoration: inherit;
+font-size: 14px;
+}
+.right_bar p{
+font-size: 18px;
+color:#003366;
+font-family:'Museo500';
+line-height:1.5;
+margin-bottom: 15px;
+}
+
+.left_bar h4{
+	font-family: 'Source Sans Pro', sans-serif;
+letter-spacing: 1.8px;
+margin-top: 0;
+margin-bottom: 20px;
+padding-bottom: 0;
+font-size: 13px;
+line-height: 23px;
+text-transform: uppercase;
+color: #111;
+display: inline-block;
+width: auto;
+font-weight:bold;
+}
+.inner_con form .label {
+    color: #111;
+    font-size: 16px;
+}

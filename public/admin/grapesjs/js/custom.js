@@ -19,15 +19,17 @@ var lp = './img/';
       ],
       pluginsOpts: {
         'gjs-plugin-filestack': {
-          key: 'A1nL8omiAR8W7pHi3cotzz',
+          key: 'AVaxHKqBWRbaLIwr2UWjwz',
+          store_location: '3s',
         }
       },
 
-      // Insert some default images
+     // Insert some default images
       assetManager: {
         assets: images
       },
-
+      
+      
       storageManager:{
         storeComponents: 1,
         storeStyles: 1,
@@ -370,9 +372,13 @@ var lp = './img/';
      // Store and load events
      editor.on('storage:load', function(e) {
        console.log('Loaded ', e);
-     })
+     });
      editor.on('storage:store', function(e) {
        console.log('Stored ', e);
-     })
+     });
+     
+     
+     
+     
 
 

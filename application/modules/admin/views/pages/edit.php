@@ -32,6 +32,7 @@
 				<section class="panel panel-with-borders">
 					<div class="panel-heading">
 						<div class="heading-buttons pull-right">
+							<a href="<?php echo ci_base_url();?>preview/<?php echo $page[0]['alias']; ?>" class="btn btn-success margin-inline">Preview</a>
 							<a href="<?php echo ci_base_url();?>pages/add" class="btn btn-success margin-inline update-button">Update</a>
 						</div>
 						<h3 class="messaging-title"><i class="left-menu-link-icon <?php echo $icon;?>"></i> <?php echo $heading." ".$page[0]['title']." page"; ?> </h3>

@@ -43,7 +43,7 @@
 
 
 <!-- grapesjs ---->
-<script src="<?php echo ci_public('admin');?>grapesjs/js/filestack-0.1.12.js"></script>
+<script type="text/javascript" src="https://static.filestackapi.com/v3/filestack.js"></script>
 <script src="<?php echo ci_public('admin');?>grapesjs/js/editor.js"></script>
     <script src="<?php echo ci_public('admin');?>grapesjs/js/perfect-scrollbar.min.js"></script>
     <script src="<?php echo ci_public('admin');?>grapesjs/js/toastr.min.js"></script>
