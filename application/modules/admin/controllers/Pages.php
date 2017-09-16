@@ -117,6 +117,8 @@ class Pages extends MX_Controller {
         $this->data['entity'] = 'pages';
         $this->data['heading'] = 'Edit';
         $this->data['icon'] = 'icmn-file-text';
+        $this->data['head_views'] = array('part/grapescss');
+		$this->data['foot_views'] = array('part/grapesjs');
 		
 		if(is_numeric($id)){
 			$where = array( 'id' => $id);
