@@ -25,7 +25,11 @@ class Welcome extends MX_Controller {
 	}
 	public function index()
 	{
-		$this->load->view('home');
+		
+		$where = array( 'alias' => 'home');
+		$this->data['page'] = $this->Util_model->read('pages', array( 'where' => $where));
+		
+		$this->load->view('home', $this->data);
 	}
 	public function preview($alias = "")
 	{

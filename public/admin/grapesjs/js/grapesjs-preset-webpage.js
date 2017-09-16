@@ -103,12 +103,12 @@ grapesjs.plugins.add('gjs-preset-webpage', function(editor, opts) {
         codeViewer.init(txtarea);
         viewer = codeViewer.editor;
       }
-
+		const html = editor.getHtml();
+		const css = editor.getCss();
       modal.setContent('');
       modal.setContent(container);
       codeViewer.setContent(
-          '<div class="txt-red">Hello world!</div>' +
-          '<style>\n.txt-red {color: red;padding: 30px\n}</style>'
+          html + '<style>'+css+'</style>'
       );
       modal.open();
       viewer.refresh();
