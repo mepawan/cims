@@ -45,7 +45,7 @@
                     { "data": 'title', render:function(data){
                             if(data){
                                 var data_arr = data.split("___");
-                                var thtml = '<div class="list-title-wrap" <a class="list_title" href="">'+data_arr[0]+'<a><div class="list-action-wrap"><a href="">Edit</a> <a href="">View</a><a href="">Delete</a> </div></div>';
+                                var thtml = '<div class="list-title-wrap" <a class="list_title" href="'+ci_base_url+'admin/pages/edit/'+data_arr[1]'">'+data_arr[0]+'<a><div class="list-action-wrap"><a href="'+ci_base_url+'admin/pages/edit/'+data_arr[1]'">Edit</a> <a href="'+ci_base_url+'preview/'+data_arr[2]'">Preview</a><a href="'+ci_base_url+'admin/pages/delete/'+data_arr[1]'">Delete</a> </div></div>';
                                 return thtml;
                             } else { return ''; }
                         }
