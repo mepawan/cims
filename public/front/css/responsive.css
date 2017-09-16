@@ -1,0 +1,128 @@
+
+
+
+
+
+/*----------------Responsive css Start------------------*/
+
+@media (max-width:1143px) {
+
+
+
+
+	
+.container {
+padding: 0 15px !important;
+width: 100% !important;
+max-width:1024px;
+}
+/*---------------Stiky Footer Css----------------*/
+#footer-Primary{
+	height:auto;
+}
+
+}
+
+
+@media (max-width:1023px)  {
+	
+.container {max-width:960px;}	
+
+}
+
+@media (max-width:959px) {
+	
+.container {max-width:768px;}
+
+	
+}
+
+@media (max-width:767px) {
+	
+.container {max-width:736px;}
+
+
+.background_header , .background_container, #footer-Primary {
+	overflow-x:hidden;
+} 
+
+
+.togglebutton button{float:left;}
+.togglebutton {display: block; cursor:pointer;}
+.togglebutton button {
+	float: left;
+	line-height: 50px;
+	padding-left: 15px;
+	font-size: 18px;
+	width: auto;
+	border:0 none;
+}
+.togglebutton img {float:right; width:40px; margin-right:15px;}
+#nav-primary ul.menu {display: none; width:100%; float:left; background-color:#ccc;}	
+#nav-primary {width: 100%;}
+#nav-primary ul.menu li {width:100%;}
+#nav-primary ul.menu li a {line-height:40px; border-bottom:1px solid #666;}
+
+
+
+/*------------setting sub menu------------*/
+#nav-primary ul.menu ul {
+  position:static;
+  width:100%;
+  display:none !important;
+}
+
+#nav-primary ul.menu li:hover ul{
+	display:block !important;
+}
+
+#nav-primary ul.menu ul li a {
+	padding-left:30px;
+}
+
+/*------------setting sub menu end------------*/
+
+}
+
+
+@media (max-width:735px) {
+	
+.container {max-width:667px;}	
+	
+}
+
+@media (max-width:666px) {
+	
+.container {max-width:640px;}
+
+}
+
+@media (max-width:639px) {
+.container {max-width:568px;}	
+}
+
+
+@media (max-width:567px) {
+.container {max-width:480px;}	
+}
+
+
+@media (max-width:479px) {
+.container {max-width:414px;}
+	
+}
+
+@media (max-width:413px) {
+.container {max-width:375px;}
+	
+}
+
+@media (max-width:374px) {
+.container {max-width:360px;}
+	
+}
+
+@media (max-width:359px) {
+.container {max-width:320px;}
+	
+}
