@@ -20,7 +20,7 @@ class Pages extends MX_Controller {
 		$this->data['entity'] = 'pages';
 		$this->data['heading'] = 'Manage Pages';
 		$this->data['icon'] = 'icmn-file-text';
-
+		$this->data['datatable'] = true;
 		$this->load->view('pages/index',$this->data);
 	}
 	function pagesdt(){
@@ -31,7 +31,7 @@ class Pages extends MX_Controller {
 		$filters['aSelectionColumns'] = array('concat(tbl.title,"___",tbl.id, "___", tbl.alias) as title','concat(u.first_name, " ", u.last_name) as author','tbl.status','concat(tbl.created_date_time, "___", tbl.publish_date_time, "___",tbl.updated_date_time) as dates');
 		$filters['aColumns'] = array('title','author','status','dates');
 		$filters['custom_search_filter'] = array(
-					'where' => array('tbl.uid' => $this->dx_auth->get_user_id())
+					'where' => array('tbl.uid' => $this->ciauth->get_user_id())
 			);
 		
 		$output = $this->Util_model->get_data_for_dt($filters);
@@ -44,7 +44,10 @@ class Pages extends MX_Controller {
         $this->data['entity'] = 'pages';
         $this->data['heading'] = 'Add New Page';
         $this->data['icon'] = 'icmn-file-text';
-
+		$this->data['head_views'] = array('part/grapescss');
+		$this->data['foot_views'] = array('part/grapesjs');
+		
+		
         $this->load->view('pages/add',$this->data);
     }
 	public function save(){

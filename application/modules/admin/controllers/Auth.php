@@ -28,11 +28,8 @@ class Auth extends MX_Controller {
 		if ( $this->ciauth->is_logged_in()) {
 			redirect('admin');
 		}
-		
-		//$form_data = $this->input->post('login');
-		
+
 		$val = $this->form_validation;
-		
 		$val->set_rules('loginkey', 'Username', 'trim|required');
 		$val->set_rules('password', 'Password', 'trim|required');
 		$val->set_rules('g-recaptcha-response', 'Human Verification', 'trim|required', array('required' => 'Solve Human Verification Captcha'));
@@ -46,6 +43,12 @@ class Auth extends MX_Controller {
 				$this->data['recaptcha_error'] = 'Fail Human Verification';
 			}
 		} 
+		
+		
+		$this->data['foot_scripts'] = array(
+			ci_public("admin").'vendors/html5-form-validation/dist/jquery.validation.min.js',
+			ci_public("admin").'vendors/bootstrap-show-password/bootstrap-show-password.min.js',
+		);
 		$this->data['add_recaptcha_js'] = true;
 		$this->load->view('auth/login', $this->data);
 	}

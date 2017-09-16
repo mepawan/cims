@@ -27,8 +27,8 @@
 
     </div> <!-- end .page-content-inner -->
     <?php $this->load->view('part/js'); ?>
-    <link rel="stylesheet" type="text/css" href="<?php echo ci_public();?>pvngen.css">
-    <!-- Page Scripts -->
+
+    
     <script type="text/javascript">
         var oTable;
 
@@ -36,7 +36,7 @@
 
         jQuery(document).ready(function() {
 
-            oTable = jQuery('#myshares_dt').DataTable({
+            oTable = jQuery("#dt_"+entity).DataTable({
                 "dom": '<"top"fl>rt<"bottom"p><"clear">',
                 "processing": true,
                 "serverSide": true,
@@ -72,10 +72,10 @@
 
         });
         function dt_loaded(){
-            jQuery(".share_info").click(function(e){
-                var id = jQuery(this).parents('tr').attr('id');
-                window.location = ci_base_url+'account/share/'+id;
-            });
+            //jQuery(".share_info").click(function(e){
+              //  var id = jQuery(this).parents('tr').attr('id');
+                //window.location = ci_base_url+'account/share/'+id;
+          //  });
         }
     </script>
     <script src="<?php echo ci_public();?>pvngen.js"></script>

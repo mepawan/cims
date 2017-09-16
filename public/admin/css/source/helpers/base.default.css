@@ -1619,3 +1619,6 @@ body.single-page-inverse .single-page-block-header .single-page-block-header-men
 .success{
 	color:#02C54C;
 }
+.gjs-editor-cont{
+	border:3px solid #463a3c;
+}
