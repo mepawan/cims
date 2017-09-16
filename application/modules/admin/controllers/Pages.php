@@ -139,6 +139,7 @@ class Pages extends MX_Controller {
 						'title' => $_POST['title'],
 						'content' => $_POST['html'],
 						'content_css' => $_POST['css'],
+						'updated_date_time' => date("Y-m-d h:i:s"),
 						);
 			
 			$rs = $this->Util_model->update('pages', $data);
