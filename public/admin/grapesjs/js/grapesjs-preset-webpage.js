@@ -21,7 +21,7 @@ grapesjs.plugins.add('gjs-preset-webpage', function(editor, opts) {
   var btnImp = document.createElement('button');
 
   // Init import button
-  btnImp.innerHTML = 'Import';
+  btnImp.innerHTML = 'Save';
   btnImp.className = pfx + 'btn-prim ' + pfx + 'btn-import';
   btnImp.onclick = function() {
     var code = codeViewer.editor.getValue();
@@ -89,14 +89,14 @@ grapesjs.plugins.add('gjs-preset-webpage', function(editor, opts) {
 
       var modalContent = modal.getContentEl();
       var viewer = codeViewer.editor;
-      modal.setTitle('Import Template');
+      modal.setTitle('Source');
 
       // Init code viewer if not yet instantiated
       if (!viewer) {
         var txtarea = document.createElement('textarea');
         var labelEl = document.createElement('div');
         labelEl.className = pfx + 'import-label';
-        labelEl.innerHTML = 'Paste here your HTML/CSS and click Import';
+        labelEl.innerHTML = 'Paste here your HTML/CSS and click Save';
         container.appendChild(labelEl);
         container.appendChild(txtarea);
         container.appendChild(btnImp);
@@ -214,7 +214,7 @@ grapesjs.plugins.add('gjs-preset-webpage', function(editor, opts) {
     id: 'import',
     className: 'fa fa-download',
     command: 'html-import',
-    attributes: { title: 'Import' }
+    attributes: { title: 'Source' }
   },{
     id: 'clean-all',
     className: 'fa fa-trash icon-blank',

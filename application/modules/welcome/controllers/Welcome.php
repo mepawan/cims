@@ -22,6 +22,8 @@ class Welcome extends MX_Controller {
 		parent::__construct();
 		$this->load->model('Util_model');
 		$this->data = array();
+		$menus = $this->Util_model->read('menus', array( 'where' => array( 'slug' => 'main_menu')));
+		$this->data['menus'] = $this->Util_model->read('menus_items', array( 'where' => array( 'menu_id' => $menus[0]['id'])));
 	}
 	public function index()
 	{
@@ -29,6 +31,7 @@ class Welcome extends MX_Controller {
 		$where = array( 'alias' => 'home');
 		$this->data['page'] = $this->Util_model->read('pages', array( 'where' => $where));
 		
+				
 		$this->load->view('home', $this->data);
 	}
 	public function preview($alias = "")
@@ -45,13 +48,25 @@ class Welcome extends MX_Controller {
 		
 		}
 		
-		
-		
 		if(!empty($this->data['page'])){
 			$this->load->view('pages', $this->data);
 		}
 		else{
 			echo "404 Page Not Found";
+		}
+	}
+	public function innerpage($page = "")
+	{
+		$url = strtolower(str_replace("_", "-", $page));
+				
+		$where = array( 'alias' => $url);
+		$this->data['page'] = $this->Util_model->read('pages', array( 'where' => $where));
+		
+		if(!empty($this->data['page'])){
+			$this->load->view('pages', $this->data);
+		}
+		else{
+			echo "page not found";
 		}
 	}
 }

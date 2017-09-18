@@ -115,7 +115,7 @@
            width: 100%;
          }
 
-.gjs-pn-buttons span.gjs-pn-btn.fa.fa-eye,
+.gjs-pn-buttons span.gjs-pn-btn.fa.fa-eye, span.gjs-pn-btn.fa.fa-code,
 .gjs-pn-buttons span.gjs-pn-btn.fa.fa-arrows-alt {
     display: none;
 } {

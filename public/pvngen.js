@@ -221,6 +221,13 @@ jQuery.fn.dt_loaded = function(tblid){
 	});	
 	console.log(row_selection);	
 	if(row_selection == undefined || row_selection != 'no'){
+		jQuery(".menu-items").click( function(){
+			event.preventDefault();
+			var id = $(this).parent().parent().attr('id');
+			
+			window.location = ci_base_url+"/admin/menuitems/"+id;
+		});
+		
 		jQuery("#"+tblid+" tbody tr").unbind('click').bind('click',function(e){
 			jQuery(this).toggleClass('success');
 			var sl = jQuery("#"+tblid+" tbody tr.success").length;
@@ -300,3 +307,5 @@ function prepare_video(videofile, thumbfile){
 	str += '</video></div>';
 	return str;
 }
+
+
