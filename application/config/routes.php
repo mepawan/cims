@@ -53,6 +53,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'welcome';
 $route['preview'] = 'welcome/preview';
 $route['preview/(:any)'] = 'welcome/preview/$1';
+$route['register'] = 'welcome/register';
+
+$route['admin/menuitems/(:any)'] = 'admin/menuitems/index/$1';
+
 
 $route['404_override'] = 'welcome/page404';
 $route['translate_uri_dashes'] = TRUE;
