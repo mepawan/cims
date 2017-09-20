@@ -7,13 +7,14 @@
     <meta name="keywords" content="<?php if(isset($meta_keywords)){ echo $meta_keywords; }?>"/>
     <meta name="description" content="<?php if(isset($meta_description)){ echo $meta_description; }?>">
     <meta name="author" content="<?php if(isset($meta_author)){ echo $meta_author; }?>">
-
+	<link href="<?php echo ci_base_url();?>favicon.ico" rel="shortcut icon">
+	
     <link href="<?php echo ci_public('admin');?>img/favicon.144x144.png" rel="apple-touch-icon" type="image/png" sizes="144x144">
     <link href="<?php echo ci_public('admin');?>img/favicon.114x114.png" rel="apple-touch-icon" type="image/png" sizes="114x114">
     <link href="<?php echo ci_public('admin');?>img/favicon.72x72.png" rel="apple-touch-icon" type="image/png" sizes="72x72">
     <link href="<?php echo ci_public('admin');?>img/favicon.57x57.png" rel="apple-touch-icon" type="image/png">
     <link href="<?php echo ci_public('admin');?>img/favicon.png" rel="icon" type="image/png">
-     <link href="<?php echo ci_base_url();?>favicon.ico" rel="shortcut icon">
+     
 	<!-- Minimum Required CSS -->
 	<link rel="stylesheet" type="text/css" href="<?php echo ci_public('admin');?>vendors/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="<?php echo ci_public('admin');?>css/source/main.css">

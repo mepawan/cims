@@ -2,10 +2,10 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
-<?php $this->load->view('head'); ?>
+<?php $this->load->view('part/head'); ?>
 <body>
 	<div class="contain_wrapper">
-		<?php $this->load->view('header'); ?>
+		<?php $this->load->view('part/header'); ?>
 		
 		<?php print_r($page[0]['content']); ?>
   
@@ -29,7 +29,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</section>
 			</main>
 		</div>
-		<?php $this->load->view('footer'); ?>
+		<?php $this->load->view('part/footer'); ?>
 	</div>
 
 

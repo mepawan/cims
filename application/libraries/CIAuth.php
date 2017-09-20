@@ -310,7 +310,7 @@ class CIAuth {
 				);
 				$reset_link = ci_base_url().'auth/resetpwd/'.$hash;
 				$email_templates = $this->ci->config->item('ciauth_email_template');
-				$name = ($user['first_name'])?$user['first_name']:$user['username'];
+				$name = ($user['first_name'])?$user['first_name']. ' ' . $user['last_name']:$user['username'];
 				$msg = $email_templates['reset_password'];
 				$msg = str_replace(
 						array('{name}','{reset_link}','{site_name}'),
@@ -346,7 +346,8 @@ class CIAuth {
 		return $this->get_user_by_phone();
 	}
 		
-	function register($data) {		
+	function register($data) {	
+		global $ci_settings;	
 		$resp = array();
 		$evcode = substr(md5($data['email']),rand(0,10),5);
 		$hash = base64_encode($data['email'].'_'.$evcode);
@@ -359,7 +360,7 @@ class CIAuth {
 			'email'						=> $data['email'],
 			'phone'						=> isset($data['phone'])?$data['phone']:'',
 			'signup_ip'					=> $this->ci->input->ip_address(),
-			'referral_code' 			=> random_num().substr(md5($data['email']),rand(0,10),5),
+			'referral_code' 			=> ci_random_code().substr(md5($data['email']),rand(0,10),5),
 			'email_veriication_code' 	=> $evcode,
 			
 		);
@@ -378,11 +379,11 @@ class CIAuth {
 			
 			$verify_link = ci_base_url().'auth/verify-email/'.$hash;
 			$email_templates = $this->ci->config->item('ciauth_email_template');
-			$name = ($new_user['first_name'])?$new_user['first_name']:$new_user['username'];
+			$name = ($new_user['first_name'])?$new_user['first_name'] . ' ' . $new_user['last_name']:$new_user['username'];
 			$msg = $email_templates['verify_email'];
 			$msg = str_replace(
-					array('{name}','{reset_link}','{site_name}'),
-					array($name,$reset_link, $ci_settings['site_name']),
+					array('{name}','{verify_link}','{site_name}'),
+					array($name,$verify_link, $ci_settings['site_name']),
 					$msg
 				);
 			$mail = ci_email($new_user['email'], 'Verify Email - '.$ci_settings['site_name'],$msg);
@@ -403,11 +404,21 @@ class CIAuth {
 		if($hash){
 			$unhash = base64_decode($hash);
 			$unhash_arr = array_unique(array_filter(explode("_",$unhash)));
+			//print_r($unhash_arr);
 			if(count($unhash_arr) == 2){
-				$user = $this->users->get_user_by_email($unhash_arr[0]);
+				$user = $this->ci->users->get_user_by_email($unhash_arr[0]);
 				if($user){
+					//print_r($user);
 					if($unhash_arr[1] == $user['email_veriication_code']){
-						
+						$user_data = array(
+							'id' => $user['id'],
+							'email_veriication_code' => '',
+							'status' => 'active',
+							'email_verified' => 'yes'
+						);
+						$this->ci->users->update_user_data($user_data);
+						$resp['status'] = 'success';
+						$resp['msg'] = "Your email address verified successfully.";
 					} else {
 						$resp['status'] = 'fail';
 						$resp['msg'] = "Verification code doesn't match";

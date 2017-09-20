@@ -58,8 +58,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
       </form>
     </aside>
-    
-    
     </div>
     
 </footer>
+<script src="<?php echo ci_public('front'); ?>js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<?php echo ci_public('front'); ?>js/bootstrap.min.js"></script>
+<script type="text/javascript" src="<?php echo ci_public('front'); ?>js/script.js"></script>
+<script src="<?php echo ci_public('front'); ?>js/respond.min.js"></script>
+
+<?php 
+	if(isset($foot_views)){
+		array_walk($foot_views, function($fv){
+			$this->load->view($fv); 
+		});
+	}
+	if(isset($foot_scripts)){
+		array_walk($foot_scripts, function($fs){
+			echo '<script type="text/javascript"  src="'.$fs.'"></script>';
+		});
+	}
+		if(isset($datatable) && $datatable){
+			echo '<script type="text/javascript"  src="'.ci_public("admin").'vendors/datatables/media/js/jquery.dataTables.min.js" ></script>';
+			echo '<script type="text/javascript"  src="'.ci_public("admin").'vendors/datatables/media/js/dataTables.bootstrap4.min.js" ></script>';
+			echo '<script type="text/javascript"  src="'.ci_public("admin").'vendors/datatables-fixedcolumns/js/dataTables.fixedColumns.js" ></script>';
+			echo '<script type="text/javascript"  src="'.ci_public("admin").'vendors/datatables-responsive/js/dataTables.responsive.js" ></script>';
+		}
+?>
+

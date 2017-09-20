@@ -3,9 +3,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
 <ul class="menu">
-  <?php foreach($menus as $menu){ 
+  <?php 
+	$menus = get_menu_items('main_menu');
+	foreach($menus as $menu){ 
 		//echo "<pre>"; print_r($menu); die; 
-		echo ' <li><a href="'.$menu['alias'].'"><span>'.$menu['title'].'</span></a></li>';
+		echo ' <li><a href="'.ci_base_url().$menu['alias'].'"><span>'.$menu['title'].'</span></a></li>';
 		} 
 	 ?>
   <li><a class="srh_icon" href="#">search</a></li>

@@ -295,7 +295,10 @@ a.tog_icon:after {
 	padding: 64px 0;
 	text-align: center;
 }
-.ands_work h2 {
+ .content-section{
+	padding:50px 
+ }
+.ands_work h2, .content-section h2 {
 	font-size: 28px;
 	line-height: 38px;
 	text-transform: uppercase;
@@ -304,8 +307,9 @@ a.tog_icon:after {
 	position: relative;
 	padding-bottom: 20px;
 	color: #0a003d !important;
+	text-align: center;
 }
-.ands_work h2::after {
+.ands_work h2::after,.content-section h2::after {
 	content: "";
 	width: 30px;
 	height: 3px;
@@ -1325,11 +1329,15 @@ font-weight:bold;
 
 
 /******** CUSTOM *********/
-.error .btt p, .error .title_s{
+.error .btt p, .error .title_s, .error{
 	color:red;
 }
-.success .btt p, .success .title_s{
+.success .btt p, .success .title_s,.success{
 	color:00bb00;
 }
-
+.form-input-error, .form-input-error p{
+	font-size: 13px;
+	clear:both;
+	color:red;
+}
 

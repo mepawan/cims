@@ -120,7 +120,14 @@ function ci_unset_session($key){
 	$ci =& get_instance();
 	$ci->session->unset_userdata($key);
 }
-
+function get_menu_items($slug = ''){
+	if(!$slug){ return false;}
+	$ci =& get_instance();
+	$ci->load->model('Util_model');
+	$menus = $ci->Util_model->read('menus', array( 'where' => array( 'slug' => $slug)));
+	$menu_items =  $ci->Util_model->read('menus_items', array( 'where' => array( 'menu_id' => $menus[0]['id'])));
+	return $menu_items;
+}
 
 //******** ci_random_code() 
 if(! function_exists('ci_random_code')){

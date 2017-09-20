@@ -76,12 +76,14 @@ class Auth extends MX_Controller {
 		return $result;
 	}
 
-	function email_check($email) {
+	function email_exists($email) {
 		$result = $this->ciauth->is_email_available($email);
-		if ( ! $result) {
-			$this->form_validation->set_message('email_check', 'Email is already used by another user. Please choose another email address.');
+		if ( $result ) {
+			//$this->form_validation->set_message('email_exists', 'Email is already used by another user. Please choose another email address.');
+			//$this->form_validation->set_message('email_check', 'text dont match captcha');
+			return false;
 		}
-		return $result;
+		return true;
 	}
 	function forgetpwd(){
 		if ( $this->ciauth->is_logged_in()) {
@@ -115,7 +117,8 @@ class Auth extends MX_Controller {
 			$val = $this->form_validation;
 			$val->set_rules('first_name', 'First Name', 'trim|required');
 			$val->set_rules('last_name', 'Last Name', 'trim|required');
-			$val->set_rules('email', 'Email', 'trim|required|valid_email|callback_email_check');
+			//$val->set_rules('email', 'Email', 'trim|required|valid_email|callback_email_exists');
+			$val->set_rules('email', 'Email', 'trim|required|valid_email');
 			$val->set_rules('password', 'Password', 'trim|required|min_length['.$ci_settings['min_password_length'].']|max_length['.$ci_settings['max_password_length'].']|matches[confirm_password]');
 			$val->set_rules('confirm_password', 'Confirm Password', 'trim|required');
 			$val->set_rules('g-recaptcha-response', 'Human Verification', 'trim|required', array('required' => 'Solve Human Verification Captcha'));
