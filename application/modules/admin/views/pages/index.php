@@ -27,8 +27,8 @@
 
     </div> <!-- end .page-content-inner -->
     <?php $this->load->view('part/js'); ?>
-    <link rel="stylesheet" type="text/css" href="<?php echo ci_public();?>pvngen.css">
-    <!-- Page Scripts -->
+
+    
     <script type="text/javascript">
         var oTable;
 
@@ -36,7 +36,7 @@
 
         jQuery(document).ready(function() {
 
-            oTable = jQuery('#myshares_dt').DataTable({
+            oTable = jQuery("#dt_"+entity).DataTable({
                 "dom": '<"top"fl>rt<"bottom"p><"clear">',
                 "processing": true,
                 "serverSide": true,
@@ -45,7 +45,7 @@
                     { "data": 'title', render:function(data){
                             if(data){
                                 var data_arr = data.split("___");
-                                var thtml = '<div class="list-title-wrap" <a class="list_title" href="">'+data_arr[0]+'<a><div class="list-action-wrap"><a href="">Edit</a> <a href="">View</a><a href="">Delete</a> </div></div>';
+                                var thtml = '<div class="list-title-wrap" <a class="list_title" href="'+ci_base_url+'admin/pages/edit/'+data_arr[1]+'">'+data_arr[0]+'<a><div class="list-action-wrap"><a href="'+ci_base_url+'admin/pages/edit/'+data_arr[1]+'">Edit</a> <a href="'+ci_base_url+'preview/'+data_arr[2]+'">Preview</a><a href="'+ci_base_url+'admin/pages/delete/'+data_arr[1]+'">Delete</a> </div></div>';
                                 return thtml;
                             } else { return ''; }
                         }
@@ -72,10 +72,10 @@
 
         });
         function dt_loaded(){
-            jQuery(".share_info").click(function(e){
-                var id = jQuery(this).parents('tr').attr('id');
-                window.location = ci_base_url+'account/share/'+id;
-            });
+            //jQuery(".share_info").click(function(e){
+              //  var id = jQuery(this).parents('tr').attr('id');
+                //window.location = ci_base_url+'account/share/'+id;
+          //  });
         }
     </script>
     <script src="<?php echo ci_public();?>pvngen.js"></script>

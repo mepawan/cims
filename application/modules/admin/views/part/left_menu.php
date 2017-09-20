@@ -25,7 +25,12 @@
                     <span class="menu-top-hidden">Manage Pages</span>
                 </a>
             </li>
-
+			<li class="left-menu-list<?php if(isset($entity) && $entity == 'menus'){ echo '-active'; } ?>">
+                <a class="left-menu-link" href="<?php echo ci_base_url();?>admin/menus">
+                    <i class="left-menu-link-icon icmn-cogs"><!-- --></i>
+                    <span class="menu-top-hidden">Manage Menus</span>
+                </a>
+            </li>
             <li class="left-menu-list-separator"><!-- --></li>
             <li>
                 <a class="left-menu-link" href="<?php echo ci_base_url();?>admin/profile">

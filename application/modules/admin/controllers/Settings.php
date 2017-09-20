@@ -18,6 +18,8 @@ class Settings extends MX_Controller {
 		$this->data = $this->load_config();
 	}
 	public function index() {
+		
+		$this->data['datatable'] = true;
 		$this->load->view('pvngen/index',$this->data);
 	}
 	public function process_ajax(){

@@ -20,8 +20,6 @@ class Welcome extends MX_Controller {
 	 */
 	function __construct() {
 		parent::__construct();
-		
-		$this->load->library('Form_validation');
 		$this->load->model('Util_model');
 		$this->data = array();
 		$menus = $this->Util_model->read('menus', array( 'where' => array( 'slug' => 'main_menu')));
@@ -34,7 +32,6 @@ class Welcome extends MX_Controller {
 		$where = array( 'alias' => 'home');
 		$this->data['page'] = $this->Util_model->read('pages', array( 'where' => $where));
 		
-				
 		$this->load->view('home', $this->data);
 	}
 	public function preview($alias = "")
@@ -51,6 +48,8 @@ class Welcome extends MX_Controller {
 		
 		}
 		
+		
+		
 		if(!empty($this->data['page'])){
 			$this->load->view('pages', $this->data);
 		}
@@ -58,23 +57,4 @@ class Welcome extends MX_Controller {
 			echo "404 Page Not Found";
 		}
 	}
-	public function register()
-	{
-		
-		$this->form_validation->set_rules('username', 'Username', 'required');
-        $this->form_validation->set_rules('password', 'Password', 'trim|required');
-		$this->form_validation->set_rules('email', 'Email', 'valid_email|required');
-        $this->form_validation->set_rules('first_name', 'First Name', 'required');
-        $this->form_validation->set_rules('last_name', 'Last Name', 'required');
-        $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|matches[password]');
-		
-		 if ($this->form_validation->run() === FALSE )
-            {
-				$this->load->view('register', $this->data);
-			}
-		else{
-			echo "test";
-			}
-	}
-	
 }

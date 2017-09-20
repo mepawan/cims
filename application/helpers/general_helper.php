@@ -120,7 +120,14 @@ function ci_unset_session($key){
 	$ci =& get_instance();
 	$ci->session->unset_userdata($key);
 }
-
+function get_menu_items($slug = ''){
+	if(!$slug){ return false;}
+	$ci =& get_instance();
+	$ci->load->model('Util_model');
+	$menus = $ci->Util_model->read('menus', array( 'where' => array( 'slug' => $slug)));
+	$menu_items =  $ci->Util_model->read('menus_items', array( 'where' => array( 'menu_id' => $menus[0]['id'])));
+	return $menu_items;
+}
 
 //******** ci_random_code() 
 if(! function_exists('ci_random_code')){
@@ -288,6 +295,36 @@ function title_alias($tbl, $title){
 	return $final_alias;
 }
 
+function ci_email($to, $subject, $msg, $from = ''){
+	global $ci_settings;
+	$config = Array(
+		'protocol' => 'smtp',
+		'smtp_host' => 'ssl://smtp.googlemail.com',
+		'smtp_port' => 465,
+		'smtp_user' => 'pawan.developers@gmail.com', 
+		'smtp_pass' => 'dpawan1086', 
+		'mailtype' => 'html',
+		'charset' => 'iso-8859-1',
+		'wordwrap' => TRUE
+	);
+	if(!$from){
+		$from['email'] = $ci_settings['site_email'];
+		$from['name'] = $ci_settings['site_name'];
+	}
 
+	$ci =& get_instance();
+	$ci->load->library('email', $config);
+	$ci->email->set_newline("\r\n");
+	
+	$ci->email->subject($subject);
+	$ci->email->from($from['email'],$from['name']);
+	$ci->email->to($to);
+	$ci->email->message($msg);
+	if($ci->email->send()) {
+		return array('status' => 'success');
+	} else {
+		return array('status' => 'fail','msg' => $ci->email->print_debugger());
+    }
+}
 
 

@@ -101,7 +101,7 @@ if(! function_exists('validate_recapcha')){
 			$result = json_decode($response);
 			return $result->success;
 		} else {
-			return true;
+			return false;
 		}
 	}
 }

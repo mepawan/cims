@@ -1,11 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-<style><?php print_r($page[0]['content_css']); ?></style>
-<?php $this->load->view('head'); ?>
+
+<?php $this->load->view('part/head'); ?>
 <body>
 	<div class="contain_wrapper">
-		<?php $this->load->view('header'); ?>
+		<?php $this->load->view('part/header'); ?>
 		
 		<div class="wrapper">
 		  <main class="background_container">
@@ -61,9 +61,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<?php //echo "<pre>"; print_r($page); die; ?>
 		
 		
-		<?php $this->load->view('footer'); ?>
+		<?php $this->load->view('part/footer'); ?>
 	</div>
 
-
+<style><?php print_r($page[0]['content_css']); ?></style>
 </body>
 </html>

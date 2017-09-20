@@ -20,6 +20,7 @@ class Menuitems extends MX_Controller {
 	public function index($i = '') {
 		
 		$this->data = $this->load_config(array('menu_id' => $i));
+		$this->data['datatable'] = true;
 		$this->data['id'] = $i; 
 		$this->load->view('menus/menu_item',$this->data);
 		

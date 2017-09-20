@@ -75,7 +75,7 @@
                         <?php echo recaptcha_form();?>
                     </div>
                     <div class="form-group">
-                        <a href="javascript: void(0);" class="pull-right">Forgot Password?</a>
+                        <a href="<?php echo ci_base_url();?>admin/auth/forgetpwd"" class="pull-right">Forgot Password?</a>
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" name="remember" checked>
@@ -113,7 +113,6 @@
         
 		$('#login-form').submit(function(e){
 			e.preventDefault();
-			alert('hello');
 			jQuery.post(ci_base_url+'admin/auth/login',jQuery(this).serialize(),function(resp){
 				
 			},'json');

@@ -219,10 +219,10 @@ jQuery.fn.dt_loaded = function(tblid){
 	jQuery('.dt_video_wrap video, .dt_img_wrap img').unbind('click').bind('click',function(e){
 		jQuery(this).parent().addClass('popup');
 	});	
-	console.log(row_selection);	
+
 	if(row_selection == undefined || row_selection != 'no'){
-		jQuery(".menu-items").click( function(){
-			event.preventDefault();
+		jQuery(".menu-items").click( function(e){
+			e.preventDefault();
 			var id = $(this).parent().parent().attr('id');
 			
 			window.location = ci_base_url+"/admin/menuitems/"+id;
