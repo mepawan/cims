@@ -1322,3 +1322,14 @@ font-weight:bold;
     color: #111;
     font-size: 16px;
 }
+
+
+/******** CUSTOM *********/
+.error .btt p, .error .title_s{
+	color:red;
+}
+.success .btt p, .success .title_s{
+	color:00bb00;
+}
+
+

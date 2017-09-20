@@ -27,7 +27,7 @@ $config['ciauth'] = array(
 	'login_by_username' => TRUE,
 	'login_by_email' => TRUE,
 	'login_by_phone' => TRUE,
-	'record_login_activiry' => TRUE,
+	'record_login_activity' => TRUE,
 	'two_factor_auth' => '', // '',email,phone,pin
 	// Auto Login 
 	'autologin_cookie_name' => 'ciauthal',
@@ -39,7 +39,11 @@ $config['ciauth'] = array(
 	'forgot_password_expire_time' => 60*60*24*31*2,
 	'google_recaptcha_site_key' => '',
 	'google_recaptcha_secret_key' => '',
+	//Registration
 	'allow_user_registration' => TRUE,
+	'min_password_length' => 6,
+	'max_password_length' => 20,
+	
 	
 	// admin 
 	
@@ -47,6 +51,10 @@ $config['ciauth'] = array(
 	
 	
 	
+);
+$config['ciauth_email_template'] = array(
+	'reset_password' => 'Dear {name},<br /><br />You have requested to reset your password. Please click on below link to reset your password.<br /><br /><a href="{reset_link}">{reset_link}</a></a><br /><br /> Thanks,<br />{site_name} Team<br />',
+	'verify_email' => 'Dear {name},<br /><br />You have requested to reset your password. Please click on below link to reset your password.<br /><br /><a href="{reset_link}">{reset_link}</a></a><br /><br /> Thanks,<br />{site_name} Team<br />',
 );
 
 

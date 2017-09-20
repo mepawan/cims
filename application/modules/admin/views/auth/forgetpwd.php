@@ -12,7 +12,7 @@
             <div class="col-lg-4">
                 <div class="logo">
                     <a href="javascript: history.back();">
-                        <img src="<?php echo ci_public('admin');?>img/logo.png" alt="Clean UI Admin Template" />
+                        <img src="<?php echo ci_public('admin');?>img/logo.png" alt="<?php echo $ci_settings['site_name']; ?>" />
                     </a>
                 </div>
             </div>
@@ -33,14 +33,17 @@
 			<div class="error">
 				<?php 	echo $this->ciauth->get_auth_error();
 						echo form_error('email'); 
-						echo form_error('password');
 						echo form_error('g-recaptcha-response');
 						if(isset($recaptcha_error) && $recaptcha_error){ echo $recaptcha_error; }
 						if(isset($error) && $recaptcha_error){ echo $error; }
+						echo $this->session->flashdata('error');
 				 ?>
 			</div>
 			<div class="success">
-				<?php  if(isset($success) && $success){ echo $success; } ?>
+				<?php  
+					if(isset($success) && $success){ echo $success; }
+					echo $this->session->flashdata('success');
+				 ?>
 			</div>
 		</div>
         <div class="single-page-block-inner effect-3d-element">
@@ -48,7 +51,7 @@
             <div class="single-page-block-form">
                 <h3 class="text-center">
                     <i class="icmn-lock3 margin-right-10"></i>
-                    Secure Authentication
+                    Forget Password
                 </h3>
                 <br />
                 <form id="login-form" name="form-validation" method="POST">
@@ -62,29 +65,16 @@
                                data-validation="[MIXED, L>3]"
 							   data-validation-message="Enter valid email/username/phone">
                     </div>
-                    <div class="form-group">
-                        <input id="validation-password"
-                               class="form-control password"
-                               name="password"
-							   autocomplete="off"
-                               type="password" data-validation="[L>=6]"
-                               data-validation-message="$ must be at least 6 characters"
-                               placeholder="Password">
-                    </div>
+                    
 					<div class="form-group">
                         <?php echo recaptcha_form();?>
                     </div>
                     <div class="form-group">
-                        <a href="<?php echo ci_base_url();?>admin/auth/forgetpwd"" class="pull-right">Forgot Password?</a>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="remember" checked>
-                                Remember me
-                            </label>
-                        </div>
+                        <a href="<?php echo ci_base_url();?>admin/auth" class="pull-right">Want to login?</a>
+                        <div class="clearfix clear"></div>
                     </div>
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-primary width-150">Sign In</button>
+                        <button type="submit" class="btn btn-primary width-150">Reset Password</button>
                     </div>
                 </form>
             </div>

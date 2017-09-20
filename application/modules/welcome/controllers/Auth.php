@@ -26,7 +26,7 @@ class Auth extends MX_Controller {
 	function login() {
 		
 		if ( $this->ciauth->is_logged_in()) {
-			redirect('admin');
+			redirect('');
 		}
 
 		$val = $this->form_validation;
@@ -37,7 +37,7 @@ class Auth extends MX_Controller {
 		if ($val->run() ) {
 			if(validate_recapcha()){
 				if($this->ciauth->login()){
-					redirect('admin');
+					redirect('');
 				}
 			} else {
 				$this->data['recaptcha_error'] = 'Fail Human Verification';
@@ -48,33 +48,36 @@ class Auth extends MX_Controller {
 		$this->data['foot_scripts'] = array(
 			ci_public("admin").'vendors/html5-form-validation/dist/jquery.validation.min.js',
 			ci_public("admin").'vendors/bootstrap-show-password/bootstrap-show-password.min.js',
-			ci_public("admin").'vendors/gsap/src/minified/TweenMax.min.js',
+			//ci_public("admin").'vendors/gsap/src/minified/TweenMax.min.js',
 		);
 		$this->data['add_recaptcha_js'] = true;
 		$this->load->view('auth/login', $this->data);
 	}
     function logout() {
         $this->ciauth->logout();
-        redirect('admin/auth');
-       // $this->data['info'] = 'You have been logged out.<br /><a href="'.ci_base_url().'">Home Page</a> | <a href="'.ci_base_url().'admin"> Login</a>';
-        //$this->load->view('general_message', $this->data);
+        redirect('auth');
     }
 	public function resend_activation_email(){
 		
 	}
-	public function request($type = ''){
-		
-	}
+
 	function username_check($username) {
-		$result = $this->dx_auth->is_username_available($username);
+		$result = $this->ciauth->is_username_available($username);
 		if ( ! $result) {
 			$this->form_validation->set_message('username_check', 'Username already exist. Please choose another username.');
 		}
 		return $result;
 	}
+	function phone_check($username) {
+		$result = $this->ciauth->is_phone_available($username);
+		if ( ! $result) {
+			$this->form_validation->set_message('phone_check', 'Phone already exist. Please choose another phone.');
+		}
+		return $result;
+	}
 
 	function email_check($email) {
-		$result = $this->dx_auth->is_email_available($email);
+		$result = $this->ciauth->is_email_available($email);
 		if ( ! $result) {
 			$this->form_validation->set_message('email_check', 'Email is already used by another user. Please choose another email address.');
 		}
@@ -97,75 +100,76 @@ class Auth extends MX_Controller {
 			}
 		} 
 		
-		
 		$this->data['foot_scripts'] = array(
 			ci_public("admin").'vendors/html5-form-validation/dist/jquery.validation.min.js',
 			ci_public("admin").'vendors/bootstrap-show-password/bootstrap-show-password.min.js',
-			ci_public("admin").'vendors/gsap/src/minified/TweenMax.min.js',
+			//ci_public("admin").'vendors/gsap/src/minified/TweenMax.min.js',
 		);
 		$this->data['add_recaptcha_js'] = true;
 		$this->load->view('auth/forgetpwd', $this->data);
 	}
-	
-	
-	
-	
-	
+
 	function register() {
-		if (1 == 2 &&  ! $this->dx_auth->is_logged_in() AND $this->dx_auth->allow_registration) {	
+		global $ci_settings;
+		if($this->input->post()){
 			$val = $this->form_validation;
-			
-			// Set form validation rules
 			$val->set_rules('first_name', 'First Name', 'trim|required');
 			$val->set_rules('last_name', 'Last Name', 'trim|required');
-			$val->set_rules('password', 'Password', 'trim|required|min_length['.$this->min_password.']|max_length['.$this->max_password.']|matches[confirm_password]');
-			$val->set_rules('confirm_password', 'Confirm Password', 'trim|required');
 			$val->set_rules('email', 'Email', 'trim|required|valid_email|callback_email_check');
+			$val->set_rules('password', 'Password', 'trim|required|min_length['.$ci_settings['min_password_length'].']|max_length['.$ci_settings['max_password_length'].']|matches[confirm_password]');
+			$val->set_rules('confirm_password', 'Confirm Password', 'trim|required');
+			$val->set_rules('g-recaptcha-response', 'Human Verification', 'trim|required', array('required' => 'Solve Human Verification Captcha'));
 			
-			// Is registration using captcha
-			if ($this->dx_auth->captcha_registration) {
-				// Set recaptcha rules.
-				// IMPORTANT: Do not change 'recaptcha_response_field' because it's used by reCAPTCHA API,
-				// This is because the limitation of reCAPTCHA, not DX Auth library
-				$val->set_rules('recaptcha_response_field', 'Confirmation Code', 'trim|required|callback_recaptcha_check');
-			}
-
-			// Run form validation and register user if it's pass the validation
-			if ($val->run() AND $this->dx_auth->register($val->set_value('first_name'),$val->set_value('last_name'), $val->set_value('password'), $val->set_value('email'))){	
-				// Set success message accordingly
-				if ($this->dx_auth->email_activation) {
-					$this->data['auth_message'] = 'You have successfully registered. Check your email address to activate your account.';
-				} else {					
-					$this->data['auth_message'] = 'You have successfully registered. '.anchor(site_url($this->dx_auth->login_uri), 'Login');
+			if ($val->run() ) {
+				if(validate_recapcha()){
+					$reg_resp = $this->ciauth->register($this->input->post());
+					if($reg_resp['status'] == 'success'){
+						$this->data['success'] = $reg_resp['msg'];
+					} else {
+						$this->data['error'] = $reg_resp['msg'];
+					}
+					
+				} else {
+					$this->data['recaptcha_error'] = 'Captcha Verification Fail';
 				}
-				
-				// Load registration success page
-				$this->load->view($this->dx_auth->register_success_view, $this->data);
 			} else {
-				// Load registration page
-				$this->load->view('Auth/register_form');
+				$this->data['form_errors'] = $this->form_validation->error_array();
 			}
-		} else if (1==1 || ! $this->dx_auth->allow_registration) {
-			$this->data['auth_message'] = 'Registration has been disabled.';
-			$this->load->view($this->dx_auth->register_disabled_view, $this->data);
-		} else {
-			$this->data['auth_message'] = 'You have to logout first, before registering.';
-			$this->load->view($this->dx_auth->logged_in_view, $this->data);
 		}
+		if(is_ajax()){
+			echo json_encode($this->data);
+			die;
+		} else {
+			
+			$this->data['foot_scripts'] = array(
+				ci_public("admin").'vendors/html5-form-validation/dist/jquery.validation.min.js',
+				ci_public("admin").'vendors/bootstrap-show-password/bootstrap-show-password.min.js',
+				//ci_public("admin").'vendors/gsap/src/minified/TweenMax.min.js',
+			);
+		$this->data['add_recaptcha_js'] = true;
+			$this->data['heading'] = "Signup";
+			$this->load->view('auth/register', $this->data);
+		}
+		
 	}
 	
-	function activate() {
-		// Get username and key
-		$username = $this->uri->segment(3);
-		$key = $this->uri->segment(4);
-
-		// Activate user
-		if ($this->dx_auth->activate($username, $key)) {
-			$this->data['auth_message'] = 'Your account have been successfully activated. '.anchor(site_url($this->dx_auth->login_uri), 'Login');
-			$this->load->view($this->dx_auth->activate_success_view, $this->data);
+	
+	
+	function verify_email($hash = '') {
+		$this->data['heading'] = "Email Verification";
+		$v_resp = $this->ciauth->verify_email($hash);
+		$this->data['msg'] = $v_resp['msg'];
+		if($v_resp['status'] == 'success'){
+			$this->data['msg_type'] = 'success';
 		} else {
-			$this->data['auth_message'] = 'The activation code you entered was incorrect. Please check your email again.';
-			$this->load->view($this->dx_auth->activate_failed_view, $this->data);
+			$this->data['msg_type'] = 'error';
+		}
+		
+		if(is_ajax()){
+			echo json_encode($this->data);
+			die;
+		} else {
+			$this->load->view('general_message', $this->data);
 		}
 	}
 	

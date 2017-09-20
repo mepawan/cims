@@ -26,21 +26,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="left_bar">
 				<h4>Categories</h4>
 					<ul>
-							<li class="cat-item cat-item-3"><a href="http://handsacrosshands.com/index.php/category/design/">Design</a>
+							<li class="cat-item cat-item-3"><a href="#">Design</a>
 						</li>
-							<li class="cat-item cat-item-4"><a href="http://handsacrosshands.com/index.php/category/lifestyle/">Lifestyle</a>
+							<li class="cat-item cat-item-4"><a href="#">Lifestyle</a>
 						</li>
-							<li class="cat-item cat-item-5"><a href="http://handsacrosshands.com/index.php/category/modern/">Modern</a>
+							<li class="cat-item cat-item-5"><a href="#">Modern</a>
 						</li>
-							<li class="cat-item cat-item-6"><a href="http://handsacrosshands.com/index.php/category/nature/">Nature</a>
+							<li class="cat-item cat-item-6"><a href="#">Nature</a>
 						</li>
-							<li class="cat-item cat-item-7"><a href="http://handsacrosshands.com/index.php/category/photography/">Photography</a>
+							<li class="cat-item cat-item-7"><a href="#">Photography</a>
 						</li>
-							<li class="cat-item cat-item-8"><a href="http://handsacrosshands.com/index.php/category/technology/">Technology</a>
+							<li class="cat-item cat-item-8"><a href="#">Technology</a>
 						</li>
-							<li class="cat-item cat-item-9"><a href="http://handsacrosshands.com/index.php/category/travel/">Travel</a>
+							<li class="cat-item cat-item-9"><a href="#">Travel</a>
 						</li>
-							<li class="cat-item cat-item-1"><a href="http://handsacrosshands.com/index.php/category/uncategorized/">Uncategorized</a>
+							<li class="cat-item cat-item-1"><a href="#">Uncategorized</a>
 						</li>
 					</ul>
 				</div>

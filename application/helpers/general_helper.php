@@ -288,6 +288,36 @@ function title_alias($tbl, $title){
 	return $final_alias;
 }
 
+function ci_email($to, $subject, $msg, $from = ''){
+	global $ci_settings;
+	$config = Array(
+		'protocol' => 'smtp',
+		'smtp_host' => 'ssl://smtp.googlemail.com',
+		'smtp_port' => 465,
+		'smtp_user' => 'pawan.developers@gmail.com', 
+		'smtp_pass' => 'dpawan1086', 
+		'mailtype' => 'html',
+		'charset' => 'iso-8859-1',
+		'wordwrap' => TRUE
+	);
+	if(!$from){
+		$from['email'] = $ci_settings['site_email'];
+		$from['name'] = $ci_settings['site_name'];
+	}
 
+	$ci =& get_instance();
+	$ci->load->library('email', $config);
+	$ci->email->set_newline("\r\n");
+	
+	$ci->email->subject($subject);
+	$ci->email->from($from['email'],$from['name']);
+	$ci->email->to($to);
+	$ci->email->message($msg);
+	if($ci->email->send()) {
+		return array('status' => 'success');
+	} else {
+		return array('status' => 'fail','msg' => $ci->email->print_debugger());
+    }
+}
 
 

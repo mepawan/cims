@@ -3,17 +3,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
 <ul class="menu">
-  <li class="active"><a href="#"><span>How It Works</span></a></li>
-  <li><a href="#"><span>Sign Up</span></a></li>
-  <li><a href="#"><span>Our Story</span></a></li>
-  <li><a href="#"><span>Contact</span></a></li>
-  <li><a class="drop_d" href="#"><span>Sign In</span></a>
-	<ul>
-	  <li><a href="#">Dummy Link 001</a></li>
-	  <li><a href="#">Dummy Link 001</a></li>
-	  <li><a href="#">Dummy Link 001</a></li>
-	</ul>
-  <li><a href="#"><span>404 Page</span></a></li>
+  <?php foreach($menus as $menu){ 
+		//echo "<pre>"; print_r($menu); die; 
+		echo ' <li><a href="'.$menu['alias'].'"><span>'.$menu['title'].'</span></a></li>';
+		} 
+	 ?>
   <li><a class="srh_icon" href="#">search</a></li>
   <li><a class="tog_icon" href="#">dropdown</a></li>
 </ul>
