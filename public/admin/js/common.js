@@ -161,13 +161,17 @@ $(function(){
 		const html = editor.getHtml();
 		  const css = editor.getCss();
 		  var title = $("#title").val();
+		  if($("#sidebar:checked").val()){
+			var sidebar = $("#sidebar:checked").val();
+			}
+		  else{ var sidebar = 'no'; }
 		  
 		  if(title == ""){ $("#title").focus(); }
 		  else{
 			 $.ajax({
 					url: ci_base_url+'/admin/pages/save',
 					type: "POST",
-					data:  {html: html, css:css, title:title},
+					data:  {html: html, css:css, title:title, sidebar:sidebar},
 					 
 					success: function(data){
 					  window.location = ci_base_url+"/admin/pages";
@@ -183,16 +187,65 @@ $(function(){
 		  const css = editor.getCss();
 		  var title = $("#title").val();
 		  var id = $("#id").val();
+		  if($("#sidebar:checked").val()){
+			var sidebar = $("#sidebar:checked").val();
+			}
+		  else{ var sidebar = 'no'; }
 		  
+		 		  
 		  if(title == ""){ $("#title").focus(); }
 		  else{
 			 $.ajax({
 					url: ci_base_url+'/admin/pages/update',
 					type: "POST",
-					data:  {html: html, css:css, title:title, id:id},
+					data:  {html: html, css:css, title:title, id:id, sidebar:sidebar},
 					 
 					success: function(data){
+						
 					  window.location = ci_base_url+"/admin/pages";
+					},
+					error: function(){} 	        
+			   });
+	   }
+	});
+	
+	$(".save-block-button").click( function(event){
+		event.preventDefault();
+		
+		  var title = $("#title").val();
+		  var content = CKEDITOR.instances['ckeditor'].getData();
+		  
+		  
+		  if(title == ""){ $("#title").focus(); }
+		  else{
+			 $.ajax({
+					url: ci_base_url+'/admin/blocks/save',
+					type: "POST",
+					data:  {content: content, title:title},
+					 
+					success: function(data){
+					  window.location = ci_base_url+"/admin/blocks";
+					},
+					error: function(){} 	        
+			   });
+	   }
+	});
+	
+	$(".update-block-button").click( function(event){
+		event.preventDefault();
+		 var title = $("#title").val();
+		  var content = CKEDITOR.instances['ckeditor'].getData();
+		  var id = $("#id").val();
+		  
+		  if(title == ""){ $("#title").focus(); }
+		  else{
+			 $.ajax({
+					url: ci_base_url+'/admin/blocks/update',
+					type: "POST",
+					data:  {content: content, title:title, id:id},
+					 
+					success: function(data){
+					  window.location = ci_base_url+"/admin/blocks";
 					},
 					error: function(){} 	        
 			   });

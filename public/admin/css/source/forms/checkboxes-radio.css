@@ -23,3 +23,24 @@ label[disabled].btn {
     opacity: .6;
     cursor: not-allowed;
 }
+
+/*************custom CSS ********************/
+
+.field-sidebar h4 {
+    margin-bottom: 10px;
+}
+.field-sidebar.form-group input[type=checkbox] {
+    width: auto;
+    clear: both;
+    display: inline;
+    height: 15px;
+    width: 15px;
+    margin-right: 10px;
+}
+.field-sidebar label {
+    width: 100%;
+}
+.form-group.field-sidebar {
+    color: #000;
+    font-size: 16px;
+}

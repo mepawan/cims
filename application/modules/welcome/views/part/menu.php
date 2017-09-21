@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$menus = get_menu_items('main_menu');
 	foreach($menus as $menu){ 
 		//echo "<pre>"; print_r($menu); die; 
-		echo ' <li><a href="'.ci_base_url().$menu['alias'].'"><span>'.$menu['title'].'</span></a></li>';
+		echo ' <li><a href="'.ci_base_url().$menu['url'].'"><span>'.$menu['title'].'</span></a></li>';
 		} 
 	 ?>
   <li><a class="srh_icon" href="#">search</a></li>
