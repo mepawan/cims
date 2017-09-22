@@ -30,6 +30,10 @@ class Auth extends MX_Controller {
 			if($redirect){
 				$this->session->unset_userdata('redirect_url');
 				$this->data['redirect'] = $redirect;
+			} else if($this->ciauth->is_role('provider')){
+				$this->data['redirect'] = ci_base_url().'provider';
+			} else {
+				$this->data['redirect'] = ci_base_url().'customer';
 			}
 			echo json_encode($this->data);
 			die;
@@ -47,24 +51,28 @@ class Auth extends MX_Controller {
 	function login() {
 		
 		if ( $this->ciauth->is_logged_in()) {
+			$this->data['status'] = 'success';
+			$this->data['msg'] = 'Already logged in. Redirecting....';
 			$this->redirect_loggedin_user();
 		}
 		if($this->input->post()){
-			
+			$this->data['loggedin'] = 'no';
+			$this->data['status'] = 'fail';
 			$val = $this->form_validation;
 			$val->set_rules('loginkey', 'Username', 'trim|required');
 			$val->set_rules('password', 'Password', 'trim|required');
 			//$val->set_rules('g-recaptcha-response', 'Human Verification', 'trim|required', array('required' => 'Solve Human Verification Captcha'));
 			
 			if ($val->run() ) {
-				
 				//if(validate_recapcha()){
+					
 					$login_resp = $this->ciauth->login($this->input->post());
-
+					$this->data = array($this->data,$login_resp);
+					
 					if($login_resp['status'] == 'success'){
 						$this->redirect_loggedin_user();
 					} else {
-						$this->data['error'] = $login_resp['msg'];
+						$this->data['msg'] = $login_resp['msg'];
 					}
 				//} else {
 				//	$this->data['recaptcha_error'] = 'Fail Human Verification';
@@ -73,9 +81,8 @@ class Auth extends MX_Controller {
 				$this->data['form_errors'] = $this->form_validation->error_array();
 			}
 		}
-		echo "hello......";
+
 		if(is_ajax()){
-			echo "hello3333";
 			echo json_encode($this->data);
 			die;
 		} else {

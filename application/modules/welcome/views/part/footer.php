@@ -63,8 +63,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </footer>
 <script src="<?php echo ci_public('front'); ?>js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<?php echo ci_public('front'); ?>js/bootstrap.min.js"></script>
+<script type="text/javascript" src="<?php echo ci_public('admin'); ?>vendors/remarkable-bootstrap-notify/dist/bootstrap-notify.min.js"></script>
 <script type="text/javascript" src="<?php echo ci_public('front'); ?>js/script.js"></script>
 <script src="<?php echo ci_public('front'); ?>js/respond.min.js"></script>
+
+
 
 <?php 
 	if(isset($foot_views)){

@@ -21,7 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									</span>
 								<?php } ?>
 								<div id="top_move" class="btt">
-									<div class="col-sm-6 col-sm-offset-3">
+									<div class="col-sm-6">
 											<div class="error">
 												<?php 	echo $this->ciauth->get_auth_error();
 														if(isset($recaptcha_error) && $recaptcha_error){ echo $recaptcha_error; }
@@ -77,6 +77,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											</form>
 										<?php } ?>
 									</div>
+									<div class="col-sm-6">
+										<?php echo bybridauth_links();?>
+									</div>
+									<div class="clearfix clear"></div>
 								</div>
 							</div>
 						</div>

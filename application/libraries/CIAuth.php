@@ -109,14 +109,13 @@ class CIAuth {
 						$user['login_attempt'] = '';
 						$user['password'] = '';
 						$this->_set_session($user);
-						$resp = true;
 						if ($params['remember'] == 1 || $params['remember'] == 'on' ) {
 							$this->_create_autologin($user['id']);
 						}
 						$update_user['id'] = $user['id'];
 						$this->ci->users->update_user_data($update_user);
 						$resp['status'] = 'success';
-						$resp['msg'] = '';
+						$resp['msg'] = 'Logged in success. Redirecting';
 					}
 				} else {
 					$resp['status'] = 'fail';
