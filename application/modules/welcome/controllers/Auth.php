@@ -22,36 +22,71 @@ class Auth extends MX_Controller {
 	function recaptcha_check(){
 		return validate_recapcha();
 	}
-
+	function redirect_loggedin_user(){
+		$redirect = ($this->session->userdata('redirect_url'))?$this->session->userdata('redirect_url'):'';
+		if(is_ajax()){
+			$this->data['loggedin'] = 'yes';
+			$this->data['user'] = $this->ciauth->get_user();
+			if($redirect){
+				$this->session->unset_userdata('redirect_url');
+				$this->data['redirect'] = $redirect;
+			}
+			echo json_encode($this->data);
+			die;
+		} else {
+			if($redirect){
+				$this->session->unset_userdata('redirect_url');
+				redirect($redirect);
+			} else if($this->ciauth->is_role('provider')){
+				redirect('/provider');
+			} else {
+				redirect('/customer');
+			}
+		}
+	}
 	function login() {
 		
 		if ( $this->ciauth->is_logged_in()) {
-			redirect('');
+			$this->redirect_loggedin_user();
 		}
+		if($this->input->post()){
+			
+			$val = $this->form_validation;
+			$val->set_rules('loginkey', 'Username', 'trim|required');
+			$val->set_rules('password', 'Password', 'trim|required');
+			//$val->set_rules('g-recaptcha-response', 'Human Verification', 'trim|required', array('required' => 'Solve Human Verification Captcha'));
+			
+			if ($val->run() ) {
+				
+				//if(validate_recapcha()){
+					$login_resp = $this->ciauth->login($this->input->post());
 
-		$val = $this->form_validation;
-		$val->set_rules('loginkey', 'Username', 'trim|required');
-		$val->set_rules('password', 'Password', 'trim|required');
-		$val->set_rules('g-recaptcha-response', 'Human Verification', 'trim|required', array('required' => 'Solve Human Verification Captcha'));
-		
-		if ($val->run() ) {
-			if(validate_recapcha()){
-				if($this->ciauth->login()){
-					redirect('');
-				}
+					if($login_resp['status'] == 'success'){
+						$this->redirect_loggedin_user();
+					} else {
+						$this->data['error'] = $login_resp['msg'];
+					}
+				//} else {
+				//	$this->data['recaptcha_error'] = 'Fail Human Verification';
+				//}
 			} else {
-				$this->data['recaptcha_error'] = 'Fail Human Verification';
+				$this->data['form_errors'] = $this->form_validation->error_array();
 			}
-		} 
-		
-		
-		$this->data['foot_scripts'] = array(
-			ci_public("admin").'vendors/html5-form-validation/dist/jquery.validation.min.js',
-			ci_public("admin").'vendors/bootstrap-show-password/bootstrap-show-password.min.js',
-			//ci_public("admin").'vendors/gsap/src/minified/TweenMax.min.js',
-		);
-		$this->data['add_recaptcha_js'] = true;
-		$this->load->view('auth/login', $this->data);
+		}
+		echo "hello......";
+		if(is_ajax()){
+			echo "hello3333";
+			echo json_encode($this->data);
+			die;
+		} else {
+			$this->data['foot_scripts'] = array(
+				ci_public("admin").'vendors/html5-form-validation/dist/jquery.validation.min.js',
+				ci_public("admin").'vendors/bootstrap-show-password/bootstrap-show-password.min.js',
+				//ci_public("admin").'vendors/gsap/src/minified/TweenMax.min.js',
+			);
+			$this->data['add_recaptcha_js'] = true;
+			$this->load->view('auth/login', $this->data);
+		}
 	}
     function logout() {
         $this->ciauth->logout();

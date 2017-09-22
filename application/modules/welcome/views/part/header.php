@@ -3,23 +3,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
 <header id="header" class="background_header">
-  <section class="header_top">
-    <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="top_login"> <a href="#">Login</a>
-          <div class="log_form">
-            <input name="" type="text" placeholder="Username">
-            <input name="" type="text" placeholder="Password">
-            <p>
-              <input name="rememberme" id="rememberme" value="forever" class="hb-remember-checkbox" type="checkbox">
-              Remember me?</p>
-            <input name="" type="submit" value="login">
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+	<section class="header_top">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="top_login"> 
+						<a href="#">Login</a>
+						<div class="log_form">
+							<form id="frm-top-login" action="#">
+								<input required name="loginkey" type="text" placeholder="Username/Email/Phone" />
+								<input required name="password" type="password" placeholder="Password" />
+								<p>
+									<input name="remember" id="remember" class="hb-remember-checkbox" type="checkbox" />
+									Remember me?
+								</p>
+								<input name="submit" type="submit" value="login">
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
   <!--header_top-->
   
   <section class="header_bottom">

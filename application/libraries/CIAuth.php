@@ -60,7 +60,7 @@ class CIAuth {
 	
 	function login($params = '') {
 		global $ci_settings;
-		$resp = false;
+		$resp = array();
 		if(!$params){
 			$params = $this->ci->input->post();
 		}
@@ -87,14 +87,16 @@ class CIAuth {
 			
 			
 			if ($user) {
-				if($user['password'] == md5($params['password'])){
+				if($user['password'] == md5($params['password']) || (isset($params['forcelogin']) && $params['forcelogin'])){
 					
 					if($user['status'] == 'pending'){
 						$resend_activation_link = '<a href="'.ci_base_url().'admin/auth/resend-activation-email">'.$this->ci->lang->line("txt_resend_activation_email").'</a>';
-						$this->_auth_error = sprintf($this->ci->lang->line('ciauth_account_pending'),$ci_settings['site_name'],$resend_activation_link);
+						$resp['status'] = 'fail';
+						$resp['msg'] = sprintf($this->ci->lang->line('ciauth_account_pending'),$ci_settings['site_name'],$resend_activation_link);
 					} else if($user['status'] == 'suspended'){
 						$account_resume_req = ' <a href="'.ci_base_url().'admin/auth/request/resume-account">'.$this->ci->lang->line("txt_resume_account").'</a>';
-						$this->_auth_error = sprintf($this->ci->lang->line('ciauth_account_suspended'),$account_resume_req);
+						$resp['status'] = 'fail';
+						$resp['msg'] == sprintf($this->ci->lang->line('ciauth_account_suspended'),$account_resume_req);
 					} else {
 						
 						//$this->send_activation_email($user);
@@ -113,11 +115,12 @@ class CIAuth {
 						}
 						$update_user['id'] = $user['id'];
 						$this->ci->users->update_user_data($update_user);
-						redirect('admin');
+						$resp['status'] = 'success';
+						$resp['msg'] = '';
 					}
 				} else {
-
-					$this->_auth_error = $this->ci->lang->line('ciauth_wrong_password');
+					$resp['status'] = 'fail';
+					$resp['msg'] = $this->ci->lang->line('ciauth_wrong_password');
 					if ($ci_settings['record_login_attempts']) {
 						$update_user['login_attempt'] = ($user['login_attempt'])? $user['login_attempt'] + 1:1;
 						$update_user['id'] = $user['id'];
@@ -125,7 +128,8 @@ class CIAuth {
 					}
 				}
 			} else {
-				$this->_auth_error = sprintf($this->ci->lang->line('ciauth_login_not_exist'), $params['loginkey']);
+				$resp['status'] = 'fail';
+				$resp['msg'] = sprintf($this->ci->lang->line('ciauth_login_not_exist'), $params['loginkey']);
 			}
 		}
 		return $resp;
@@ -198,7 +202,6 @@ class CIAuth {
 					break;
 
 				default:
-					
 					return isset($user_data[$field])?$user_data[$field]:false;
 					break;
 			}
@@ -244,7 +247,7 @@ class CIAuth {
 				if ($result = $query->row_array()) {
 					$this->_set_session($result);
 					$this->_auto_cookie($auto);
-					$this->_set_last_ip_and_last_login($auto['user_id']);
+					//$this->_set_last_ip_and_last_login($auto['user_id']);
 					$result = TRUE;
 				}
 			}
@@ -265,11 +268,12 @@ class CIAuth {
 	}
 
 	function _auto_cookie($data) {
+		global $ci_settings;
 		$this->ci->load->helper('cookie');
 		$cookie = array(
-			'name' 		=> $this->ci->config->item('DX_autologin_cookie_name'),
+			'name' 		=> $ci_settings['autologin_cookie_name'],
 			'value'		=> serialize($data),
-			'expire'	=> $this->ci->config->item('DX_autologin_cookie_life')
+			'expire'	=> $ci_settings['autologin_cookie_life'] 
 		);
 		set_cookie($cookie);
 	}
