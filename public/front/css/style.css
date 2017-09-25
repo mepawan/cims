@@ -63,6 +63,9 @@ body {
 	float: left;
 	line-height: 135px;
 }
+.red{
+	color:red;
+}
 /*--------------Header nav start---------------*/
 #nav-primary {
 	float: right;

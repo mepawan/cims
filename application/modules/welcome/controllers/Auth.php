@@ -153,7 +153,7 @@ class Auth extends MX_Controller {
 		$this->load->view('auth/forgetpwd', $this->data);
 	}
 
-	function register() {
+	function register($role = 'customer') {
 		global $ci_settings;
 		if($this->input->post()){
 			$val = $this->form_validation;
@@ -167,7 +167,12 @@ class Auth extends MX_Controller {
 			
 			if ($val->run() ) {
 				if(validate_recapcha()){
-					$reg_resp = $this->ciauth->register($this->input->post());
+					$post_data = $this->input->post();
+					if(!$role){
+						$role = isset($post_data['role'])?$post_data['role']:'';
+					}
+					$post_data['role'] = $role;
+					$reg_resp = $this->ciauth->register($post_data);
 					if($reg_resp['status'] == 'success'){
 						$this->data['success'] = $reg_resp['msg'];
 					} else {
@@ -191,8 +196,9 @@ class Auth extends MX_Controller {
 				ci_public("admin").'vendors/bootstrap-show-password/bootstrap-show-password.min.js',
 				//ci_public("admin").'vendors/gsap/src/minified/TweenMax.min.js',
 			);
-		$this->data['add_recaptcha_js'] = true;
+			$this->data['add_recaptcha_js'] = true;
 			$this->data['heading'] = "Signup";
+			$this->data['role'] = $role;
 			$this->load->view('auth/register', $this->data);
 		}
 		

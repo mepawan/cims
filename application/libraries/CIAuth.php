@@ -41,10 +41,13 @@ class CIAuth {
 			$ci_settings = load_settings();
 			$user_roles = $this->ci->users->get_roles();
 			$roles = array();
+			$roles_by_name = array();
 			array_walk($user_roles, function($role) use(&$roles){
 				$roles[$role['id']] = $role;
+				$roles_by_name[$role['alias']] = $role;
 			});
 			$ci_settings['roles'] = $roles;
+			$ci_settings['roles_by_name'] = $roles_by_name;
 		}
 		$ci_settings = array_merge($this->config, $ci_settings);
 		
@@ -148,17 +151,18 @@ class CIAuth {
 	}
 	
 	function _set_session($data) {
+		global $ci_settings;
 		$data = (array)$data;
 		if(isset($data['password'])){
 			unset($data['password']);
 		}
 		
 		
-		$role_data = $this->_get_role_data($data['role_id']);
+		$role_data = isset($ci_settings['roles'][$data['role_id']])?$ci_settings['roles'][$data['role_id']]:false;
 		$user = array(						
 			'user_id'		=> $data['id'],	
-			'role'			=> $role_data['alias'],
-			'role_name'			=> $role_data['title'],
+			'role'			=> ($role_data)?$role_data['alias']:'',
+			'role_name'			=> ($role_data)?$role_data['title']:'',
 			'logged_in'		=> TRUE,
 		);
 		$user_data = array();
@@ -354,6 +358,8 @@ class CIAuth {
 		$resp = array();
 		$evcode = substr(md5($data['email']),rand(0,10),5);
 		$hash = base64_encode($data['email'].'_'.$evcode);
+		$role = isset($data['role'])?$data['role']:'customer';
+		$rol_data = isset($ci_settings['roles_by_name'][$role])?$ci_settings['roles_by_name'][$role]:'';
 		
 		$new_user = array(		
 			'username'					=> isset($data['username'])?$data['username']:'',
@@ -362,9 +368,11 @@ class CIAuth {
 			'password'					=> md5($data['password']),
 			'email'						=> $data['email'],
 			'phone'						=> isset($data['phone'])?$data['phone']:'',
+			'status' 					=> isset($data['status'])?$data['status']:'pending',
 			'signup_ip'					=> $this->ci->input->ip_address(),
 			'referral_code' 			=> ci_random_code().substr(md5($data['email']),rand(0,10),5),
 			'email_veriication_code' 	=> $evcode,
+			'role_id' 					=> $rol_data['id']
 			
 		);
 		if($referral = $this->ci->session->userdata('referral')){
