@@ -342,15 +342,15 @@ class CIAuth {
 		
 	}
 	function is_username_available($username) {
-		return $this->get_user_by_username();
+		return $this->ci->users->get_user_by_username($username);
 	}
 
 	function is_email_available($email) {
-		return $this->get_user_by_email();
+		return $this->ci->users->get_user_by_email($email);
 	}
 
 	function is_phone_available($phone) {
-		return $this->get_user_by_phone();
+		return $this->ci->users->get_user_by_phone($phone);
 	}
 		
 	function register($data) {	

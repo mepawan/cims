@@ -173,16 +173,14 @@ class Auth extends MX_Controller {
 					}
 					$post_data['role'] = $role;
 					$reg_resp = $this->ciauth->register($post_data);
-					if($reg_resp['status'] == 'success'){
-						$this->data['success'] = $reg_resp['msg'];
-					} else {
-						$this->data['error'] = $reg_resp['msg'];
-					}
-					
+					$this->data['status'] = $reg_resp['status'];
+					$this->data['msg'] = $reg_resp['msg'];
 				} else {
-					$this->data['recaptcha_error'] = 'Captcha Verification Fail';
+					$this->data['status'] = 'fail';
+					$this->data['msg'] = 'Captcha Verification Fail';
 				}
 			} else {
+				$this->data['status'] = 'fail';
 				$this->data['form_errors'] = $this->form_validation->error_array();
 			}
 		}

@@ -22,15 +22,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<?php } ?>
 								<div id="top_move" class="btt">
 									<div class="col-sm-6">
-											<div class="error">
-												<?php 	echo $this->ciauth->get_auth_error();
-														if(isset($recaptcha_error) && $recaptcha_error){ echo $recaptcha_error; }
-														if(isset($error) && $recaptcha_error){ echo $error; }
-												 ?>
-											</div>
-											<?php if(isset($success) && $success){   ?>
+											<?php if(isset($status) && $status == 'fail'){   ?>
+													<div class="error">
+														<?php echo $msg; ?>
+													</div>
+											<?php } ?>
+											
+											<?php if(isset($status) && $status == 'success'){   ?>
 													<div class="success">
-														<?php echo $success; ?>
+														<?php echo $msg; ?>
 													</div>
 											<?php } else { ?> 
 											<form method="POST" name="form-validation" id="form-registration ">

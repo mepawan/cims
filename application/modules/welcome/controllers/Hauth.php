@@ -15,6 +15,8 @@ class Hauth extends CI_Controller {
 
     $this->load->helper('url');
     $this->load->library('hybridauth');
+    $this->load->library('CIAuth');
+    
   }
 
   /**
@@ -50,7 +52,45 @@ class Hauth extends CI_Controller {
     try{
 		$adapter = $this->hybridauth->HA->authenticate($provider_id, $params);
 		$profile = $adapter->getUserProfile();
-		print_r($profile);
+		
+		$email = $profile->email;
+		$emailset = $this->ciauth->is_email_available($email);
+		
+		if($emailset != ""){
+			$param = array(
+			  'loginkey' => $profile->email,
+			  'forcelogin' => 'true',
+			);
+			
+			$login = $this->ciauth->login($param);
+			if($login['status'] = 'success'){
+				redirect('/auth/redirect_login');
+			}
+		}
+		else{
+			$data = array(		
+					'first_name'	=> isset($profile->firstName)?$profile->firstName:'',		
+					'last_name'		=> isset($profile->lastName)?$profile->lastName:'',	
+					'email'			=> $profile->email,
+					'phone'			=> isset($profile->phone)?$profile->phone:'',
+					'status'  		=> 'active',
+				);
+				$result = $this->ciauth->register($data);
+				$param = array(
+				  'loginkey' => $profile->email,
+				  'forcelogin' => 'true',
+				);
+					
+				$login = $this->ciauth->login($param);
+				
+				if($login['status'] = 'success'){
+					redirect('/auth/redirect_login');
+				}
+		}
+		
+		
+		
+		
       
 	} catch (Exception $e){
       show_error($e->getMessage());

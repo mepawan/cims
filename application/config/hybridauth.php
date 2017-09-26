@@ -23,8 +23,8 @@ $config['hybridauth'] = array(
       "enabled" => FALSE,
     ),
     "Google" => array(
-      "enabled" => FALSE,
-      "keys" => array("id" => "", "secret" => ""),
+      "enabled" => TRUE,
+      "keys" => array("id" => "349060752209-1smlfqjsfncu2t73ecq51vl4ajegn7hh.apps.googleusercontent.com", "secret" => "0UQRSomqgfPDTrNy-CSwcbDT"),
     ),
     "Facebook" => array(
       "enabled" => TRUE,
@@ -32,9 +32,9 @@ $config['hybridauth'] = array(
       "trustForwarded" => FALSE,
     ),
     "Twitter" => array(
-      "enabled" => FALSE,
-      "keys" => array("key" => "", "secret" => ""),
-      "includeEmail" => FALSE,
+      "enabled" => TRUE,
+      "keys" => array("key" => "ckQFIqZgJAIurC1AlX7aIUOaB", "secret" => "Z9J62wTQ4WedKaH7Hr1IhhSumApNonPdhId1EhscoS8spEBnQk"),
+      "includeEmail" => TRUE,
     ),
     "Live" => array(
       "enabled" => FALSE,
