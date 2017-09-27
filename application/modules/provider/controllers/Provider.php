@@ -39,6 +39,7 @@ class Provider extends MX_Controller {
 		return $result;
 	}
 	public function profile(){
+		
 		if($this->input->post()){
 			
 					
@@ -46,6 +47,16 @@ class Provider extends MX_Controller {
 			// Set form validation rules
 			$val->set_rules('first_name', 'First Name', 'trim|required');
 			$val->set_rules('last_name', 'Last Name', 'trim|required');
+			$val->set_rules('bio', 'Bio', 'trim|required');
+			$val->set_rules('status', 'status', 'trim|required');
+			$val->set_rules('profile_pic', 'Profile Photo', 'trim|required');
+			$val->set_rules('address', 'Address', 'trim|required');
+			$val->set_rules('city', 'City', 'trim|required');
+			$val->set_rules('state', 'State', 'trim|required');
+			$val->set_rules('zipcode', 'Zipcode', 'trim|required');
+			$val->set_rules('country', 'Country', 'trim|required');
+			$val->set_rules('phone', 'Phone', 'trim|required');
+			$val->set_rules('created_date_time', 'Date Registered', 'trim|required');
 			
 			if($this->input->post('email') && $this->input->post('email') != $this->cauth->get_user('email')){
 				$val->set_rules('email', 'Email', 'trim|required|valid_email|callback_email_check');
@@ -60,6 +71,16 @@ class Provider extends MX_Controller {
 					'id' => $this->cauth->get_user_id(),
 					'first_name' => $this->input->post('first_name'),
 					'last_name' => $this->input->post('last_name'),
+					'bio' => $this->input->post('bio'),
+					'status' => $this->input->post('status'),
+					'profile_pic' => $this->input->post('profile_pic'),
+					'address' => $this->input->post('address'),
+					'city' => $this->input->post('city'),
+					'state' => $this->input->post('state'),
+					'zipcode' => $this->input->post('zipcode'),
+					'country' => $this->input->post('country'),
+					'phone' => $this->input->post('phone'),
+					'created_date_time' => $this->input->post('created_date_time'),
 				);
 				if($this->input->post('email') != $this->cauth->get_user('email')){ 
 					$user_data['email'] = $this->input->post('email');

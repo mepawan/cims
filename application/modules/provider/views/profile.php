@@ -55,6 +55,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<div class="clearfix clear"></div>
 									</div>
 									<div class="form-group col-md-6">
+										<label for="profile_pic" class="form-label col-sm-4">Profile Photo<span class="red">*</span></label>
+										<div class="col-sm-8">
+											<input type="file" required name="profile_pic" class="form-control" id="profile_pic"  />
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group col-md-6">
 										<label for="email" class="form-label col-sm-4">Email<span class="red">*</span></label>
 										<div class="col-sm-8">
 											<input type="text" required placeholder="Email" name="email" class="form-control" id="email"  />
@@ -73,7 +80,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group col-md-6">
 										<label for="first_name" class="form-label col-sm-4">First Name<span class="red">*</span></label>
 										<div class="col-sm-8">
-											<input type="text" required placeholder="First Name" name="first_name" class="form-control" id="first_name"  />
+											<input type="text" required placeholder="First Name" name="first_name" class="form-control" id="first_name" value="<?php echo set_value('first_name', ''); ?>"  />
 											
 										</div>
 										<div class="clearfix clear"></div>
