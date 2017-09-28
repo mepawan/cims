@@ -1,234 +1,318 @@
-<?php $this->load->view('part/head');?>
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
+<?php 
+	$languages = explode(',', $profile['languages']);
+	$area_of_experience = explode(',', $profile['area_of_experience']);
+	$availabe_days_time = explode(',', $profile['availabe_days_time']);
+	$video_calling_feature = explode(',', $profile['video_calling_feature']);
+?>
+<?php $this->load->view('part/head'); ?>
+<body>
+	<div class="contain_wrapper">
+		<?php $this->load->view('part/header'); ?>
+		
+		<?php print_r($page[0]['content']); ?>
+  
+		<div class="wrapper">
+			<main class="background_container">
+				<section class="general-message ands_work">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-12 <?php if(isset($msg_type) && $msg_type){ echo $msg_type; }?>" >
+								<?php if(isset($heading) && $heading){ ?>
+									<span id="mm_title">
+										<h2 class="title_s"> <?php echo $heading; ?></h2>
+									</span>
+								<?php } ?>
+								<div id="top_move" class="btt">
+									<p>Provider</p>
+								</div>
+								<?php if(isset($status) && $status == 'fail'){   ?>
+										<div class="error">
+											<?php echo $msg; ?>
+										</div>
+								<?php } ?>
+								
+								<?php if(isset($status) && $status == 'success'){   ?>
+										<div class="success">
+											<?php echo $msg; ?>
+										</div>
+								<?php } else { ?> 
+								<form method="POST" name="form-validation" id="provider-registration" enctype="multipart/form-data">
+									<div class="form-group col-md-6">
+										<label for="username" class="form-label col-sm-4">User Name<span class="red">*</span></label>
+										<div class="col-sm-8">
+											<input type="text" readonly  name="username" class="form-control" id="username" value="<?php echo $user['username']; ?>"  />
+											
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="created_date_time" class="form-label col-sm-4">Date Registered<span class="red">*</span></label>
+										<div class="col-sm-8">
+											<input type="text" readonly  name="created_date_time" class="form-control" id="created_date_time" value="<?php echo $user['created_date_time']; ?>"  />
+											
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="status" class="form-label col-sm-4">Profile Status<span class="red">*</span></label>
+										<div class="col-sm-8">
+											<input type="text" readonly name="created_date_time" class="form-control" id="created_date_time" value="<?php echo $user['status']; ?>"  />
+											
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="email" class="form-label col-sm-4">Email<span class="red">*</span></label>
+										<div class="col-sm-8">
+											<input type="string" readonly name="email" class="form-control" id="email"  value="<?php echo $user['email']; ?>" />
+											
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="profile_pic" class="form-label col-sm-4">Profile Photo<span class="red">*</span></label>
+										<div class="col-sm-8">
+											<input type="file"  name="profile_pic" class="form-control" id="profile_pic"  />
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									
+									<div class="form-group col-md-6">
+										<label for="bio" class="form-label col-sm-4">Bio<span class="red">*</span></label>
+										<div class="col-sm-8">
+											<textarea required placeholder="Bio" name="bio" class="form-control" id="bio" /><?php echo $user['bio']; ?></textarea>
+											
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="first_name" class="form-label col-sm-4">First Name<span class="red">*</span></label>
+										<div class="col-sm-8">
+											<input type="text" required placeholder="First Name" name="first_name" class="form-control" id="first_name" value="<?php echo $user['first_name']; ?>"  />
+											
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="last_name" class="form-label col-sm-4">Last Name<span class="red">*</span></label>
+										<div class="col-sm-8">
+											<input type="text" required placeholder="Last Name" name="last_name" class="form-control" id="last_name" value="<?php echo $user['last_name']; ?>" />
+											
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									
+									<div class="form-group col-md-6">
+										<label for="address" class="form-label col-sm-4">Billing_Address<span class="red">*</span></label>
+										<div class="col-sm-8">
+											<input type="text" required placeholder="Billing Address" name="address" class="form-control" id="address" value="<?php echo $user['address']; ?>" />
+											
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="city" class="form-label col-sm-4">City<span class="red">*</span></label>
+										<div class="col-sm-8">
+											<input type="text" required placeholder="City" name="city" class="form-control" id="city" value="<?php echo $user['city']; ?>"  />
+											
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="state" class="form-label col-sm-4">State<span class="red">*</span></label>
+										<div  class="col-sm-8">
+											<select name="state" required="required">
+												<option value="">-Select-</option>
+												<option value="state1" <?php if($user['state'] == "state1"){ echo "selected"; } ?>>state1</option>
+												<option value="state2" <?php if($user['state'] == "state2"){ echo "selected"; } ?>>state2</option>
+											</select>
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="zipcode" class="form-label col-sm-4">Zip_Code<span class="red">*</span></label>
+										<div class="col-sm-8">
+											<input type="text" required placeholder="Zip Code" name="zipcode" class="form-control" id="zipcode" value="<?php echo $user['zipcode']; ?>" />
+											
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="country" class="form-label col-sm-4">Country<span class="red">*</span></label>
+										<div  class="col-sm-8">
+											<select name="country" required="required">
+												<option value="">-Select-</option>
+												<option value="usa" <?php if($user['country'] == "usa"){ echo "selected"; } ?>>USA</option>
+												<option value="canada" <?php if($user['country'] == "canada"){ echo "selected"; } ?>>Canada</option>
+											</select>
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="phone" class="form-label col-sm-4">Phone_Number<span class="red">*</span></label>
+										<div class="col-sm-8">
+											<input type="text" required placeholder="Phone Number" name="phone" class="form-control" id="phone" value="<?php echo $user['phone']; ?>" />
+											
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									
+									<div class="form-group col-md-6">
+										<label for="have_license_certification" class="form-label col-sm-4">Do you have any Licenses or Certifications?<span class="red">*</span></label>
+										<div  class="col-sm-8">
+											<select name="profile[have_license_certification]" required="required">
+												<option value="">-Select-</option>
+												<option value="yes" <?php if($profile['have_license_certification'] == "yes"){ echo "selected"; } ?>>Yes</option>
+												<option value="no" <?php if($profile['have_license_certification'] == "no"){ echo "selected"; } ?>>No</option>
+											</select>
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="license_certification_name" class="form-label col-sm-4">Certifications or License Name</label>
+										<div class="col-sm-8">
+											<input type="text" placeholder="Certifications or License Name" name="profile[license_certification_name]" class="form-control" id="license_certification_name" value="<?php echo $profile['license_certification_name']; ?>"  />
+											
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="license_certification_number" class="form-label col-sm-4">Certifications/License Number</label>
+										<div class="col-sm-8">
+											<input type="text" placeholder="Certifications/License Number" name="profile[license_certification_number]" class="form-control" id="license_certification_number"  value="<?php echo $profile['license_certification_number']; ?>" />
+											
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="state_of_license_certification" class="form-label col-sm-4">State or county of License/Certifications</label>
+										<div class="col-sm-8">
+											<input type="text" placeholder="State or county of License/Certifications" name="profile[state_of_license_certification]" class="form-control" id="state_of_license_certification" value="<?php echo $profile['state_of_license_certification']; ?>" />
+											
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="have_license_certification" class="form-label col-sm-4">Languages Spoken<span class="red">*</span></label>
+										<div  class="col-sm-8">
+											<select name="profile[languages][]" multiple required>
+											  <option value="akan" <?php foreach($languages as $languages1){ if($languages1 == "akan"){ echo "selected";}} ?>>Akan</option>
+											  <option value="amharic" <?php foreach($languages as $languages2){ if($languages2 == "amharic"){ echo "selected";}} ?>>Amharic</option>
+											  <option value="arabic" <?php foreach($languages as $languages3){ if($languages3 == "arabic"){ echo "selected";}} ?>>Arabic</option>
+											  <option value="assamese" <?php foreach($languages as $languages4){ if($languages4 == "assamese"){ echo "selected";}} ?>>Assamese</option>
+											</select>
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="resume" class="form-label col-sm-4">Resume</label>
+										<div class="col-sm-8">
+											<input type="file" name="resume" class="form-control" id="resume"  />
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="area_of_experience" class="form-label col-sm-4">Area of Experience<span class="red">*</span></label>
+										<div  class="col-sm-8">
+											<select name="profile[area_of_experience][]" multiple required>
+											  <option value="ability" <?php foreach($area_of_experience as $area_of_experience1){ if($area_of_experience1 == "ability"){ echo "selected";}} ?>>Ability to work under pressure</option>
+											  <option value="adaptability" <?php foreach($area_of_experience as $area_of_experience2){ if($area_of_experience2 == "adaptability"){ echo "selected";}} ?>>Adaptability</option>
+											  <option value="administering" <?php foreach($area_of_experience as $area_of_experience3){ if($area_of_experience3 == "administering"){ echo "selected";}} ?>>Administering medication</option>
+											  <option value="advising" <?php foreach($area_of_experience as $area_of_experience4){ if($area_of_experience4 == "advising"){ echo "selected";}} ?>>Advising people</option>
+											</select>
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="education" class="form-label col-sm-4">Education</label>
+										<div  class="col-sm-8">
+											<select name="profile[education]">
+											  <option value="">-Select-</option>
+											  <option value="education1">education1</option>
+											  <option value="education2">education2</option>
+											  <option value="education3">education3</option>
+											  <option value="education4">education4</option>
+											</select>
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="area_of_experience_other" class="form-label col-sm-4">Area of Experience other</label>
+										<div class="col-sm-8">
+											<input type="text" placeholder="Area of Experience other" name="profile[area_of_experience_other]" class="form-control" id="area_of_experience_other" value="<?php if($profile){ echo $profile['area_of_experience_other'];}  ?>" />
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="years_of_experience" class="form-label col-sm-4">Number of Years of Experience<span class="red">*</span></label>
+										<div class="col-sm-8">
+											<input type="text" required placeholder="Number of Years of Experience" name="profile[years_of_experience]" class="form-control" id="years_of_experience" value="<?php echo $profile['years_of_experience']; ?>" />
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="availabe_days_time" class="form-label col-sm-4">Days and Times you are available<span class="red">*</span></label>
+										<div  class="col-sm-8">
+											<select name="profile[availabe_days_time][]" multiple required>
+											  <option value="Sunday_12AM_2AM" <?php foreach($availabe_days_time as $availabe_days_time1){ if($availabe_days_time1 == "Sunday_12AM_2AM"){ echo "selected";}} ?>>Sunday 12 AM - 2 AM</option>
+											  <option value="Sunday_2AM_4AM" <?php foreach($availabe_days_time as $availabe_days_time2){ if($availabe_days_time2 == "Sunday_2AM_4AM"){ echo "selected";}} ?> >Sunday 2 AM - 4 AM</option>
+											  <option value="Sunday_4AM_6AM" <?php foreach($availabe_days_time as $availabe_days_time3){ if($availabe_days_time3 == "Sunday_4AM_6AM"){ echo "selected";}} ?>>Sunday 4 AM - 6 AM</option>
+											  <option value="Sunday_6AM_8AM" <?php foreach($availabe_days_time as $availabe_days_time4){ if($availabe_days_time4 == "Sunday_6AM_8AM"){ echo "selected";}} ?>>Sunday 6 AM - 8 AM</option>
+											</select>
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="pictures_of_work" class="form-label col-sm-4">Pictures of Work</label>
+										<div class="col-sm-8">
+											<input type="file" name="pictures_of_work" class="form-control" id="pictures_of_work"  />
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="video_calling_feature" class="form-label col-sm-4">What video calling feature do you use?<span class="red">*</span></label>
+										<div  class="col-sm-8">
+											<select name="profile[video_calling_feature][]" multiple required>
+											  <option value="facetime" <?php foreach($video_calling_feature as $video_calling_feature1){ if($video_calling_feature1 == "facetime"){ echo "selected";}} ?>>Face Time</option>
+											  <option value="tango" <?php foreach($video_calling_feature as $video_calling_feature2){ if($video_calling_feature2 == "tango"){ echo "selected";}} ?>>Tango</option>
+											  <option value="skype" <?php foreach($video_calling_feature as $video_calling_feature3){ if($video_calling_feature3 == "skype"){ echo "selected";}} ?>>Skype</option>
+											  <option value="android_video_calling" <?php foreach($video_calling_feature as $video_calling_feature4){ if($video_calling_feature4 == "android_video_calling"){ echo "selected";}} ?>>Android Video Calling</option>
+											</select>
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="video_calling_feature_other" class="form-label col-sm-4">Video Calling Feature Other</label>
+										<div class="col-sm-8">
+											<input type="text" placeholder="Video Calling Feature Other" name="profile[video_calling_feature_other]" class="form-control" id="video_calling_feature_other" value="<?php echo $profile['video_calling_feature_other']; ?>" />
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-group">
+										<label for="confirm_password" class="form-label col-sm-3"></label>
+										<div class="col-sm-9">
+											<?php echo recaptcha_form();?>
+											<div class="form-input-error"><?php echo form_error('g-recaptcha-response'); ?></div>
+										</div>
+										<div class="clearfix clear"></div>
+									</div>
+									<div class="form-actions text-center col-md-12">
+										<button class="btn btn-primary width-150" type="submit">Register</button>
+									</div>
+								</form>
+								<?php } ?>
+							</div>
+						</div>
+					</div>
+				</section>
+			</main>
+		</div>
+		<?php $this->load->view('part/footer'); ?>
+	</div>
 
-<body class="theme-dark">
-<?php $this->load->view('/part/left_menu'); ?>
-<?php $this->load->view('/part/top_menu'); ?>
-<section class="page-content">
-	<div class="page-content-inner">
-		    <!-- Profile Header -->
-    <nav class="top-submenu top-submenu-with-background">
-        <div class="profile-header">
-            <div class="profile-header-info">
-                <div class="row">
-                    <div class="col-xl-8 col-xl-offset-4">
-                        <div class="width-100 text-center pull-right hidden-md-down">
-                            <h2>154</h2>
-                            <p>Followers</p>
-                        </div>
-                        <div class="width-100 text-center pull-right hidden-md-down">
-                            <h2>17</h2>
-                            <p>Posts</p>
-                        </div>
-                        <div class="profile-header-title">
-                            <h2><?php echo $this->ciauth->get_user_fullname();?> <small>@<?php echo $this->ciauth->get_user('username');?></small></h2>
-                            <p>Founder / CEO</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-    <!-- End Profile Header -->
-
-    <!-- Profile -->
-    <div class="row">
-        <div class="col-xl-4">
-            <section class="panel profile-user" style="background-image: url(<?php echo ci_public('admin');?>img/temp/photos/4.jpeg)">
-                <div class="panel-body">
-                    <div class="profile-user-title text-center">
-                        <a class="avatar" href="javascript:void(0);">
-                            <img src="<?php echo ci_public('admin');?>img/temp/avatars/1.jpg" alt="Alternative text to the image">
-                        </a>
-                        <br />
-                        <div class="btn-group btn-group-justified" aria-label="" role="group">
-                            <div class="btn-group">
-                                <button type="button" class="btn width-150 swal-btn-success">Follow</button>
-                            </div>
-                            <div class="btn-group">
-                                <button type="button" class="btn width-150 swal-btn-success-2">Add to Friend</button>
-                            </div>
-                        </div>
-                        <br />
-                        <p>Last activity: 13 May 2016 7:26PM</p>
-                        <p>
-                            <span class="donut donut-success"></span>
-                            Online
-                        </p>
-                    </div>
-                </div>
-            </section>
-            <section class="panel">
-                <div class="panel-body">
-                    <h6>Actions</h6>
-                    <div class="btn-group-vertical btn-group-justified">
-                        <button type="button" class="btn">Send Message</button>
-                        <button type="button" class="btn">Send File</button>
-                        <button type="button" class="btn">Access History</button>
-                        <button type="button" class="btn">Rename User</button>
-                        <button type="button" class="btn">Ban User</button>
-                    </div>
-                </div>
-            </section>
-            <section class="panel">
-                <div class="panel-body">
-                    <div class="profile-user-skills">
-                        <h6>Skills</h6>
-                        <span>Management</span>
-                        <progress class="progress progress-primary" value="74" max="100">74%</progress>
-                        <span>Investing</span>
-                        <progress class="progress progress-primary" value="82" max="100">82%</progress>
-                        <span>Programming</span>
-                        <progress class="progress progress-primary" value="67" max="100">67%</progress>
-                        <span>Leading</span>
-                        <progress class="progress progress-success" value="90" max="100">90%</progress>
-                        <span>Learning</span>
-                        <progress class="progress progress-danger" value="27" max="100">27%</progress>
-                    </div>
-                </div>
-            </section>
-            <section class="panel">
-                <div class="panel-body">
-                    <h6>Information</h6>
-                    <dl class="dl-horizontal user-profile-dl">
-                        <dt>Courses End</dt>
-                        <dd>Digital Ocean, Nokia</dd>
-                        <dt>Address</dt>
-                        <dd>New York, US</dd>
-                        <dt>Skills</dt>
-                        <dd><span class="label label-default">html</span> <span class="label label-default">css</span> <span class="label label-default">design</span> <span class="label label-default">javascript</span></dd>
-                        <dt>Last companies</dt>
-                        <dd>Microsoft, Soft Mailstorm</dd>
-                        <dt>Personal Information</dt>
-                        <dd>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</dd>
-                    </dl>
-                </div>
-            </section>
-            <div class="widget widget-three">
-                <div class="example-calendar-block"></div>
-            </div>
-        </div>
-        <div class="col-xl-8">
-            <section class="panel profile-user-content">
-                <div class="panel-body">
-                    <div class="nav-tabs-horizontal">
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="javascript: void(0);" data-toggle="tab" data-target="#posts" role="tab">
-                                    <i class="icmn-menu3"></i>
-                                    Activities
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="javascript: void(0);" data-toggle="tab" data-target="#messaging" role="tab">
-                                    <i class="icmn-bubbles5"></i>
-                                    Temp Tab
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="javascript: void(0);" data-toggle="tab" data-target="#settings" role="tab">
-                                    <i class="icmn-cog"></i>
-                                    Settings
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="tab-content padding-vertical-20">
-                            <div class="tab-pane active" id="posts" role="tabpanel">
-                                <div class="user-wall">
-                                    Activities will goes here
-                                </div>
-                            </div>
-                            <div class="tab-pane" id="messaging" role="tabpanel">
-                                <div class="conversation-block">
-                                   
-                                     Temp tab content goes here
-                                </div>
-                                <div class="form-group padding-top-20 margin-bottom-0">
-                                    <textarea class="form-control adjustable-textarea" placeholder="Type and press enter"></textarea>
-                                    <button class="btn btn-primary width-200 margin-top-10">
-                                        <i class="fa fa-send margin-right-5"></i>
-                                        Send
-                                    </button>
-                                    <button class="btn btn-link margin-top-10">
-                                        Attach File
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="tab-pane" id="settings" role="tabpanel">
-                                <br />
-                                <h5>Personal Information</h5>
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="l0">Username</label>
-                                            <input type="text" class="form-control" id="l0">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="l1">Email</label>
-                                            <input type="email" class="form-control" id="l1">
-                                        </div>
-                                    </div>
-                                </div>
-                                <br />
-                                <h5>Password</h5>
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="l3">Password</label>
-                                            <input type="password" class="form-control" id="l3">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="l4">Password</label>
-                                            <input type="password" class="form-control" id="l4">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <br />
-                                        <h5>Profile Avatar</h5>
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="l6">File Upload</label>
-                                            <input type="file" id="l6">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <br />
-                                        <h5>Profile Background</h5>
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="l5">File Upload</label>
-                                            <input type="file" id="l5">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-actions">
-                                    <div class="form-group">
-                                        <button type="button" class="btn width-150 btn-primary">Submit</button>
-                                        <button type="button" class="btn btn-default">Cancel</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </div>
-    <!-- End Profile -->
-
-	</div> <!-- end .page-content-inner -->
-<?php $this->load->view('part/js'); ?>
-
-<!-- Page Scripts -->
-<script>
-   
-</script>
-</section>
-
-<div class="main-backdrop"><!-- --></div>
 
 </body>
 </html>
