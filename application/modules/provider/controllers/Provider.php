@@ -19,6 +19,9 @@ class Provider extends MX_Controller {
 		$this->data['entity'] = 'dashboard';
 		$this->data['heading'] = 'Provider Dashboard';
 		$this->data['icon'] = 'icmn-home2';
+		$this->data['user'] = $this->ciauth->get_user();
+		$provider_profile = $this->Util_model->read('provider_profile',array('where' => array('uid'=>$this->ciauth->get_user_id())));
+		$this->data['profile'] = ($provider_profile)?$provider_profile[0]:'';
 		$this->load->view('provider/dashboard', $this->data);
 	}
 	function email_check($email) {
@@ -42,47 +45,7 @@ class Provider extends MX_Controller {
 		//$uid = $this->ciauth->get_user();
 		//echo "<pre>"; print_r($uid); die;
 		if($this->input->post()){
-							
-				//~ $config1['upload_path'] = 'public/upload/';
-				//~ $config1['allowed_types'] = 'pdf|xls|csv';
-				//~ $new_name = "resume_".$this->ciauth->get_user_id();
-				//~ $config1['file_name'] = $new_name;
-				//~ $this->load->library('upload', $config1);
-								
-				//~ if ( ! $this->upload->do_upload('resume'))
-                //~ {
-                        //~ $error = array('error' => $this->upload->display_errors());
-						//~ print_r($error); die;
-                //~ }
-                //~ else
-                //~ {
-                        //~ $data = array('upload_data' => $this->upload->data());
-						//~ print_r($data); 
-                //~ }
 				
-				//~ $this->upload->initialize($config1);
-			
-			
-				//~ $config2['upload_path'] = 'public/upload/';
-				//~ $config2['allowed_types'] = 'gif|jpg|png|jpeg';
-				//~ $new_name = "pictureswork_".$this->ciauth->get_user_id();
-				//~ $config2['file_name'] = $new_name;
-				//~ $this->load->library('upload', $config2);
-								
-				//~ if ( ! $this->upload->do_upload('pictures_of_work'))
-                //~ {
-                        //~ $error = array('error' => $this->upload->display_errors());
-						//~ print_r($error); die;
-                //~ }
-                //~ else
-                //~ {
-                        //~ $data = array('upload_data' => $this->upload->data());
-						//~ print_r($data); die;
-                //~ }
-				
-				//~ $this->upload->initialize($config2);
-			
-			
 				
 			$val = $this->form_validation;
 			// Set form validation rules
@@ -124,24 +87,24 @@ class Provider extends MX_Controller {
 					$user_data['username'] = $this->input->post('username');
 				}
 				
-				$config['upload_path'] = 'public/upload/';
-				$config['allowed_types'] = 'gif|jpg|png|jpeg';
-				$new_name = "profilepic_".$this->ciauth->get_user_id();
-				$config['file_name'] = $new_name;
-				$this->load->library('upload', $config);
+				//~ $config['upload_path'] = 'public/upload/';
+				//~ $config['allowed_types'] = 'gif|jpg|png|jpeg';
+				//~ $new_name = "profilepic_".$this->ciauth->get_user_id();
+				//~ $config['file_name'] = $new_name;
+				//~ $this->load->library('upload', $config);
 								
-				if ( ! $this->upload->do_upload('profile_pic'))
-                {
-                        $error = array('error' => $this->upload->display_errors());
-						//print_r($error); die;
-                }
-                else
-                {
-                        $data = array('upload_data' => $this->upload->data());
-                        $user_data['profile_pic'] = $data['upload_data']['file_name'];
-                }
+				//~ if ( ! $this->upload->do_upload('profile_pic'))
+                //~ {
+                        //~ $error = array('error' => $this->upload->display_errors());
+						//~ //print_r($error); die;
+                //~ }
+                //~ else
+                //~ {
+                        //~ $data = array('upload_data' => $this->upload->data());
+                        //~ $user_data['profile_pic'] = $data['upload_data']['file_name'];
+                //~ }
 				
-				$this->upload->initialize($config);
+				//~ $this->upload->initialize($config);
 				
 				
 				$this->Util_model->update('users',$user_data);
@@ -157,6 +120,26 @@ class Provider extends MX_Controller {
 				$user_profile_data['availabe_days_time']  = $availabe_days_time;
 				$user_profile_data['video_calling_feature']  = $video_calling_feature;
 				
+				if($_FILES["resume"]["name"])	{	
+					$target_dir = "public/upload/";
+					$pathinfo = pathinfo($_FILES["resume"]["name"]);
+					$resume_name = "resume_".$this->ciauth->get_user_id('email').".".$pathinfo['extension'];
+					$target_file = $target_dir . $resume_name ;
+					
+					if (move_uploaded_file($_FILES["resume"]["tmp_name"], $target_file)) {
+						$user_profile_data['resume'] = $resume_name; 
+					}
+				}
+				if($_FILES["pictures_of_work"]["name"])	{	
+					$target_dir = "public/upload/";
+					$pathinfo = pathinfo($_FILES["pictures_of_work"]["name"]);
+					$resume_name = "pictureswork_".$this->ciauth->get_user_id('email').".".$pathinfo['extension'];
+					$target_file = $target_dir . $resume_name ;
+					
+					if (move_uploaded_file($_FILES["pictures_of_work"]["tmp_name"], $target_file)) {
+						$user_profile_data['pictures_of_work'] = $resume_name; 
+					}
+				}
 				
 				if(!isset($user_profile_data['uid']) || $user_profile_data['uid']){
 					$user_profile_data['uid']  = $this->ciauth->get_user_id();
@@ -164,7 +147,7 @@ class Provider extends MX_Controller {
 				
 				$provider_profile = $this->Util_model->read('provider_profile',array('where' => array('uid'=>$user_data['id'])));
 				
-				
+				//echo "<pre>"; print_r($user_profile_data); die;
 				if(!empty($provider_profile)){
 					$this->Util_model->update('provider_profile',$user_profile_data,'uid');
 				}
@@ -204,6 +187,12 @@ class Provider extends MX_Controller {
 			
 			$this->load->view('provider/profile', $this->data);
 		}
+	}
+	public function payment(){
+		$this->data['entity'] = 'Payment';
+		$this->data['heading'] = 'Provider payment';
+		$this->data['icon'] = 'icmn-home2';
+		$this->load->view('provider/payment', $this->data);
 	}
 	
 }

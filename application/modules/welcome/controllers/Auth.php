@@ -99,6 +99,10 @@ class Auth extends MX_Controller {
         $this->ciauth->logout();
         redirect('auth');
     }
+    function logout_user() {
+        $this->ciauth->logout();
+        redirect('/');
+    }
 	public function resend_activation_email(){
 		
 	}

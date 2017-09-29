@@ -4,10 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <ul class="menu">
    <li><a href="http://localhost/hds/cims/#"><span>How It Works</span></a></li>
-   <li><a href="http://localhost/hds/cims/auth/register"><span>Sign Up</span></a></li>
    <li><a href="http://localhost/hds/cims/#"><span>Our Story</span></a></li>
    <li><a href="http://localhost/hds/cims/#"><span>Contact</span></a></li>
-   <li><a href="<?php echo ci_base_url();?>provider/profile"><span>Profile</span></a></li>
    <li><a href="http://localhost/hds/cims/#"><span>404 Page</span></a></li>
   <li><a class="srh_icon" href="#">search</a></li>
   <li><a class="tog_icon" href="#">dropdown</a></li>

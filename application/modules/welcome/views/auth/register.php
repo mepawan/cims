@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <?php $this->load->view('part/head'); ?>
 <body>
-	<div class="contain_wrapper">
+	<div class="contain_wrapper sign-up">
 		<?php $this->load->view('part/header'); ?>
 		
 		<?php print_r($page[0]['content']); ?>
@@ -22,6 +22,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<?php } ?>
 								<div id="top_move" class="btt">
 									<div class="col-sm-6">
+										<h3>Sign Up</h3>
 											<?php if(isset($status) && $status == 'fail'){   ?>
 													<div class="error">
 														<?php echo $msg; ?>
@@ -33,6 +34,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 														<?php echo $msg; ?>
 													</div>
 											<?php } else { ?> 
+											<div class="social-login"><?php echo bybridauth_links();?></div>
+											<div class="l-login-padding login-big-or horizontal-or">
+												<div class="t-middle-line">
+												   <div class="login-big-or-circle"></div>
+												</div>
+											 </div>
 											<form method="POST" name="form-validation" id="form-registration ">
 												<?php if(isset($role) && $role){   ?>
 													<input type="hidden"  name="role" value="<?php echo $role;?>" />
@@ -102,7 +109,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<?php } ?>
 									</div>
 									<div class="col-sm-6">
-										<?php echo bybridauth_links();?>
+										<h3>Sign In</h3>
+										<div class="social-login"><?php echo bybridauth_links();?></div>
+										<div class="l-login-padding login-big-or horizontal-or">
+											<div class="t-middle-line">
+											   <div class="login-big-or-circle"></div>
+											</div>
+										 </div>
+										 
+										<form id="frm-top-login" action="<?php echo ci_base_url();?>auth/login" method="post">
+											<input required="required" name="loginkey" type="text" placeholder="Username/Email/Phone">
+											<input required="required" name="password" type="password" placeholder="Password">
+											
+											<input name="submit" type="submit" value="login">
+										</form>
+									
 									</div>
 									<div class="clearfix clear"></div>
 								</div>

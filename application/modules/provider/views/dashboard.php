@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+//echo "<pre>"; print_r($user); die;
 ?>
 
 <?php $this->load->view('part/head'); ?>
@@ -20,10 +21,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<h2 class="title_s"> <?php echo $heading; ?></h2>
 									</span>
 								<?php } ?>
-								<div id="top_move" class="btt">
-									<p>Provider Dashboard</p>
-								</div>
 							</div>
+							<section id="provider-details">
+								<div class="col-md-2">
+									<?php $this->load->view('part/user_left'); ?>
+								</div>
+								<div class="col-md-10">
+									<?php $this->load->view('part/user_top'); ?>
+								</div>
+							</section>
+							
 						</div>
 					</div>
 				</section>

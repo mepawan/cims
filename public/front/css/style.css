@@ -1344,3 +1344,130 @@ font-weight:bold;
 	color:red;
 }
 
+/****************provider dashboard****************************/
+
+#provider-details{ text-align: left;}
+
+#provider-details h3 {
+    text-transform: capitalize;
+    font-size: 26px;
+    font-weight: bold;
+    color: #0a003d !important;
+    margin-bottom: 10px;
+}
+.profile-menu {
+    margin-top: 30px;
+}
+.profile-menu a {
+    font-size: 16px;
+    padding-bottom:10px;
+}
+.profile-menu ul {
+    padding: 0;
+    list-style: none;
+}
+#provider-details p {
+    font-size: 20px;
+}
+.services span:after {
+    content: "|";
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.services span:last-child:after {
+    content: "";
+}
+.services span {
+    font-size: 16px;
+        text-transform: capitalize;
+}
+.profile_img img {
+    width: 180px;
+    height: 140px;
+    margin-bottom: 10px;
+}
+div#top_move p {
+    border-bottom: 1px solid;
+    margin-bottom: 30px;
+}
+#provider-details .services {
+    margin-bottom: 30px;
+}
+#provider-details select {
+    width: 100%;
+}
+
+/*****************sign up page ******************/
+.social-login {
+    float: left;
+    margin-bottom: 30px;
+    width: 100%;
+}
+.social-login a {
+    color: #fff;
+    background-repeat: no-repeat;
+    padding: 7px 20px 7px 50px;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 20px;
+}
+.social-login a:first-child {
+    background-color: rgb(221,75,56);
+    background-image: url(../images/google.png);
+}
+.social-login a:nth-child(2) {
+    background-color: rgb(57,86,153);
+    background-image: url(../images/facebook-button-icon.png);
+}
+.social-login a:last-child{
+    background-color: rgb(35,192,243);
+    background-image: url(../images/twitter-button-icon.png);
+}
+.t-middle-line {
+    background-color: #E0D5C8;
+    height: 1px;
+    margin: 15px 0;
+}
+.login-big-or-circle {
+    width: 51px;
+    height: 51px;
+    background-image: url(../images/login-big-or.png);
+    position: relative;
+}
+.horizontal-or .login-big-or-circle {
+    bottom: 25px;
+    left: 45%;
+}
+.l-login-padding.login-big-or.horizontal-or {
+    clear: both;
+    margin-bottom: 20px;
+    float: left;
+    width: 100%;
+}
+.sign-up div#top_move .col-sm-6 > h3 {
+    float: left;
+    width: 100%;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+.sign-up .col-sm-6 {
+    border: 1px solid #cdcdcd;
+    padding: 30px;
+    /* border-right: none; */
+    margin-top: 30px;
+}
+.sign-up .col-sm-6:nth-child(2) {
+     border-left: none;
+         background: #f8f7f1;
+}
+.sign-up #top_move form#frm-top-login input[type="submit"] {
+    margin-top: 20px;
+    padding: 5px 30px;
+    font-size: 18px;
+    border-radius: 0;
+    background: #337ab7;
+    color: #fff;
+    border: none;
+    font-weight: bold;
+}
+
