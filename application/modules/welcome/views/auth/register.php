@@ -120,8 +120,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<form id="frm-main-login" action="#" method="post">
 											<input required="required" name="loginkey" type="text" placeholder="Username/Email/Phone">
 											<input required="required" name="password" type="password" placeholder="Password">
-											
-											<input name="submit" class="btn btn-primary" type="submit" value="login">
+											<div class="form-actions text-center">
+												<input name="submit" class="btn btn-primary" type="submit" value="login">
+											</div>
 										</form>
 									
 									</div>
