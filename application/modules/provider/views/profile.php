@@ -107,23 +107,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									</div>
 									
 									<div class="form-group col-md-6">
-										<label for="address" class="form-label col-sm-4">Billing_Address<span class="red">*</span></label>
+										<label for="address" class="form-label col-sm-4">Billing_Address</label>
 										<div class="col-sm-8">
-											<input type="text" required placeholder="Billing Address" name="address" class="" id="address" value="<?php echo $user['address']; ?>" />
+											<input type="text"  placeholder="Billing Address" name="address" class="" id="address" value="<?php echo $user['address']; ?>" />
 											
 										</div>
 									</div>
 									<div class="form-group col-md-6">
-										<label for="city" class="form-label col-sm-4">City<span class="red">*</span></label>
+										<label for="city" class="form-label col-sm-4">City</label>
 										<div class="col-sm-8">
-											<input type="text" required placeholder="City" name="city" class="" id="city" value="<?php echo $user['city']; ?>"  />
+											<input type="text"  placeholder="City" name="city" class="" id="city" value="<?php echo $user['city']; ?>"  />
 											
 										</div>
 									</div>
 									<div class="form-group col-md-6">
-										<label for="state" class="form-label col-sm-4">State<span class="red">*</span></label>
+										<label for="country" class="form-label col-sm-4">Country<span class="red">*</span></label>
 										<div  class="col-sm-8">
-											<select name="state" required="required">
+											<select name="country" required="required">
+												<option value="">-Select-</option>
+												<?php 
+													foreach($countries as $c){
+														echo '<option value="'.$c["iso_code_2"].'">'.$c["name"].'</option>';
+													}
+												?>
+											</select>
+										</div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="state" class="form-label col-sm-4">State</label>
+										<div  class="col-sm-8">
+											<select name="state" >
 												<option value="">-Select-</option>
 												<option value="state1" <?php if($user['state'] == "state1"){ echo "selected"; } ?>>state1</option>
 												<option value="state2" <?php if($user['state'] == "state2"){ echo "selected"; } ?>>state2</option>
@@ -137,16 +150,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											
 										</div>
 									</div>
-									<div class="form-group col-md-6">
-										<label for="country" class="form-label col-sm-4">Country<span class="red">*</span></label>
-										<div  class="col-sm-8">
-											<select name="country" required="required">
-												<option value="">-Select-</option>
-												<option value="usa" <?php if($user['country'] == "usa"){ echo "selected"; } ?>>USA</option>
-												<option value="canada" <?php if($user['country'] == "canada"){ echo "selected"; } ?>>Canada</option>
-											</select>
-										</div>
-									</div>
+									
 									<div class="form-group col-md-6">
 										<label for="phone" class="form-label col-sm-4">Phone_Number<span class="red">*</span></label>
 										<div class="col-sm-8">

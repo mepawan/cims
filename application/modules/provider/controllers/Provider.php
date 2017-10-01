@@ -183,8 +183,8 @@ class Provider extends MX_Controller {
 			$this->data['add_recaptcha_js'] = true;
 			$provider_profile = $this->Util_model->read('provider_profile',array('where' => array('uid'=>$this->ciauth->get_user_id())));
 			
-				$this->data['profile'] = ($provider_profile)?$provider_profile[0]:'';
-			
+			$this->data['profile'] = ($provider_profile)?$provider_profile[0]:'';
+			$this->data['countries'] = $this->Util_model->read('country');
 			$this->load->view('provider/profile', $this->data);
 		}
 	}
