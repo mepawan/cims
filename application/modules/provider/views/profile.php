@@ -52,28 +52,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group col-md-6">
 										<label for="username" class="form-label col-sm-4">User Name<span class="red">*</span></label>
 										<div class="col-sm-8">
-											<input type="text" readonly  name="username" class="form-control" id="username" value="<?php echo $user['username']; ?>"  />
+											<input type="text" readonly  name="username" class="" id="username" value="<?php echo $user['username']; ?>"  />
 											
 										</div>
 									</div>
 									<div class="form-group col-md-6">
 										<label for="created_date_time" class="form-label col-sm-4">Date Registered<span class="red">*</span></label>
 										<div class="col-sm-8">
-											<input type="text" readonly  name="created_date_time" class="form-control" id="created_date_time" value="<?php echo $user['created_date_time']; ?>"  />
+											<input type="text" readonly  name="created_date_time" class="" id="created_date_time" value="<?php echo $user['created_date_time']; ?>"  />
 											
 										</div>
 									</div>
 									<div class="form-group col-md-6">
 										<label for="status" class="form-label col-sm-4">Profile Status<span class="red">*</span></label>
 										<div class="col-sm-8">
-											<input type="text" readonly name="created_date_time" class="form-control" id="created_date_time" value="<?php echo $user['status']; ?>"  />
+											<input type="text" readonly name="created_date_time" class="" id="created_date_time" value="<?php echo $user['status']; ?>"  />
 											
 										</div>
 									</div>
 									<div class="form-group col-md-6">
 										<label for="email" class="form-label col-sm-4">Email<span class="red">*</span></label>
 										<div class="col-sm-8">
-											<input type="string" readonly name="email" class="form-control" id="email"  value="<?php echo $user['email']; ?>" />
+											<input type="string" readonly name="email" class="" id="email"  value="<?php echo $user['email']; ?>" />
 											
 										</div>
 									</div>
@@ -85,7 +85,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group col-md-6">
 										<label for="profile_pic" class="form-label col-sm-4">Profile Photo<span class="red">*</span></label>
 										<div class="col-sm-8">
-											<input type="file"  name="profile_pic" class="form-control" id="profile_pic"  />
+											<input type="file"  name="profile_pic" class="" id="profile_pic"  />
 										</div>
 										<div class="clearfix clear"></div>
 									</div>
@@ -94,14 +94,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group col-md-6">
 										<label for="first_name" class="form-label col-sm-4">First Name<span class="red">*</span></label>
 										<div class="col-sm-8">
-											<input type="text" required placeholder="First Name" name="first_name" class="form-control" id="first_name" value="<?php echo $user['first_name']; ?>"  />
+											<input type="text" required placeholder="First Name" name="first_name" class="" id="first_name" value="<?php echo $user['first_name']; ?>"  />
 											
 										</div>
 									</div>
 									<div class="form-group col-md-6">
 										<label for="last_name" class="form-label col-sm-4">Last Name<span class="red">*</span></label>
 										<div class="col-sm-8">
-											<input type="text" required placeholder="Last Name" name="last_name" class="form-control" id="last_name" value="<?php echo $user['last_name']; ?>" />
+											<input type="text" required placeholder="Last Name" name="last_name" class="" id="last_name" value="<?php echo $user['last_name']; ?>" />
 											
 										</div>
 									</div>
@@ -109,14 +109,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group col-md-6">
 										<label for="address" class="form-label col-sm-4">Billing_Address<span class="red">*</span></label>
 										<div class="col-sm-8">
-											<input type="text" required placeholder="Billing Address" name="address" class="form-control" id="address" value="<?php echo $user['address']; ?>" />
+											<input type="text" required placeholder="Billing Address" name="address" class="" id="address" value="<?php echo $user['address']; ?>" />
 											
 										</div>
 									</div>
 									<div class="form-group col-md-6">
 										<label for="city" class="form-label col-sm-4">City<span class="red">*</span></label>
 										<div class="col-sm-8">
-											<input type="text" required placeholder="City" name="city" class="form-control" id="city" value="<?php echo $user['city']; ?>"  />
+											<input type="text" required placeholder="City" name="city" class="" id="city" value="<?php echo $user['city']; ?>"  />
 											
 										</div>
 									</div>
@@ -133,7 +133,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group col-md-6">
 										<label for="zipcode" class="form-label col-sm-4">Zip_Code<span class="red">*</span></label>
 										<div class="col-sm-8">
-											<input type="text" required placeholder="Zip Code" name="zipcode" class="form-control" id="zipcode" value="<?php echo $user['zipcode']; ?>" />
+											<input type="text" required placeholder="Zip Code" name="zipcode" class="" id="zipcode" value="<?php echo $user['zipcode']; ?>" />
 											
 										</div>
 									</div>
@@ -150,14 +150,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group col-md-6">
 										<label for="phone" class="form-label col-sm-4">Phone_Number<span class="red">*</span></label>
 										<div class="col-sm-8">
-											<input type="text" required placeholder="Phone Number" name="phone" class="form-control" id="phone" value="<?php echo $user['phone']; ?>" />
+											<input type="text" required placeholder="Phone Number" name="phone" class="" id="phone" value="<?php echo $user['phone']; ?>" />
 											
 										</div>
 									</div>
 									<div class="form-group col-md-12">
 										<label for="bio" class="form-label col-sm-1">Bio<span class="red">*</span></label>
 										<div class="col-sm-11">
-											<textarea required placeholder="Bio" name="bio" class="form-control" id="bio" rows="5" /><?php echo $user['bio']; ?></textarea>
+											<textarea required placeholder="Bio" name="bio" class="" id="bio" rows="5" /><?php echo $user['bio']; ?></textarea>
 											
 										</div>
 									</div>
@@ -181,7 +181,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group col-md-6">
 										<label for="license_certification_name" class="form-label col-sm-4">Certifications or License Name</label>
 										<div class="col-sm-8">
-											<input type="text" placeholder="Certifications or License Name" name="profile[license_certification_name]" class="form-control" id="license_certification_name" value="<?php if($profile) echo $profile['license_certification_name']; ?>"  />
+											<input type="text" placeholder="Certifications or License Name" name="profile[license_certification_name]" class="" id="license_certification_name" value="<?php if($profile) echo $profile['license_certification_name']; ?>"  />
 											
 										</div>
 									</div>
@@ -189,14 +189,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group col-md-6">
 										<label for="license_certification_number" class="form-label col-sm-4">Certifications/License Number</label>
 										<div class="col-sm-8">
-											<input type="text" placeholder="Certifications/License Number" name="profile[license_certification_number]" class="form-control" id="license_certification_number"  value="<?php if($profile) echo $profile['license_certification_number']; ?>" />
+											<input type="text" placeholder="Certifications/License Number" name="profile[license_certification_number]" class="" id="license_certification_number"  value="<?php if($profile) echo $profile['license_certification_number']; ?>" />
 											
 										</div>
 									</div>
 									<div class="form-group col-md-6">
 										<label for="state_of_license_certification" class="form-label col-sm-4">State or county of License/Certifications</label>
 										<div class="col-sm-8">
-											<input type="text" placeholder="State or county of License/Certifications" name="profile[state_of_license_certification]" class="form-control" id="state_of_license_certification" value="<?php if($profile) echo $profile['state_of_license_certification']; ?>" />
+											<input type="text" placeholder="State or county of License/Certifications" name="profile[state_of_license_certification]" class="" id="state_of_license_certification" value="<?php if($profile) echo $profile['state_of_license_certification']; ?>" />
 											
 										</div>
 									</div>
@@ -216,7 +216,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<label for="resume" class="form-label col-sm-4">Resume</label>
 										<div class="col-sm-8">
 											<?php if($profile['resume']) { echo "<a href='".ci_public('upload').$profile['resume']."' target='_blank'>".$profile['resume']."</a>"; } else { ?>
-												<input type="file" name="resume" class="form-control" id="resume"  />
+												<input type="file" name="resume" class="" id="resume"  />
 											<?php } ?>
 										</div>
 									</div>
@@ -249,13 +249,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group col-md-6">
 										<label for="area_of_experience_other" class="form-label col-sm-4">Area of Experience other</label>
 										<div class="col-sm-8">
-											<input type="text" placeholder="Area of Experience other" name="profile[area_of_experience_other]" class="form-control" id="area_of_experience_other" value="<?php if($profile) echo $profile['area_of_experience_other'];  ?>" />
+											<input type="text" placeholder="Area of Experience other" name="profile[area_of_experience_other]" class="" id="area_of_experience_other" value="<?php if($profile) echo $profile['area_of_experience_other'];  ?>" />
 										</div>
 									</div>
 									<div class="form-group col-md-6">
 										<label for="years_of_experience" class="form-label col-sm-4">Number of Years of Experience<span class="red">*</span></label>
 										<div class="col-sm-8">
-											<input type="text" required placeholder="Number of Years of Experience" name="profile[years_of_experience]" class="form-control" id="years_of_experience" value="<?php if($profile) echo $profile['years_of_experience']; ?>" />
+											<input type="text" required placeholder="Number of Years of Experience" name="profile[years_of_experience]" class="" id="years_of_experience" value="<?php if($profile) echo $profile['years_of_experience']; ?>" />
 										</div>
 									</div>
 									<div class="clearfix clear"></div>
@@ -276,7 +276,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<?php if($profile['pictures_of_work']) { ?> 
 												<img src="<?php echo ci_public('upload'); ?><?php echo $profile['pictures_of_work']; ?>" height="100px" width="250px"> 
 											<?php } else { ?>
-											<input type="file" name="pictures_of_work" class="form-control" id="pictures_of_work"  />
+											<input type="file" name="pictures_of_work" class="" id="pictures_of_work"  />
 											<?php } ?>
 										</div>
 									</div>
@@ -295,7 +295,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group col-md-6">
 										<label for="video_calling_feature_other" class="form-label col-sm-4">Video Calling Feature Other</label>
 										<div class="col-sm-8">
-											<input type="text" placeholder="Video Calling Feature Other" name="profile[video_calling_feature_other]" class="form-control" id="video_calling_feature_other" value="<?php if($profile) echo $profile['video_calling_feature_other']; ?>" />
+											<input type="text" placeholder="Video Calling Feature Other" name="profile[video_calling_feature_other]" class="" id="video_calling_feature_other" value="<?php if($profile) echo $profile['video_calling_feature_other']; ?>" />
 										</div>
 									</div>
 									<div class="clearfix clear"></div>
