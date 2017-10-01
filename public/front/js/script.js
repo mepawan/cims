@@ -136,7 +136,7 @@ function pvn_notify(msg,type,title){
 }
 
 jQuery(document).ready(function(){
-	jQuery("#frm-top-login").submit(function(e){
+	jQuery("#frm-top-login, #frm-main-login").submit(function(e){
 		e.preventDefault();
 		var dis = jQuery(this);
 		jQuery('input[type="submmit"]',jQuery(dis)).val('Please wait...');
