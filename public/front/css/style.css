@@ -570,7 +570,7 @@ ul.client_icons li {
 	-o-transform: rotate(45deg);
 	z-index: 8;
 }
-input[type="text"], input[type="email"], input[type="password"], input[type="number"], input[type="url"], input[type="tel"] {
+input[type="text"], input[type="email"], input[type="password"], input[type="number"], input[type="url"], input[type="tel"], select {
 	padding: 12px 12px 10px !important;
 	border: solid 1px #e3e3e3;
 	color: #777;
@@ -654,7 +654,7 @@ top: 50px;
 
 
 
-#contact-panel input[type="submit"] {
+input[type="submit"] {
 	color: rgba(0,0,0,0);
 	vertical-align: middle;
 	text-align: center;
