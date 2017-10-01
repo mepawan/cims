@@ -22,6 +22,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script src="<?php echo ci_public('front'); ?>js/jquery-1.12.4.min.js"></script>
 	<script type="text/javascript">
 		var ci_base_url = '<?php echo ci_base_url();?>';
+		var test = "test";
 	</script>
 <?php
 	if(isset($head_views)){
