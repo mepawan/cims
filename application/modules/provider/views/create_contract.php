@@ -42,6 +42,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										</div>
 										<div class="clearfix clear"></div>
 									</div>
+									<div class="clearfix clear"></div>
 									<div class="form-group col-md-6">
 										<label for="paypal" class="form-label col-sm-4">Area of Experience<span class="red">*</span></label>
 										<div class="col-sm-8">
@@ -51,6 +52,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										</div>
 										<div class="clearfix clear"></div>
 									</div>
+									<div class="clearfix clear"></div>
+									
+									
+									
+									
 									
 									<div class="form-actions text-center col-md-12">
 										<button class="btn btn-primary width-150" type="submit">Create Contract</button>
