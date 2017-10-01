@@ -138,8 +138,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<div  class="col-sm-8">
 											<select name="state" >
 												<option value="">-Select-</option>
-												<option value="state1" <?php if($user['state'] == "state1"){ echo "selected"; } ?>>state1</option>
-												<option value="state2" <?php if($user['state'] == "state2"){ echo "selected"; } ?>>state2</option>
+												
 											</select>
 										</div>
 									</div>

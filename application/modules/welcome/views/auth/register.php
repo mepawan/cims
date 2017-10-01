@@ -121,7 +121,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<input required="required" name="loginkey" type="text" placeholder="Username/Email/Phone">
 											<input required="required" name="password" type="password" placeholder="Password">
 											
-											<input name="submit" type="submit" value="login">
+											<input name="submit" class="btn btn-primary" type="submit" value="login">
 										</form>
 									
 									</div>
