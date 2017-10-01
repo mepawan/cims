@@ -117,7 +117,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											</div>
 										 </div>
 										 
-										<form id="frm-main-login" action="<?php echo ci_base_url();?>auth/login" method="post">
+										<form id="frm-main-login" action="#" method="post">
 											<input required="required" name="loginkey" type="text" placeholder="Username/Email/Phone">
 											<input required="required" name="password" type="password" placeholder="Password">
 											
