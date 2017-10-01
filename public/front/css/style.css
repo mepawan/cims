@@ -655,7 +655,7 @@ top: 50px;
 
 
 input[type="submit"], button[type="submit"]  {
-	color: rgba(0,0,0,0);
+	/*color: rgba(0,0,0,0);*/
 	vertical-align: middle;
 	text-align: center;
 	cursor: pointer;
@@ -663,8 +663,8 @@ input[type="submit"], button[type="submit"]  {
 	letter-spacing: 1.5px;
 	text-transform: uppercase;
 	border: 0 none;
-	background: rgba(127,140,141,0.8);
-	width: 100%;
+	/*background: rgba(127,140,141,0.8);
+	width: 100%;*/
 	padding: 15px 16px 13px !important;
 	font-weight: 500;
 	font-size: 12px;
