@@ -654,7 +654,7 @@ top: 50px;
 
 
 
-input[type="submit"] {
+input[type="submit"], button[type="submit"]  {
 	color: rgba(0,0,0,0);
 	vertical-align: middle;
 	text-align: center;
