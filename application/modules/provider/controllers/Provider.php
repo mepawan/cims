@@ -194,5 +194,11 @@ class Provider extends MX_Controller {
 		$this->data['icon'] = 'icmn-home2';
 		$this->load->view('provider/payment', $this->data);
 	}
+	public function create_contract(){
+		$this->data['entity'] = 'contract';
+		$this->data['heading'] = 'Create Contract';
+		$this->data['icon'] = 'icmn-home2';
+		$this->load->view('provider/create_contract', $this->data);
+	}
 	
 }
