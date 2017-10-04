@@ -3,23 +3,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Welcome extends MX_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/user_guide/general/urls.html
-	 */
+
 	function __construct() {
 		parent::__construct();
+		$this->load->library('CIAuth');
+		
 		$this->load->model('Util_model');
 		$this->data = array();
 		$menus = $this->Util_model->read('menus', array( 'where' => array( 'slug' => 'main_menu')));
@@ -56,5 +44,29 @@ class Welcome extends MX_Controller {
 		else{
 			echo "404 Page Not Found";
 		}
+	}
+	function states_ajax($cid = ''){
+		if(!$cid){
+			$cid = $this->input->post('country_id');
+		}
+		$resp = array();
+		if($cid){
+			if(is_numeric($cid)){
+				$states = $this->Util_model->read('province',array('where' => array('country_id' => $cid)));
+			} else {
+				$country = $this->Util_model->read('country',array('where' => array('iso_code_2' => $cid)));
+				//print_r($country);
+				$states = $this->Util_model->read('province',array('where' => array('country_id' => $country[0]['country_id'])));
+			}
+			
+			$resp['status'] = 'success';
+			$resp['states'] = $states;
+		} else {
+			$resp['status'] = 'fail';
+			$resp['msg'] = 'Country id missing';
+		}
+		echo json_encode($resp);
+		die;
+		
 	}
 }

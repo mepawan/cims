@@ -1,13 +1,13 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Provider extends MX_Controller {
+class Customer extends MX_Controller {
 	function __construct() {
 		parent::__construct();
 		$this->load->library('Form_validation');
 		$this->load->helper('form');
 		$this->load->library('CIAuth');
-		if ( ! $this->ciauth->is_logged_in() || !($this->ciauth->is_role('provider'))){
+		if ( ! $this->ciauth->is_logged_in() || !($this->ciauth->is_role('customer'))){
 			redirect('/', 'location');
 		}
 		$this->load->model('Util_model');
@@ -17,12 +17,12 @@ class Provider extends MX_Controller {
 	}
  	public function index(){
 		$this->data['entity'] = 'dashboard';
-		$this->data['heading'] = 'Provider Dashboard';
+		$this->data['heading'] = 'Customer Dashboard';
 		$this->data['icon'] = 'icmn-home2';
 		$this->data['user'] = $this->ciauth->get_user();
-		$provider_profile = $this->Util_model->read('provider_profile',array('where' => array('uid'=>$this->ciauth->get_user_id())));
-		$this->data['profile'] = ($provider_profile)?$provider_profile[0]:'';
-		$this->load->view('provider/dashboard', $this->data);
+		$customer_profile = $this->Util_model->read('customer_profile',array('where' => array('uid'=>$this->ciauth->get_user_id())));
+		$this->data['profile'] = ($customer_profile)?$customer_profile[0]:'';
+		$this->load->view('customer/dashboard', $this->data);
 	}
 	function email_check($email) {
 		$result = $this->ciauth->is_email_available($email);
@@ -86,59 +86,25 @@ class Provider extends MX_Controller {
 				if($this->input->post('username') != $this->ciauth->get_user('username')){
 					$user_data['username'] = $this->input->post('username');
 				}
-				
-				
+
 				$this->Util_model->update('users',$user_data);
 				
-				//update provider_profile table
+				//update customer_profile table
+				/*
 				$user_profile_data = $this->input->post('profile');
-				$languages = implode(',', $user_profile_data['languages']);
-				$area_of_experience = implode(',', $user_profile_data['area_of_experience']);
-				$availabe_days_time = implode(',', $user_profile_data['availabe_days_time']);
-				$video_calling_feature = implode(',', $user_profile_data['video_calling_feature']);
-				$user_profile_data['languages']  = $languages;
-				$user_profile_data['area_of_experience']  = $area_of_experience;
-				$user_profile_data['availabe_days_time']  = $availabe_days_time;
-				$user_profile_data['video_calling_feature']  = $video_calling_feature;
-				
-				if($_FILES["resume"]["name"])	{	
-					$target_dir = "public/upload/";
-					$pathinfo = pathinfo($_FILES["resume"]["name"]);
-					$resume_name = "resume_".$this->ciauth->get_user_id('email').".".$pathinfo['extension'];
-					$target_file = $target_dir . $resume_name ;
-					
-					if (move_uploaded_file($_FILES["resume"]["tmp_name"], $target_file)) {
-						$user_profile_data['resume'] = $resume_name; 
-					}
-				}
-				if($_FILES["pictures_of_work"]["name"])	{	
-					$target_dir = "public/upload/";
-					$pathinfo = pathinfo($_FILES["pictures_of_work"]["name"]);
-					$resume_name = "pictureswork_".$this->ciauth->get_user_id('email').".".$pathinfo['extension'];
-					$target_file = $target_dir . $resume_name ;
-					
-					if (move_uploaded_file($_FILES["pictures_of_work"]["tmp_name"], $target_file)) {
-						$user_profile_data['pictures_of_work'] = $resume_name; 
-					}
-				}
-				
 				if(!isset($user_profile_data['uid']) || $user_profile_data['uid']){
 					$user_profile_data['uid']  = $this->ciauth->get_user_id();
 				}
-				
-				$provider_profile = $this->Util_model->read('provider_profile',array('where' => array('uid'=>$user_data['id'])));
-				
-				//echo "<pre>"; print_r($user_profile_data); die;
-				if(!empty($provider_profile)){
-					$this->Util_model->update('provider_profile',$user_profile_data,'uid');
+				$customer_profile = $this->Util_model->read('customer_profile',array('where' => array('uid'=>$user_data['id'])));
+				if(!empty($customer_profile)){
+					$this->Util_model->update('customer_profile',$user_profile_data,'uid');
 				}
 				else{
-					$this->Util_model->create('provider_profile',$user_profile_data);
+					$this->Util_model->create('customer_profile',$user_profile_data);
 				}
-				
+				*/
 				$user = $this->Util_model->read('users',array('where' => array('id'=>$user_data['id'])));
-				
-				
+
 				if($user){
 					$user = $user[0];
 					$user = $user;
@@ -162,18 +128,121 @@ class Provider extends MX_Controller {
 			$this->data['heading'] = 'Profile';
 			$this->data['user'] = $this->ciauth->get_user();
 			$this->data['add_recaptcha_js'] = true;
-			$provider_profile = $this->Util_model->read('provider_profile',array('where' => array('uid'=>$this->ciauth->get_user_id())));
+			$provider_profile = $this->Util_model->read('customer_profile',array('where' => array('uid'=>$this->ciauth->get_user_id())));
 			
 			$this->data['profile'] = ($provider_profile)?$provider_profile[0]:'';
 			$this->data['countries'] = $this->Util_model->read('country');
-			$this->load->view('provider/profile', $this->data);
+			$this->load->view('customer/profile', $this->data);
 		}
 	}
 	public function payment(){
-		$this->data['entity'] = 'Payment';
-		$this->data['heading'] = 'Provider Payment';
-		$this->data['icon'] = 'icmn-home2';
-		$this->load->view('provider/payment', $this->data);
-	}
+		if($this->input->post()){
+			$val = $this->form_validation;
+			// Set form validation rules
+			$val->set_rules('card_number', 'Card Number', 'trim|required');
+			$val->set_rules('exp_date', 'Expiry Date', 'trim|required');
+			$val->set_rules('name_on_card', 'Name on card', 'trim|required');
+			$val->set_rules('card_type', 'Card Type', 'trim|required');
+			
+			if ($val->run()){
+				//update users table
+				
+				$card_data = array(
+					'uid' => $this->ciauth->get_user_id(),
+					'card_number' => $this->input->post('card_number'),
+					'exp_date' => $this->input->post('exp_date'),
+					'name_on_card' => $this->input->post('name_on_card'),
+					'card_type' => $this->input->post('card_type'),
+				);
+				
 
+				$card = $this->Util_model->create('payment_cards',$card_data);
+				
+
+				if($card){
+					$this->data['status'] = 'success';
+					$this->data['msg']= 'Card Added successfully';
+				} else {
+					$this->data['status'] = 'fail';
+					$this->data['msg'] = 'There is some problem to process request';
+				}
+			}
+			
+		}
+		
+		$this->data['cards'] = $this->Util_model->read('payment_cards',array('where' => array('uid'=>$this->ciauth->get_user_id())));
+		$this->data['entity'] = 'Payment';
+		$this->data['heading'] = 'Customer Payment';
+		$this->data['submit_text'] = 'Add';
+		$this->data['icon'] = 'icmn-home2';
+		$this->load->view('customer/card', $this->data);
+	}
+	public function create_contract(){
+		$this->data['entity'] = 'contract';
+		$this->data['heading'] = 'Create Contract';
+		$this->data['icon'] = 'icmn-home2';
+		$this->load->view('customer/create_contract', $this->data);
+	}
+	
+	public function card_edit(){
+		$id = $_GET['id'];
+		if($this->input->post()){
+			$val = $this->form_validation;
+			// Set form validation rules
+			$val->set_rules('card_number', 'Card Number', 'trim|required');
+			$val->set_rules('exp_date', 'Expiry Date', 'trim|required');
+			$val->set_rules('name_on_card', 'Name on card', 'trim|required');
+			$val->set_rules('card_type', 'Card Type', 'trim|required');
+			
+			if ($val->run()){
+				//update users table
+				
+				$card_data = array(
+					'uid' => $this->ciauth->get_user_id(),
+					'card_number' => $this->input->post('card_number'),
+					'exp_date' => $this->input->post('exp_date'),
+					'name_on_card' => $this->input->post('name_on_card'),
+					'card_type' => $this->input->post('card_type'),
+				);
+				
+				$card_data['id']  = $id;
+				$card = $this->Util_model->update('payment_cards',$card_data);
+				
+
+				if($card){
+					redirect('customer/payment');
+				} else {
+					$this->data['status'] = 'fail';
+					$this->data['msg'] = 'There is some problem to process request';
+				}
+			}
+			
+		}
+		
+		
+		$id = $_GET['id'];
+		$card_details = $this->Util_model->read('payment_cards',array('where' => array('id'=>$id)));
+		$this->data['card'] = $card_details[0];
+		$this->data['entity'] = 'Card Edit';
+		$this->data['heading'] = 'Card Edit';
+		$this->data['submit_text'] = 'Edit';
+		$this->data['icon'] = 'icmn-home2';
+		$this->load->view('customer/card', $this->data);
+	}
+	public function card_remove(){
+		if($this->input->post()){
+			
+			$this->Util_model->delete('payment_cards',$this->input->post('id'));
+			redirect('customer/payment');
+			
+		}
+		$this->data['entity'] = 'remove';
+		$this->data['id'] = $_GET['id'];
+		$this->data['heading'] = 'Card Remove';
+		$this->data['icon'] = 'icmn-home2';
+		$this->load->view('customer/card_remove', $this->data);
+	}
+	
+	
+	
 }

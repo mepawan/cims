@@ -48,18 +48,6 @@ class Auth extends MX_Controller {
 			}
 		}
 	}
-	function redirect_login(){
-		$redirect = ($this->session->userdata('redirect_url'))?$this->session->userdata('redirect_url'):'';
-		if($redirect){
-			$this->session->unset_userdata('redirect_url');
-			redirect($redirect);
-		} else if($this->ciauth->is_role('provider')){
-			redirect('/provider');
-		} else {
-			redirect('/customer');
-		}
-		
-	}
 	function login() {
 		
 		if ( $this->ciauth->is_logged_in()) {
@@ -111,23 +99,28 @@ class Auth extends MX_Controller {
         $this->ciauth->logout();
         redirect('auth');
     }
+    function logout_user() {
+        $this->ciauth->logout();
+        redirect('/');
+    }
 	public function resend_activation_email(){
 		
 	}
 
-	function username_check($username) {
+	function username_exists($username) {
 		$result = $this->ciauth->is_username_available($username);
 		if ( ! $result) {
-			$this->form_validation->set_message('username_check', 'Username already exist. Please choose another username.');
+			$this->form_validation->set_message('username_exists', 'Username already exist. Please choose another username.');
 		}
 		return $result;
 	}
-	function phone_check($username) {
-		$result = $this->ciauth->is_phone_available($username);
-		if ( ! $result) {
-			$this->form_validation->set_message('phone_check', 'Phone already exist. Please choose another phone.');
+	function phone_exists($phone) {
+		$result = $this->ciauth->is_phone_available($phone);
+		if ($result) {
+			//$this->form_validation->set_message('phone_exists', 'Phone already exist. Please choose another phone.');
+			return false;
 		}
-		return $result;
+		return true;
 	}
 
 	function email_exists($email) {
@@ -141,7 +134,9 @@ class Auth extends MX_Controller {
 	}
 	function forgetpwd(){
 		if ( $this->ciauth->is_logged_in()) {
-			redirect('admin');
+			$this->data['status'] = 'success';
+			$this->data['msg'] = 'Already logged in. Redirecting....';
+			$this->redirect_loggedin_user();
 		}
 
 		$val = $this->form_validation;
@@ -165,31 +160,49 @@ class Auth extends MX_Controller {
 		$this->load->view('auth/forgetpwd', $this->data);
 	}
 
-	function register() {
+	function register($role = 'customer') {
+		if ( $this->ciauth->is_logged_in()) {
+			$this->data['status'] = 'success';
+			$this->data['msg'] = 'Already logged in. Redirecting....';
+			$this->redirect_loggedin_user();
+		}
 		global $ci_settings;
+		
 		if($this->input->post()){
 			$val = $this->form_validation;
 			$val->set_rules('first_name', 'First Name', 'trim|required');
 			$val->set_rules('last_name', 'Last Name', 'trim|required');
-			//$val->set_rules('email', 'Email', 'trim|required|valid_email|callback_email_exists');
 			$val->set_rules('email', 'Email', 'trim|required|valid_email');
+			$val->set_rules('username', 'Username', 'trim|required');
+			//$val->set_rules('email', 'Email', 'trim|required|valid_email|unique[user.email_address]');
+			//$val->set_rules('username', 'Username', 'trim|required|callback_username_exists');
+	
 			$val->set_rules('password', 'Password', 'trim|required|min_length['.$ci_settings['min_password_length'].']|max_length['.$ci_settings['max_password_length'].']|matches[confirm_password]');
 			$val->set_rules('confirm_password', 'Confirm Password', 'trim|required');
 			$val->set_rules('g-recaptcha-response', 'Human Verification', 'trim|required', array('required' => 'Solve Human Verification Captcha'));
 			
 			if ($val->run() ) {
-				if(validate_recapcha()){
-					$reg_resp = $this->ciauth->register($this->input->post());
-					if($reg_resp['status'] == 'success'){
-						$this->data['success'] = $reg_resp['msg'];
-					} else {
-						$this->data['error'] = $reg_resp['msg'];
-					}
-					
+				if(!validate_recapcha()){
+					$this->data['status'] = 'fail';
+					$this->data['msg'] = 'Captcha Verification Fail';
+				} else if($this->ciauth->is_email_available($this->input->post('email'))){
+					$this->data['status'] = 'fail';
+					$this->data['msg'] = 'Email is already used by another user. Please choose another one';
+				} else if($this->ciauth->is_username_available($this->input->post('username'))){
+					$this->data['status'] = 'fail';
+					$this->data['msg'] = 'Username is already used by another user. Please choose another one';
 				} else {
-					$this->data['recaptcha_error'] = 'Captcha Verification Fail';
+					$post_data = $this->input->post();
+					if(!$role){
+						$role = isset($post_data['role'])?$post_data['role']:'';
+					}
+					$post_data['role'] = $role;
+					$reg_resp = $this->ciauth->register($post_data);
+					$this->data['status'] = $reg_resp['status'];
+					$this->data['msg'] = $reg_resp['msg'];
 				}
 			} else {
+				$this->data['status'] = 'fail';
 				$this->data['form_errors'] = $this->form_validation->error_array();
 			}
 		}
@@ -203,8 +216,12 @@ class Auth extends MX_Controller {
 				ci_public("admin").'vendors/bootstrap-show-password/bootstrap-show-password.min.js',
 				//ci_public("admin").'vendors/gsap/src/minified/TweenMax.min.js',
 			);
-		$this->data['add_recaptcha_js'] = true;
+			$this->data['add_recaptcha_js'] = true;
 			$this->data['heading'] = "Signup";
+			$this->data['role'] = $role;
+			
+			//print_r($this->data);
+			
 			$this->load->view('auth/register', $this->data);
 		}
 		

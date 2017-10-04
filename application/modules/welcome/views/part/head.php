@@ -3,6 +3,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?><!DOCTYPE html>
 <html>
 <head lang="en">
+<?php 
+	global $ci_settings;
+?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -17,7 +20,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link href="<?php echo ci_public('front'); ?>css/responsive.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="<?php echo ci_public('front'); ?>css/font-awesome.min.css">
 	<script src="<?php echo ci_public('front'); ?>js/jquery-1.12.4.min.js"></script>
-
+	<script type="text/javascript">
+		var ci_base_url = '<?php echo ci_base_url();?>';
+		var test = "test";
+	</script>
 <?php
 	if(isset($head_views)){
 			array_walk($head_views, function($hv){

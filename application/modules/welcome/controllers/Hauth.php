@@ -64,11 +64,12 @@ class Hauth extends CI_Controller {
 			
 			$login = $this->ciauth->login($param);
 			if($login['status'] = 'success'){
-				redirect('/auth/redirect_login');
+				redirect('/auth/redirect_loggedin_user');
 			}
 		}
 		else{
-			$data = array(		
+			$data = array(	
+					'username' 		=> isset($profile->displayName)?$profile->displayName:'null',
 					'first_name'	=> isset($profile->firstName)?$profile->firstName:'',		
 					'last_name'		=> isset($profile->lastName)?$profile->lastName:'',	
 					'email'			=> $profile->email,
@@ -84,7 +85,7 @@ class Hauth extends CI_Controller {
 				$login = $this->ciauth->login($param);
 				
 				if($login['status'] = 'success'){
-					redirect('/auth/redirect_login');
+					redirect('/auth/redirect_loggedin_user');
 				}
 		}
 		
