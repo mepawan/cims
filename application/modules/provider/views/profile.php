@@ -43,7 +43,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<div class="success">
 											<?php echo $msg; ?>
 										</div>
-								<?php } else { ?> 
+								<?php }  ?> 
 								<form method="POST" name="form-validation" id="provider-registration" enctype="multipart/form-data">
 									
 									<div id="top_move" class="btt">
@@ -73,7 +73,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group col-md-6">
 										<label for="email" class="form-label col-sm-4">Email<span class="red">*</span></label>
 										<div class="col-sm-8">
-											<input type="string" readonly name="email" class="" id="email"  value="<?php echo $user['email']; ?>" />
+											<input type="email" readonly name="email" class="" id="email"  value="<?php echo $user['email']; ?>" />
 											
 										</div>
 									</div>
@@ -81,15 +81,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div id="top_move" class="btt">
 										<p>Persnol Details</p>
 									</div>
-<!--
-									<div class="form-group col-md-6">
-										<label for="profile_pic" class="form-label col-sm-4">Profile Photo<span class="red">*</span></label>
-										<div class="col-sm-8">
-											<input type="file"  name="profile_pic" class="" id="profile_pic"  />
-										</div>
-										<div class="clearfix clear"></div>
-									</div>
--->
 									
 									<div class="form-group col-md-6">
 										<label for="first_name" class="form-label col-sm-4">First Name<span class="red">*</span></label>
@@ -121,9 +112,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										</div>
 									</div>
 									<div class="form-group col-md-6">
-										<label for="country" class="form-label col-sm-4">Country<span class="red">*</span></label>
+										<label for="country" class="form-label col-sm-4">Country </label>
 										<div  class="col-sm-8">
-											<select name="country" required="required">
+											<select id="country" name="country" >
 												<option value="">-Select-</option>
 												<?php 
 													foreach($countries as $c){
@@ -136,31 +127,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group col-md-6">
 										<label for="state" class="form-label col-sm-4">State</label>
 										<div  class="col-sm-8">
-											<select name="state" >
-												<option value="">-Select-</option>
+											<select id="state" name="state" >
+												<option value="">Select One</option>
 												
 											</select>
 										</div>
 									</div>
 									<div class="form-group col-md-6">
-										<label for="zipcode" class="form-label col-sm-4">Zip_Code<span class="red">*</span></label>
+										<label for="zipcode" class="form-label col-sm-4">Zip_Code </label>
 										<div class="col-sm-8">
-											<input type="text" required placeholder="Zip Code" name="zipcode" class="" id="zipcode" value="<?php echo $user['zipcode']; ?>" />
+											<input type="text"  placeholder="Zip Code" name="zipcode" class="" id="zipcode" value="<?php echo $user['zipcode']; ?>" />
 											
 										</div>
 									</div>
 									
 									<div class="form-group col-md-6">
-										<label for="phone" class="form-label col-sm-4">Phone_Number<span class="red">*</span></label>
+										<label for="phone" class="form-label col-sm-4">Phone_Number</label>
 										<div class="col-sm-8">
-											<input type="text" required placeholder="Phone Number" name="phone" class="" id="phone" value="<?php echo $user['phone']; ?>" />
+											<input type="text" placeholder="Phone Number" name="phone" class="" id="phone" value="<?php echo $user['phone']; ?>" />
 											
 										</div>
 									</div>
 									<div class="form-group col-md-12">
-										<label for="bio" class="form-label col-sm-1">Bio<span class="red">*</span></label>
+										<label for="bio" class="form-label col-sm-1">Bio</label>
 										<div class="col-sm-11">
-											<textarea required placeholder="Bio" name="bio" class="" id="bio" rows="5" /><?php echo $user['bio']; ?></textarea>
+											<textarea placeholder="Bio" name="bio" class="" id="bio" rows="5" /><?php echo $user['bio']; ?></textarea>
 											
 										</div>
 									</div>
@@ -172,9 +163,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									</div>
 									
 									<div class="form-group col-md-6">
-										<label for="have_license_certification" class="form-label col-sm-4">Do you have any Licenses or Certifications?<span class="red">*</span></label>
+										<label for="have_license_certification" class="form-label col-sm-4">Do you have any Licenses or Certifications</label>
 										<div  class="col-sm-8">
-											<select name="profile[have_license_certification]" required="required">
+											<select name="profile[have_license_certification]" >
 												<option value="">-Select-</option>
 												<option value="yes" <?php if($profile['have_license_certification'] == "yes"){ echo "selected"; } ?>>Yes</option>
 												<option value="no" <?php if($profile['have_license_certification'] == "no"){ echo "selected"; } ?>>No</option>
@@ -205,9 +196,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									</div>
 									<div class="clearfix clear"></div>
 									<div class="form-group col-md-6">
-										<label for="have_license_certification" class="form-label col-sm-4">Languages Spoken<span class="red">*</span></label>
+										<label for="have_license_certification" class="form-label col-sm-4">Languages Spoken</label>
 										<div  class="col-sm-8">
-											<select name="profile[languages][]" multiple required>
+											<select name="profile[languages][]" multiple >
 											  <option value="akan" <?php if($profile) foreach($languages as $languages1){ if($languages1 == "akan"){ echo "selected";}} ?>>Akan</option>
 											  <option value="amharic" <?php if($profile) foreach($languages as $languages2){ if($languages2 == "amharic"){ echo "selected";}} ?>>Amharic</option>
 											  <option value="arabic" <?php if($profile) foreach($languages as $languages3){ if($languages3 == "arabic"){ echo "selected";}} ?>>Arabic</option>
@@ -225,9 +216,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									</div>
 									<div class="clearfix clear"></div>
 									<div class="form-group col-md-6">
-										<label for="area_of_experience" class="form-label col-sm-4">Area of Experience<span class="red">*</span></label>
+										<label for="area_of_experience" class="form-label col-sm-4">Area of Experience</label>
 										<div  class="col-sm-8">
-											<select name="profile[area_of_experience][]" multiple required>
+											<select name="profile[area_of_experience][]" multiple >
 											  <option value="ability_to_work_under_pressure" <?php if($profile) foreach($area_of_experience as $area_of_experience1){ if($area_of_experience1 == "ability"){ echo "selected";}} ?>>Ability to work under pressure</option>
 											  <option value="adaptability" <?php if($profile) foreach($area_of_experience as $area_of_experience2){ if($area_of_experience2 == "adaptability"){ echo "selected";}} ?>>Adaptability</option>
 											  <option value="administering_medication" <?php if($profile) foreach($area_of_experience as $area_of_experience3){ if($area_of_experience3 == "administering"){ echo "selected";}} ?>>Administering medication</option>
@@ -256,16 +247,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										</div>
 									</div>
 									<div class="form-group col-md-6">
-										<label for="years_of_experience" class="form-label col-sm-4">Number of Years of Experience<span class="red">*</span></label>
+										<label for="years_of_experience" class="form-label col-sm-4">Number of Years of Experience</label>
 										<div class="col-sm-8">
-											<input type="text" required placeholder="Number of Years of Experience" name="profile[years_of_experience]" class="" id="years_of_experience" value="<?php if($profile) echo $profile['years_of_experience']; ?>" />
+											<input type="text"  placeholder="Number of Years of Experience" name="profile[years_of_experience]" class="" id="years_of_experience" value="<?php if($profile) echo $profile['years_of_experience']; ?>" />
 										</div>
 									</div>
 									<div class="clearfix clear"></div>
 									<div class="form-group col-md-6">
-										<label for="availabe_days_time" class="form-label col-sm-4">Days and Times you are available<span class="red">*</span></label>
+										<label for="availabe_days_time" class="form-label col-sm-4">Days and Times you are available</label>
 										<div  class="col-sm-8">
-											<select name="profile[availabe_days_time][]" multiple required>
+											<select name="profile[availabe_days_time][]" multiple >
 											  <option value="Sunday_12AM_2AM" <?php if($profile) foreach($availabe_days_time as $availabe_days_time1){ if($availabe_days_time1 == "Sunday_12AM_2AM"){ echo "selected";}} ?>>Sunday 12 AM - 2 AM</option>
 											  <option value="Sunday_2AM_4AM" <?php if($profile) foreach($availabe_days_time as $availabe_days_time2){ if($availabe_days_time2 == "Sunday_2AM_4AM"){ echo "selected";}} ?> >Sunday 2 AM - 4 AM</option>
 											  <option value="Sunday_4AM_6AM" <?php if($profile) foreach($availabe_days_time as $availabe_days_time3){ if($availabe_days_time3 == "Sunday_4AM_6AM"){ echo "selected";}} ?>>Sunday 4 AM - 6 AM</option>
@@ -285,9 +276,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									</div>
 									<div class="clearfix clear"></div>
 									<div class="form-group col-md-6">
-										<label for="video_calling_feature" class="form-label col-sm-4">What video calling feature do you use?<span class="red">*</span></label>
+										<label for="video_calling_feature" class="form-label col-sm-4">What video calling feature do you use?</label>
 										<div  class="col-sm-8">
-											<select name="profile[video_calling_feature][]" multiple required>
+											<select name="profile[video_calling_feature][]" multiple >
 											  <option value="facetime" <?php if($profile) foreach($video_calling_feature as $video_calling_feature1){ if($video_calling_feature1 == "facetime"){ echo "selected";}} ?>>Face Time</option>
 											  <option value="tango" <?php if($profile) foreach($video_calling_feature as $video_calling_feature2){ if($video_calling_feature2 == "tango"){ echo "selected";}} ?>>Tango</option>
 											  <option value="skype" <?php if($profile) foreach($video_calling_feature as $video_calling_feature3){ if($video_calling_feature3 == "skype"){ echo "selected";}} ?>>Skype</option>
@@ -313,7 +304,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<button class="btn btn-primary width-150" type="submit">Register</button>
 									</div>
 								</form>
-								<?php } ?>
+								
 							</div>
 							</section>
 						</div>
@@ -323,7 +314,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div>
 		<?php $this->load->view('part/footer'); ?>
 	</div>
-
+	<script type="text/javascript">
+		jQuery(document).ready(function(){
+			jQuery("#country").change(function(e){
+				jQuery("#state").html('<option> Please wait....</option>');
+				var cid = jQuery(this).val();
+				jQuery.post(ci_base_url + "welcome/states-ajax",{country_id:cid}, function(resp){
+					jQuery("#state").html('<option> Select One </option>');
+					if(resp.status == 'success'){
+						for(var i in resp.states){
+							var st = resp.states[i];
+							jQuery("#state").append('<option value="'+st.code+'">'+st.name+'</option>');
+						}
+					} else {
+						
+					}
+				},'json');
+			});
+		});
+	</script>
 
 </body>
 </html>

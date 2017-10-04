@@ -3,10 +3,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
 <ul class="menu">
-   <li><a href="http://localhost/hds/cims/#"><span>How It Works</span></a></li>
-   <li><a href="http://localhost/hds/cims/#"><span>Our Story</span></a></li>
-   <li><a href="http://localhost/hds/cims/#"><span>Contact</span></a></li>
-   <li><a href="http://localhost/hds/cims/#"><span>404 Page</span></a></li>
+  <?php 
+	$menus = get_menu_items('main_menu');
+	foreach($menus as $menu){ 
+		//echo "<pre>"; print_r($menu); die; 
+		echo ' <li><a href="'.ci_base_url().$menu['alias'].'"><span>'.$menu['title'].'</span></a></li>';
+		} 
+	 ?>
   <li><a class="srh_icon" href="#">search</a></li>
   <li><a class="tog_icon" href="#">dropdown</a></li>
 </ul>

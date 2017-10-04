@@ -21,13 +21,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									</span>
 								<?php } ?>
 								<div id="top_move" class="btt">
-									<div class="col-sm-6">
-										<h3>Sign Up</h3>
-											<?php if(isset($status) && $status == 'fail'){   ?>
-													<div class="error">
-														<?php echo $msg; ?>
-													</div>
-											<?php } ?>
+									
+									<div class="col-sm-6 reg-wrap">
+										<h3> <?php if(isset($role) && $role){ echo ucfirst($role); } ?> Registration <?php 
+												if(isset($role) && $role == 'customer'){
+													echo '<a class="btn btn-primary pull-right" href="'.ci_base_url().'auth/register/provider">Become Provider</a>';
+												} else {
+													echo '<a class="btn btn-primary pull-right" href="'.ci_base_url().'auth/register">Customer Registration</a>';
+												}
+
+											?><div class="clearfix clear"></div>
+										</h3>
+											
 											
 											<?php if(isset($status) && $status == 'success'){   ?>
 													<div class="success">
@@ -41,6 +46,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												</div>
 											 </div>
 											<form method="POST" name="form-validation" id="form-registration ">
+											
+												<?php if(isset($status) && $status == 'fail'){   ?>
+													<div class="form-group">
+														<div class="error">
+															<?php echo $msg; ?>
+														</div>
+													</div>
+												<?php } ?>
+											
 												<?php if(isset($role) && $role){   ?>
 													<input type="hidden"  name="role" value="<?php echo $role;?>" />
 												<?php } ?>
@@ -108,7 +122,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											</form>
 										<?php } ?>
 									</div>
-									<div class="col-sm-6">
+									<div class="col-sm-6 login-wrap">
 										<h3>Sign In</h3>
 										<div class="social-login"><?php echo bybridauth_links();?></div>
 										<div class="l-login-padding login-big-or horizontal-or">
@@ -140,6 +154,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <style>
 	form{text-align:left;}
 </style>
+<script>
+	jQuery(document).ready(function(e){
+		var rh = jQuery(".reg-wrap").height();
+		var lh = jQuery(".login-wrap").height();
+		console.log(rh);
+		console.log(lh);
+		if(lh < rh){
+			jQuery(".login-wrap").height(rh);
+		} else {
+			jQuery(".reg-wrap").height(lh);
+		}
+		
+		
+	});
+</script>
 </body>
 </html>
 

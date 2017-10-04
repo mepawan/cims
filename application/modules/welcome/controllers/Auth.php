@@ -133,7 +133,9 @@ class Auth extends MX_Controller {
 	}
 	function forgetpwd(){
 		if ( $this->ciauth->is_logged_in()) {
-			redirect('admin');
+			$this->data['status'] = 'success';
+			$this->data['msg'] = 'Already logged in. Redirecting....';
+			$this->redirect_loggedin_user();
 		}
 
 		$val = $this->form_validation;
@@ -158,7 +160,13 @@ class Auth extends MX_Controller {
 	}
 
 	function register($role = 'customer') {
+		if ( $this->ciauth->is_logged_in()) {
+			$this->data['status'] = 'success';
+			$this->data['msg'] = 'Already logged in. Redirecting....';
+			$this->redirect_loggedin_user();
+		}
 		global $ci_settings;
+		
 		if($this->input->post()){
 			$val = $this->form_validation;
 			$val->set_rules('first_name', 'First Name', 'trim|required');

@@ -64,5 +64,5 @@ $route['hauth/(:any)/(:any)/(:any)'] = 'welcome/hauth/$1/$2/$3';
 
 $route['admin/menuitems/(:any)'] = 'admin/menuitems/index/$1';
 
-$route['404_override'] = 'welcome/page404';
+$route['404_override'] = '';
 $route['translate_uri_dashes'] = TRUE;

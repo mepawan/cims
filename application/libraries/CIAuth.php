@@ -42,7 +42,7 @@ class CIAuth {
 			$user_roles = $this->ci->users->get_roles();
 			$roles = array();
 			$roles_by_name = array();
-			array_walk($user_roles, function($role) use(&$roles){
+			array_walk($user_roles, function($role) use(&$roles,&$roles_by_name){
 				$roles[$role['id']] = $role;
 				$roles_by_name[$role['alias']] = $role;
 			});
@@ -359,6 +359,9 @@ class CIAuth {
 		$evcode = substr(md5($data['email']),rand(0,10),5);
 		$hash = base64_encode($data['email'].'_'.$evcode);
 		$role = isset($data['role'])?$data['role']:'customer';
+		//print_r($ci_settings['roles_by_name']);
+		
+		//die;
 		$rol_data = isset($ci_settings['roles_by_name'][$role])?$ci_settings['roles_by_name'][$role]:'';
 		
 		$new_user = array(		

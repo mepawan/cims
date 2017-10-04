@@ -45,4 +45,28 @@ class Welcome extends MX_Controller {
 			echo "404 Page Not Found";
 		}
 	}
+	function states_ajax($cid = ''){
+		if(!$cid){
+			$cid = $this->input->post('country_id');
+		}
+		$resp = array();
+		if($cid){
+			if(is_numeric($cid)){
+				$states = $this->Util_model->read('province',array('where' => array('country_id' => $cid)));
+			} else {
+				$country = $this->Util_model->read('country',array('where' => array('iso_code_2' => $cid)));
+				//print_r($country);
+				$states = $this->Util_model->read('province',array('where' => array('country_id' => $country[0]['country_id'])));
+			}
+			
+			$resp['status'] = 'success';
+			$resp['states'] = $states;
+		} else {
+			$resp['status'] = 'fail';
+			$resp['msg'] = 'Country id missing';
+		}
+		echo json_encode($resp);
+		die;
+		
+	}
 }

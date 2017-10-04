@@ -51,13 +51,13 @@ class Provider extends MX_Controller {
 			// Set form validation rules
 			$val->set_rules('first_name', 'First Name', 'trim|required');
 			$val->set_rules('last_name', 'Last Name', 'trim|required');
-			$val->set_rules('bio', 'Bio', 'trim|required');
-			$val->set_rules('address', 'Address', 'trim|required');
-			$val->set_rules('city', 'City', 'trim|required');
-			$val->set_rules('state', 'State', 'trim|required');
-			$val->set_rules('zipcode', 'Zipcode', 'trim|required');
-			$val->set_rules('country', 'Country', 'trim|required');
-			$val->set_rules('phone', 'Phone', 'trim|required');
+			//$val->set_rules('bio', 'Bio', 'trim|required');
+			//$val->set_rules('address', 'Address', 'trim|required');
+			//$val->set_rules('city', 'City', 'trim|required');
+			//$val->set_rules('state', 'State', 'trim|required');
+			//$val->set_rules('zipcode', 'Zipcode', 'trim|required');
+			//$val->set_rules('country', 'Country', 'trim|required');
+			//$val->set_rules('phone', 'Phone', 'trim|required');
 				
 			if($this->input->post('email') && $this->input->post('email') != $this->ciauth->get_user('email')){
 				$val->set_rules('email', 'Email', 'trim|required|valid_email|callback_email_check');
@@ -87,29 +87,10 @@ class Provider extends MX_Controller {
 					$user_data['username'] = $this->input->post('username');
 				}
 				
-				//~ $config['upload_path'] = 'public/upload/';
-				//~ $config['allowed_types'] = 'gif|jpg|png|jpeg';
-				//~ $new_name = "profilepic_".$this->ciauth->get_user_id();
-				//~ $config['file_name'] = $new_name;
-				//~ $this->load->library('upload', $config);
-								
-				//~ if ( ! $this->upload->do_upload('profile_pic'))
-                //~ {
-                        //~ $error = array('error' => $this->upload->display_errors());
-						//~ //print_r($error); die;
-                //~ }
-                //~ else
-                //~ {
-                        //~ $data = array('upload_data' => $this->upload->data());
-                        //~ $user_data['profile_pic'] = $data['upload_data']['file_name'];
-                //~ }
-				
-				//~ $this->upload->initialize($config);
-				
 				
 				$this->Util_model->update('users',$user_data);
 				
-				//update customer_profile table
+				//update provider_profile table
 				$user_profile_data = $this->input->post('profile');
 				$languages = implode(',', $user_profile_data['languages']);
 				$area_of_experience = implode(',', $user_profile_data['area_of_experience']);
@@ -190,15 +171,9 @@ class Provider extends MX_Controller {
 	}
 	public function payment(){
 		$this->data['entity'] = 'Payment';
-		$this->data['heading'] = 'Provider payment';
+		$this->data['heading'] = 'Provider Payment';
 		$this->data['icon'] = 'icmn-home2';
 		$this->load->view('provider/payment', $this->data);
 	}
-	public function create_contract(){
-		$this->data['entity'] = 'contract';
-		$this->data['heading'] = 'Create Contract';
-		$this->data['icon'] = 'icmn-home2';
-		$this->load->view('provider/create_contract', $this->data);
-	}
-	
+
 }
