@@ -386,6 +386,7 @@ class CIAuth {
 		$insert = $this->ci->users->create_user($new_user);
 
 		if ($insert) {
+			$resp['status'] =  'success';
 			if($referral){
 				$referral['uid'] = $uid;
 				update_referal($referral);
@@ -402,10 +403,10 @@ class CIAuth {
 				);
 			$mail = ci_email($new_user['email'], 'Verify Email - '.$ci_settings['site_name'],$msg);
 			if($mail['status'] == 'success'){
-				$resp['status'] =  'success';
 				$resp['msg'] = sprintf($this->ci->lang->line('ciauth_register_success'),$ci_settings['site_name']);
 			} else {
-				$this->ci->session->set_flashdata('error', $mail['msg']);
+				$resp['status'] =  'success';
+				$resp['msg'] = sprintf($this->ci->lang->line('ciauth_register_success'),$ci_settings['site_name']) . '<br />'.$mail['msg'];
 			}
 		} else {
 			$resp['status'] =  'fail';
