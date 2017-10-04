@@ -107,17 +107,17 @@ class Auth extends MX_Controller {
 		
 	}
 
-	function username_check($username) {
+	function username_exists($username) {
 		$result = $this->ciauth->is_username_available($username);
 		if ( ! $result) {
-			$this->form_validation->set_message('username_check', 'Username already exist. Please choose another username.');
+			$this->form_validation->set_message('username_exists', 'Username already exist. Please choose another username.');
 		}
 		return $result;
 	}
-	function phone_check($username) {
-		$result = $this->ciauth->is_phone_available($username);
+	function phone_exists($phone) {
+		$result = $this->ciauth->is_phone_available($phone);
 		if ( ! $result) {
-			$this->form_validation->set_message('phone_check', 'Phone already exist. Please choose another phone.');
+			$this->form_validation->set_message('phone_exists', 'Phone already exist. Please choose another phone.');
 		}
 		return $result;
 	}
@@ -125,7 +125,7 @@ class Auth extends MX_Controller {
 	function email_exists($email) {
 		$result = $this->ciauth->is_email_available($email);
 		if ( $result ) {
-			//$this->form_validation->set_message('email_exists', 'Email is already used by another user. Please choose another email address.');
+			$this->form_validation->set_message('email_exists', 'Email is already used by another user. Please choose another email address.');
 			//$this->form_validation->set_message('email_check', 'text dont match captcha');
 			return false;
 		}
@@ -171,8 +171,11 @@ class Auth extends MX_Controller {
 			$val = $this->form_validation;
 			$val->set_rules('first_name', 'First Name', 'trim|required');
 			$val->set_rules('last_name', 'Last Name', 'trim|required');
-			//$val->set_rules('email', 'Email', 'trim|required|valid_email|callback_email_exists');
-			$val->set_rules('email', 'Email', 'trim|required|valid_email');
+			$val->set_rules('email', 'Email', 'trim|required|valid_email|callback_email_exists');
+			//$val->set_rules('email', 'Email', 'trim|required|valid_email|unique[user.email_address]');
+			
+			$val->set_rules('username', 'Username', 'trim|required|callback_username_exists');
+			//$val->set_rules('email', 'Email', 'trim|required|valid_email');
 			$val->set_rules('password', 'Password', 'trim|required|min_length['.$ci_settings['min_password_length'].']|max_length['.$ci_settings['max_password_length'].']|matches[confirm_password]');
 			$val->set_rules('confirm_password', 'Confirm Password', 'trim|required');
 			$val->set_rules('g-recaptcha-response', 'Human Verification', 'trim|required', array('required' => 'Solve Human Verification Captcha'));
