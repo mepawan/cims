@@ -219,6 +219,9 @@ class Auth extends MX_Controller {
 			$this->data['add_recaptcha_js'] = true;
 			$this->data['heading'] = "Signup";
 			$this->data['role'] = $role;
+			
+			print_r($this->data);
+			
 			$this->load->view('auth/register', $this->data);
 		}
 		
