@@ -1392,7 +1392,7 @@ input:read-only {
 }
 div#top_move p {
     border-bottom: 1px solid;
-    margin-bottom: 30px;
+    margin-bottom: 0px;
 }
 #provider-details .services {
     margin-bottom: 30px;
