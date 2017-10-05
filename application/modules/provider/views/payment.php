@@ -48,7 +48,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<div class="form-group col-md-6">
 											<label for="paypal" class="form-label col-sm-4">Paypal Email<span class="red">*</span></label>
 											<div class="col-sm-8">
-												<input required type="email" placeholder="Paypal Email"  name="paypal_email" class="" id="paypal_email" />
+												<input required type="email" value="<?php echo $profile['paypal_email'];?>" placeholder="Paypal Email"  name="paypal_email" class="" id="paypal_email" />
 											</div>
 											<div class="clearfix clear"></div>
 										</div>

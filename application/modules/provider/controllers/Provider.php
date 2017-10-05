@@ -198,6 +198,8 @@ class Provider extends MX_Controller {
 			echo json_encode($this->data);
 			die;
 		} else {
+			$provider_profile = $this->Util_model->read('provider_profile',array('where' => array('uid'=>$this->ciauth->get_user_id())));
+			$this->data['profile'] = ($provider_profile)?$provider_profile[0]:'';
 			$this->data['entity'] = 'payment';
 			$this->data['heading'] = 'Payment Setting';
 			$this->load->view('provider/payment', $this->data);
