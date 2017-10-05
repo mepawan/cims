@@ -34,7 +34,7 @@ class Hauth extends CI_Controller {
 		$this->load->view('hauth/login_widget', array(
 		  'providers' => $providers,
 		));*/
-		redirect('auth/register')
+		redirect('auth/register');
 	}
 	function redirect_loggedin_user(){
 		$redirect = ($this->session->userdata('redirect_url'))?$this->session->userdata('redirect_url'):'';
