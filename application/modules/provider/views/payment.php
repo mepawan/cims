@@ -51,10 +51,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<input required type="email" value="<?php echo $profile['paypal_email'];?>" placeholder="Paypal Email"  name="paypal_email" class="" id="paypal_email" />
 											</div>
 											<div class="clearfix clear"></div>
+											<div class="form-actions text-center col-md-12">
+												<button class="btn btn-primary width-150" type="submit">Save Payment Info</button>
+											</div>
 										</div>
-										<div class="form-actions text-center col-md-12">
-											<button class="btn btn-primary width-150" type="submit">Save Payment Info</button>
-										</div>
+										
 									</form>
 								
 							</div>
