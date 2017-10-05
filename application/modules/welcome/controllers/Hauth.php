@@ -22,21 +22,46 @@ class Hauth extends CI_Controller {
   /**
    * {@inheritdoc}
    */
-  public function index() {
-    // Build a list of enabled providers.
-    /*
-    $providers = array();
-    foreach ($this->hybridauth->HA->getProviders() as $provider_id => $params)
-    {
-      $providers[] = anchor("hauth/window/{$provider_id}", $provider_id);
-    }
+	public function index() {
+		// Build a list of enabled providers.
+		/*
+		$providers = array();
+		foreach ($this->hybridauth->HA->getProviders() as $provider_id => $params)
+		{
+		  $providers[] = anchor("hauth/window/{$provider_id}", $provider_id);
+		}
 
-    $this->load->view('hauth/login_widget', array(
-      'providers' => $providers,
-    ));*/
-    
-  }
-
+		$this->load->view('hauth/login_widget', array(
+		  'providers' => $providers,
+		));*/
+		redirect('auth/register')
+	}
+	function redirect_loggedin_user(){
+		$redirect = ($this->session->userdata('redirect_url'))?$this->session->userdata('redirect_url'):'';
+		if(is_ajax()){
+			$this->data['loggedin'] = 'yes';
+			$this->data['user'] = $this->ciauth->get_user();
+			if($redirect){
+				$this->session->unset_userdata('redirect_url');
+				$this->data['redirect'] = $redirect;
+			} else if($this->ciauth->is_role('provider')){
+				$this->data['redirect'] = ci_base_url().'provider';
+			} else {
+				$this->data['redirect'] = ci_base_url().'customer';
+			}
+			echo json_encode($this->data);
+			die;
+		} else {
+			if($redirect){
+				$this->session->unset_userdata('redirect_url');
+				redirect($redirect);
+			} else if($this->ciauth->is_role('provider')){
+				redirect('/provider');
+			} else {
+				redirect('/customer');
+			}
+		}
+	}
   /**
    * Try to authenticate the user with a given provider
    *
@@ -87,14 +112,12 @@ class Hauth extends CI_Controller {
 				);
 					
 				$login = $this->ciauth->login($param);
-				
+				$this->data = array($this->data,$login);
 				if($login['status'] = 'success'){
-					redirect('/auth/redirect_login');
+					//redirect('/auth/redirect_login');
+					$this->redirect_loggedin_user();
 				}
 		}
-		
-		
-		
 		
       
 	} catch (Exception $e){
