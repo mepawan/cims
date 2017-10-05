@@ -97,14 +97,15 @@ class Hauth extends CI_Controller {
 		else{
 			$role = $this->session->userdata('social_login_role');
 			$this->session->unset_userdata('social_login_role');
-			$rol_data = isset($ci_settings['roles_by_name'][$role])?$ci_settings['roles_by_name'][$role]:'';
+			//$rol_data = isset($ci_settings['roles_by_name'][$role])?$ci_settings['roles_by_name'][$role]:'';
 			$data = array(		
 					'first_name'	=> isset($profile->firstName)?$profile->firstName:'',		
 					'last_name'		=> isset($profile->lastName)?$profile->lastName:'',	
 					'email'			=> $profile->email,
 					'phone'			=> isset($profile->phone)?$profile->phone:'',
 					'status'  		=> 'active',
-					'role_id' 		=> $rol_data['id']
+					'role' 			=> $role,
+					'sociallogin'	=> true
 				);
 				$result = $this->ciauth->register($data);
 				$param = array(

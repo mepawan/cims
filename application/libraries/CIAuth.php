@@ -374,7 +374,7 @@ class CIAuth {
 			'status' 					=> isset($data['status'])?$data['status']:'pending',
 			'signup_ip'					=> $this->ci->input->ip_address(),
 			'referral_code' 			=> ci_random_code().substr(md5($data['email']),rand(0,10),5),
-			'email_veriication_code' 	=> $evcode,
+			'email_veriication_code' 	=> isset($data['sociallogin']) && $data['sociallogin'] ? '':$evcode,
 			'role_id' 					=> $rol_data['id']
 			
 		);
@@ -391,22 +391,26 @@ class CIAuth {
 				$referral['uid'] = $uid;
 				update_referal($referral);
 			}	
-			
-			$verify_link = ci_base_url().'auth/verify-email/'.$hash;
-			$email_templates = $this->ci->config->item('ciauth_email_template');
-			$name = ($new_user['first_name'])?$new_user['first_name'] . ' ' . $new_user['last_name']:$new_user['username'];
-			$msg = $email_templates['verify_email'];
-			$msg = str_replace(
-					array('{name}','{verify_link}','{site_name}'),
-					array($name,$verify_link, $ci_settings['site_name']),
-					$msg
-				);
-			$mail = ci_email($new_user['email'], 'Verify Email - '.$ci_settings['site_name'],$msg);
-			if($mail['status'] == 'success'){
+			if(isset($data['sociallogin']) && $data['sociallogin']){
+				$resp['status'] =  'success';
 				$resp['msg'] = sprintf($this->ci->lang->line('ciauth_register_success'),$ci_settings['site_name']);
 			} else {
-				$resp['status'] =  'success';
-				$resp['msg'] = sprintf($this->ci->lang->line('ciauth_register_success'),$ci_settings['site_name']) . '<br />'.$mail['msg'];
+				$verify_link = ci_base_url().'auth/verify-email/'.$hash;
+				$email_templates = $this->ci->config->item('ciauth_email_template');
+				$name = ($new_user['first_name'])?$new_user['first_name'] . ' ' . $new_user['last_name']:$new_user['username'];
+				$msg = $email_templates['verify_email'];
+				$msg = str_replace(
+						array('{name}','{verify_link}','{site_name}'),
+						array($name,$verify_link, $ci_settings['site_name']),
+						$msg
+					);
+				$mail = ci_email($new_user['email'], 'Verify Email - '.$ci_settings['site_name'],$msg);
+				if($mail['status'] == 'success'){
+					$resp['msg'] = sprintf($this->ci->lang->line('ciauth_register_success'),$ci_settings['site_name']);
+				} else {
+					$resp['status'] =  'success';
+					$resp['msg'] = sprintf($this->ci->lang->line('ciauth_register_success'),$ci_settings['site_name']) . '<br />'.$mail['msg'];
+				}
 			}
 		} else {
 			$resp['status'] =  'fail';
