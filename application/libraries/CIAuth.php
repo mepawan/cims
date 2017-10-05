@@ -365,7 +365,7 @@ class CIAuth {
 		$rol_data = isset($ci_settings['roles_by_name'][$role])?$ci_settings['roles_by_name'][$role]:'';
 		
 		$new_user = array(		
-			'username'					=> isset($data['username'])?$data['username']:'',
+			'username'					=> isset($data['username'])?$data['username']:NULL,
 			'first_name'				=> isset($data['first_name'])?$data['first_name']:'',		
 			'last_name'					=> isset($data['last_name'])?$data['last_name']:'',					
 			'password'					=> md5($data['password']),

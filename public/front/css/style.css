@@ -1415,15 +1415,15 @@ div#top_move p {
     font-weight: bold;
     margin: 20px;
 }
-.social-login a:first-child {
+.social-login a.google {
     background-color: rgb(221,75,56);
     background-image: url(../images/google.png);
 }
-.social-login a:nth-child(2) {
+.social-login a.facebook {
     background-color: rgb(57,86,153);
     background-image: url(../images/facebook-button-icon.png);
 }
-.social-login a:last-child{
+.social-login a.twitter{
     background-color: rgb(35,192,243);
     background-image: url(../images/twitter-button-icon.png);
 }

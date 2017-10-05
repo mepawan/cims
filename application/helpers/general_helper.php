@@ -238,7 +238,7 @@ function bybridauth_links(){
 	
 	$view_str = '';
 	array_walk($ci->hybridauth->HA->getProviders(), function ($params,$provider_id) use(&$view_str){
-		$view_str .= anchor(ci_base_url()."hauth/process/{$provider_id}", $provider_id);
+		$view_str .= anchor(ci_base_url()."hauth/process/{$provider_id}", $provider_id,array('class' => strtolower($provider_id)));
     });
     return $view_str;
 }

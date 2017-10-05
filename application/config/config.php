@@ -298,7 +298,7 @@ $config['cache_path'] = '';
 | URL query string.  Please be aware this might result in numerous cache files.
 |
 */
-$config['cache_query_string'] = FALSE;
+$config['cache_query_string'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------
@@ -311,7 +311,7 @@ $config['cache_query_string'] = FALSE;
 | http://codeigniter.com/user_guide/libraries/encryption.html
 |
 */
-$config['encryption_key'] = '';
+$config['encryption_key'] = '123654789';
 
 /*
 |--------------------------------------------------------------------------

@@ -170,10 +170,38 @@ class Provider extends MX_Controller {
 		}
 	}
 	public function payment(){
-		$this->data['entity'] = 'Payment';
-		$this->data['heading'] = 'Provider Payment';
-		$this->data['icon'] = 'icmn-home2';
-		$this->load->view('provider/payment', $this->data);
+		if($this->input->post()){
+			$val = $this->form_validation;
+			// Set form validation rules
+			$val->set_rules('paypal_email', 'Paypal Emal', 'trim|required|valid_email');
+			if ($val->run()){
+				//update users table
+				$profile_data = array(
+					'uid' => $this->ciauth->get_user_id(),
+					'paypal_email' => $this->input->post('paypal_email'),
+				);
+				$provider_profile = $this->Util_model->read('provider_profile',array('where' => array('uid'=>$this->ciauth->get_user_id())));
+				if(!empty($provider_profile)){
+					$this->Util_model->update('provider_profile',$profile_data,'uid');
+				} else{
+					$this->Util_model->create('provider_profile',$profile_data);
+				}
+				$user = $this->Util_model->read('users',array('where' => array('id'=>$user_data['id'])));
+				$this->data['status'] = 'success';
+				$this->data['msg']= 'Payment setting updated successfully';
+			} else {
+				$this->data['status'] = 'fail';
+				$this->data['form_errors'] = $this->form_validation->error_array();
+			}
+		}
+		if(is_ajax()){
+			echo json_encode($this->data);
+			die;
+		} else {
+			$this->data['entity'] = 'payment';
+			$this->data['heading'] = 'Payment Setting';
+			$this->load->view('provider/payment', $this->data);
+		}
 	}
 
 }

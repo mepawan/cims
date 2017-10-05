@@ -43,6 +43,7 @@ class Hauth extends CI_Controller {
    * @param string $provider_id Define provider to login
    */
   public function process($provider_id){
+	global $ci_settings;
 	$params = array(
       'hauth_return_to' => ci_base_url("hauth/process/{$provider_id}"),
     );
@@ -68,12 +69,16 @@ class Hauth extends CI_Controller {
 			}
 		}
 		else{
+			$role = $this->session->userdata('social_login_role');
+			$this->session->unset_userdata('social_login_role');
+			$rol_data = isset($ci_settings['roles_by_name'][$role])?$ci_settings['roles_by_name'][$role]:'';
 			$data = array(		
 					'first_name'	=> isset($profile->firstName)?$profile->firstName:'',		
 					'last_name'		=> isset($profile->lastName)?$profile->lastName:'',	
 					'email'			=> $profile->email,
 					'phone'			=> isset($profile->phone)?$profile->phone:'',
 					'status'  		=> 'active',
+					'role_id' 		=> $rol_data['id']
 				);
 				$result = $this->ciauth->register($data);
 				$param = array(
