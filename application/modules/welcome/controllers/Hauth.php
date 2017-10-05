@@ -90,7 +90,8 @@ class Hauth extends CI_Controller {
 			
 			$login = $this->ciauth->login($param);
 			if($login['status'] = 'success'){
-				redirect('/auth/redirect_login');
+				//redirect('/auth/redirect_login');
+				$this->redirect_loggedin_user();
 			}
 		}
 		else{
