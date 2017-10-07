@@ -302,15 +302,17 @@ a.tog_icon:after {
 	padding:50px 
  }
 .ands_work h2, .content-section h2 {
-	font-size: 28px;
-	line-height: 38px;
-	text-transform: uppercase;
-	font-weight: 600;
-	letter-spacing: 1px;
-	position: relative;
-	padding-bottom: 20px;
-	color: #0a003d !important;
-	text-align: center;
+    font-size: 28px;
+    line-height: 38px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+    position: relative;
+    padding-bottom: 20px;
+    color: #0a003d !important;
+    text-align: center;
+    
+    margin-bottom: 10px;
 }
 .ands_work h2::after,.content-section h2::after {
 	content: "";
@@ -657,7 +659,7 @@ top: 50px;
 
 
 
-input[type="submit"], button[type="submit"]  {
+input[type="submit"], button[type="submit"], input[type="button"],  button[type="button"]   {
 	/*color: rgba(0,0,0,0);*/
 	vertical-align: middle;
 	text-align: center;
@@ -1478,4 +1480,37 @@ div#top_move p {
     border: none;
     font-weight: bold;
 }
-
+/**** cusotmer setting page ****/
+#setting-wrap{
+	text-align:left;
+}
+.form-section{
+	height:0;
+	overflow:hidden;
+	opacity:0;
+	transition:all 0.5s;
+}
+.form-section.open{
+	height:auto;
+	opacity:1;
+	transition:all 0.5s;
+}
+.view-section{
+	height:auto;
+	opacity:1;
+	transition:all 0.5s;
+}
+.view-section.close{
+	height:0;
+	opacity:0;
+	transition:all 0.5s;
+}
+.view-item{
+    display: block;
+    text-align: left;
+    font-weight: normal;
+}
+.setting-row{
+	border-top: 1px solid;
+	padding: 15px 0;
+}

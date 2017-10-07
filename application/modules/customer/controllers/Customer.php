@@ -17,7 +17,7 @@ class Customer extends MX_Controller {
 	}
  	public function index(){
 		$this->data['entity'] = 'dashboard';
-		$this->data['heading'] = 'Customer Dashboard';
+		$this->data['heading'] = 'Welcome, ' . $this->ciauth->get_user('first_name');
 		$this->data['icon'] = 'icmn-home2';
 		$this->data['user'] = $this->ciauth->get_user();
 		$customer_profile = $this->Util_model->read('customer_profile',array('where' => array('uid'=>$this->ciauth->get_user_id())));
@@ -40,6 +40,23 @@ class Customer extends MX_Controller {
 		}
 				
 		return $result;
+	}
+	function setting(){
+		$this->data['entity'] = 'setting';
+		$this->data['heading'] = 'Setting';
+		$user = $this->Util_model->read('users',array('where' => array('id' => $this->ciauth->get_user_id())));
+		$user = $user[0];
+		$this->data['user'] = $user;
+		$this->data['countries'] = $this->Util_model->read('country');
+		$this->load->view('customer/setting', $this->data);
+		
+	}
+	function save_setting(){
+		
+		$post_data = $this->input->post();
+		
+		print_r($post_data);
+		die;
 	}
 	public function profile(){
 		//$uid = $this->ciauth->get_user();
@@ -136,10 +153,101 @@ class Customer extends MX_Controller {
 		}
 	}
 	public function payment(){
+		if($this->input->post()){
+			$val = $this->form_validation;
+			// Set form validation rules
+			$val->set_rules('card_number', 'Card Number', 'trim|required');
+			$val->set_rules('exp_date', 'Expiry Date', 'trim|required');
+			$val->set_rules('name_on_card', 'Name on card', 'trim|required');
+			$val->set_rules('card_type', 'Card Type', 'trim|required');
+			
+			if ($val->run()){
+				//update users table
+				
+				$card_data = array(
+					'uid' => $this->ciauth->get_user_id(),
+					'card_number' => $this->input->post('card_number'),
+					'exp_date' => $this->input->post('exp_date'),
+					'name_on_card' => $this->input->post('name_on_card'),
+					'card_type' => $this->input->post('card_type'),
+				);
+				
+
+				$card = $this->Util_model->create('payment_cards',$card_data);
+				
+
+				if($card){
+					$this->data['status'] = 'success';
+					$this->data['msg']= 'Card Added successfully';
+				} else {
+					$this->data['status'] = 'fail';
+					$this->data['msg'] = 'There is some problem to process request';
+				}
+			}
+			
+		}
+		
+		$this->data['cards'] = $this->Util_model->read('payment_cards',array('where' => array('uid'=>$this->ciauth->get_user_id())));
 		$this->data['entity'] = 'Payment';
 		$this->data['heading'] = 'Customer Payment';
+		$this->data['submit_text'] = 'Add';
 		$this->data['icon'] = 'icmn-home2';
-		$this->load->view('customer/payment', $this->data);
+		$this->load->view('customer/card', $this->data);
+	}
+	
+	public function card_edit(){
+		$id = $_GET['id'];
+		if($this->input->post()){
+			$val = $this->form_validation;
+			// Set form validation rules
+			$val->set_rules('card_number', 'Card Number', 'trim|required');
+			$val->set_rules('exp_date', 'Expiry Date', 'trim|required');
+			$val->set_rules('name_on_card', 'Name on card', 'trim|required');
+			$val->set_rules('card_type', 'Card Type', 'trim|required');
+			
+			if ($val->run()){
+				$card_data = array(
+					'uid' => $this->ciauth->get_user_id(),
+					'card_number' => $this->input->post('card_number'),
+					'exp_date' => $this->input->post('exp_date'),
+					'name_on_card' => $this->input->post('name_on_card'),
+					'card_type' => $this->input->post('card_type'),
+				);
+				
+				$card_data['id']  = $id;
+				$card = $this->Util_model->update('payment_cards',$card_data);
+				if($card){
+					redirect('customer/payment');
+				} else {
+					$this->data['status'] = 'fail';
+					$this->data['msg'] = 'There is some problem to process request';
+				}
+			}
+		}
+		
+		
+		$id = $_GET['id'];
+		$card_details = $this->Util_model->read('payment_cards',array('where' => array('id'=>$id)));
+		$this->data['card'] = $card_details[0];
+		$this->data['entity'] = 'Card Edit';
+		$this->data['heading'] = 'Card Edit';
+		$this->data['submit_text'] = 'Edit';
+		$this->data['icon'] = 'icmn-home2';
+		$this->load->view('customer/card', $this->data);
+	}
+
+	public function card_remove(){
+		if($this->input->post()){
+			
+			$this->Util_model->delete('payment_cards',$this->input->post('id'));
+			redirect('customer/payment');
+			
+		}
+		$this->data['entity'] = 'remove';
+		$this->data['id'] = $_GET['id'];
+		$this->data['heading'] = 'Card Remove';
+		$this->data['icon'] = 'icmn-home2';
+		$this->load->view('customer/card_remove', $this->data);
 	}
 	public function create_contract(){
 		$this->data['entity'] = 'contract';
@@ -147,5 +255,6 @@ class Customer extends MX_Controller {
 		$this->data['icon'] = 'icmn-home2';
 		$this->load->view('customer/create_contract', $this->data);
 	}
+	
 	
 }
