@@ -177,12 +177,7 @@ class Customer extends MX_Controller {
 		$this->data['icon'] = 'icmn-home2';
 		$this->load->view('customer/card', $this->data);
 	}
-	public function create_contract(){
-		$this->data['entity'] = 'contract';
-		$this->data['heading'] = 'Create Contract';
-		$this->data['icon'] = 'icmn-home2';
-		$this->load->view('customer/create_contract', $this->data);
-	}
+	
 	
 	public function card_edit(){
 		$id = $_GET['id'];
@@ -242,6 +237,42 @@ class Customer extends MX_Controller {
 		$this->data['icon'] = 'icmn-home2';
 		$this->load->view('customer/card_remove', $this->data);
 	}
+	
+	public function create_contract(){
+		$this->data['entity'] = 'contract';
+		$this->data['heading'] = 'Create Contract';
+		$this->data['icon'] = 'icmn-home2';
+		$this->data['category'] = $this->Util_model->read('category', array('where' => array('parent'=>'0')));
+		$this->load->view('customer/create_contract', $this->data);
+	}
+	public function subcategory(){
+		$parent = array('where' => array('parent'=>$_GET['id']));
+		
+		$this->data['entity'] = 'contract';
+		$this->data['heading'] = 'Create Contract';
+		$this->data['icon'] = 'icmn-home2';
+		$this->data['category'] = $this->Util_model->read('category',$parent);
+		$this->load->view('customer/subcategory', $this->data);
+	}
+	public function finder(){
+		if($this->input->post()){
+			
+				//, 'years_of_experience' => $this->input->post('years_of_experience')				
+				$filter = array('where' => array('area_of_experience' => $this->input->post('area_of_experience')));
+
+				$this->data['result'] = $this->Util_model->read('provider_profile', $filter);
+				
+			
+		}
+		
+		$this->data['area_of_exap'] = $this->Util_model->read('provider_profile');
+		$this->data['entity'] = 'finder';
+		$this->data['heading'] = 'Finder';
+		$this->data['submit_text'] = 'Search';
+		$this->data['icon'] = 'icmn-home2';
+		$this->load->view('customer/finder', $this->data);
+	}
+	
 	
 	
 	

@@ -37,6 +37,12 @@
                     <span class="menu-top-hidden">Manage Blocks</span>
                 </a>
             </li>
+            <li class="left-menu-list<?php if(isset($entity) && $entity == 'category'){ echo '-active'; } ?>">
+                <a class="left-menu-link" href="<?php echo ci_base_url();?>admin/category">
+                    <i class="left-menu-link-icon icmn-cogs"><!-- --></i>
+                    <span class="menu-top-hidden">Manage Category</span>
+                </a>
+            </li>
             <li class="left-menu-list-separator"><!-- --></li>
             <li>
                 <a class="left-menu-link" href="<?php echo ci_base_url();?>admin/profile">

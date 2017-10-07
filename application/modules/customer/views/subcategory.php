@@ -33,7 +33,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<h3>Select a Category Below to Get Started</h3>
 								
 								<?php foreach($category as $category){ ?>
-									<a href="<?php echo ci_base_url();?>customer/subcategory?id=<?php echo $category['id']; ?>"><?php echo $category['title']; ?></a>
+									<a href="<?php echo ci_base_url();?>customer/finder"><?php echo $category['title']; ?></a>
 									
 								<?php } ?>
 								
