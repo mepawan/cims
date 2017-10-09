@@ -23,11 +23,11 @@ $config['hybridauth'] = array(
       "enabled" => FALSE,
     ),
     "Google" => array(
-      "enabled" => FALSE,
+      "enabled" => TRUE,
       "keys" => array("id" => "349060752209-1smlfqjsfncu2t73ecq51vl4ajegn7hh.apps.googleusercontent.com", "secret" => "0UQRSomqgfPDTrNy-CSwcbDT"),
     ),
     "Facebook" => array(
-      "enabled" => FALSE,
+      "enabled" => TRUE,
       "keys" => array("id" => "1587623191497700", "secret" => "70bd1e30878dca927223251d0247fe5a"),
       "trustForwarded" => FALSE,
     ),

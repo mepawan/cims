@@ -298,7 +298,7 @@ $config['cache_path'] = '';
 | URL query string.  Please be aware this might result in numerous cache files.
 |
 */
-$config['cache_query_string'] = TRUE;
+$config['cache_query_string'] = FALSE;
 
 /*
 |--------------------------------------------------------------------------

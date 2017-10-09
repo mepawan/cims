@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <?php 
-	//echo "<pre>"; print_r($card); die;
+	//echo "<pre>"; print_r($area_of_exap); die;
 ?>
 <?php $this->load->view('part/head'); ?>
 <body>
@@ -41,36 +41,45 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<?php echo $msg; ?>
 											</div>
 									<?php }  ?> 
+									
+									
 									<form method="POST" name="form-validation" id="provider-registration" enctype="multipart/form-data">
+										<div class="form-group col-md-6">
+										<label for="area_of_experience" class="form-label col-sm-4">Area of Experience</label>
+										<div  class="col-sm-8">
+												<select name="area_of_experience" >
+												  <option value="ability_to_work_under_pressure" >Ability to work under pressure</option>
+												  <option value="adaptability" >Adaptability</option>
+												  <option value="administering_medication">Administering medication</option>
+												  <option value="advising_people" >Advising people</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group col-md-6">
+											<label for="years_of_experience" class="form-label col-sm-4">Number of Years of Experience</label>
+											<div class="col-sm-8">
+												<select name="years_of_experience" >
+												  <option value="0-5" >0-5</option>
+												  <option value="5-10" >5-10</option>
+												  <option value="10-15">10-15</option>
+												  <option value="15-20" >15-20</option>
+												</select>
+											</div>
+										</div>
+																				
 										
-										<p>Are you sure you want to remove card</p>
-										<input type="hidden"  name="id"   value="<?php echo $id; ?>" />
 										<div class="form-actions text-center col-md-12">
-											<button class="btn btn-primary width-150" type="submit">Remove</button>
+											<button class="btn btn-primary width-150" type="submit"><?php echo $submit_text; ?></button>
 										</div>
 									</form>
-									<?php if(isset($cards)){ ?>
-										<div class="clearfix clear"></div>
-										<h3>Cards</h3>
-										
-										<div class="cards-details">
-											<div class="col-md-2"><strong>Card Number</strong></div>
-											<div class="col-md-2"><strong>Expiry Date</strong></div>
-											<div class="col-md-2"><strong>Name On Card</strong></div>
-											<div class="col-md-2"><strong>Card Type</strong></div>
-											<div class="col-md-2"><strong>Action</strong></div>
-											<div class="clearfix clear"></div>
-											<?php foreach($cards as $card){ ?>
-												<div class="col-md-2"><?php echo $card['card_number']; ?></div>
-												<div class="col-md-2"><?php echo $card['exp_date']; ?></div>
-												<div class="col-md-2"><?php echo $card['name_on_card']; ?></div>
-												<div class="col-md-2"><?php echo str_replace("_", " ", $card['card_type']); ?></div>
-												<div class="col-md-2"><a href="card_edit?id=<?php echo $card['id']; ?>">Edit</a> | <a href="card_remove?id=<?php echo $card['id']; ?>">Remove</a></div>
-												<div class="clearfix clear"></div>
-											<?php } ?>
-										</div>
-									<?php } ?>
-								
+									
+									<?php if($result){ ?>
+										<h3>Result</h3>
+										<?php foreach($result as $result){ ?>
+											
+											<p><?php echo $result['uid']; ?></p>
+											
+									<?php } }?>
 							</div>
 							</section>
 						</div>
