@@ -41,6 +41,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<?php echo $msg; ?>
 											</div>
 									<?php }  ?> 
+									
+									
 									<form method="POST" name="form-validation" id="provider-registration" enctype="multipart/form-data">
 										<div class="form-group col-md-6">
 										<label for="area_of_experience" class="form-label col-sm-4">Area of Experience</label>

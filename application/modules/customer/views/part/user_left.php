@@ -8,6 +8,7 @@
 		<li><a href="<?php echo ci_base_url();?>customer/profile">Edit Profile</a></li>
 		<li><a href="<?php echo ci_base_url();?>customer/payment">Payment</a></li>
 		<li><a href="<?php echo ci_base_url();?>customer/create-contract">Create Contract</a></li>
+		<li><a href="<?php echo ci_base_url();?>customer/contracts">All Contract</a></li>
 		<li><a href="<?php echo ci_base_url();?>auth/logout_user">Logout</a></li>
 		
 		

@@ -29,13 +29,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								</div>
 								<div class="col-md-10">
 									<?php $this->load->view('part/user_top'); ?>
-								
-								<h3>Select a Category Below to Get Started</h3>
-								
-								<?php foreach($category as $category){ ?>
-									<a href="<?php echo ci_base_url();?>customer/subcategory?id=<?php echo $category['id']; ?>"><?php echo $category['title']; ?></a>
+								<div class="create_contract">
+									<h3>Select a Category Below to Get Started</h3>
 									
-								<?php } ?>
+									<?php foreach($category as $category){ ?>
+										<div class="col-md-6">
+											<a href="<?php echo ci_base_url();?>customer/subcategory?id=<?php echo $category['id']; ?>"><?php echo $category['title']; ?></a>
+										</div>
+									<?php } ?>
+								</div>
 								
 							</div>
 							</section>

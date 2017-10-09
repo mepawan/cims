@@ -252,27 +252,66 @@ class Customer extends MX_Controller {
 		$this->data['heading'] = 'Create Contract';
 		$this->data['icon'] = 'icmn-home2';
 		$this->data['category'] = $this->Util_model->read('category',$parent);
+		$this->data['parent'] = $this->Util_model->read('category',array('where' => array('id'=>$_GET['id'])));
+		
+		if(empty($this->data['category'])){
+			redirect('/customer/contract?id='.$_GET['id'].'');
+		}
+		
 		$this->load->view('customer/subcategory', $this->data);
 	}
-	public function finder(){
+	public function contract(){
 		if($this->input->post()){
-			
-				//, 'years_of_experience' => $this->input->post('years_of_experience')				
-				$filter = array('where' => array('area_of_experience' => $this->input->post('area_of_experience')));
-
-				$this->data['result'] = $this->Util_model->read('provider_profile', $filter);
 				
+				$category = $this->Util_model->read('category', array('where' => array('id'=> $_GET['id'])));
+				if(isset($_GET['parent'])){
+					$parent = $this->Util_model->read('category', array('where' => array('id'=> $_GET['parent'])));
+				}
+				//echo "<pre>"; print_r($parent); die;
+				
+				$contract_data = array(
+					'area_of_experience' => $this->input->post('area_of_experience'),
+					'years_of_experience' => $this->input->post('years_of_experience'),
+					'category' => $category[0]['title'],
+					'sub-categeory' => $parent[0]['title']?$parent[0]['title']:'',
+				);
+				
+				
+				$contract = $this->Util_model->create('contract',$contract_data);
+				
+
+				if($contract){
+					$this->data['status'] = 'success';
+					$this->data['msg'] = 'Contract Added successfully';
+				} else {
+					$this->data['status'] = 'fail';
+					$this->data['msg'] = 'There is some problem to process request';
+				}
+			
 			
 		}
 		
-		$this->data['area_of_exap'] = $this->Util_model->read('provider_profile');
-		$this->data['entity'] = 'finder';
-		$this->data['heading'] = 'Finder';
-		$this->data['submit_text'] = 'Search';
+		$this->data['entity'] = 'contract';
+		$this->data['heading'] = 'Contract';
+		$this->data['submit_text'] = 'Save';
 		$this->data['icon'] = 'icmn-home2';
-		$this->load->view('customer/finder', $this->data);
+		$this->load->view('customer/contract', $this->data);
 	}
-	
+	public function contracts(){
+		if(isset($_GET['area_exp'])){
+			$provider = $this->Util_model->read('provider_profile', array('where' => array('area_of_experience'=> $_GET['area_exp'])) );
+			$this->data['users']  = $this->Util_model->read('users', array('where' => array('id'=> $provider['0']['uid'])) );
+			$this->data['contracts'] = $this->Util_model->read('contract',  array('where' => array('id'=> $_GET['id'])));
+			$this->load->view('customer/all_contracts', $this->data);
+		}
+		else{
+			$this->data['entity'] = 'contract';
+			$this->data['heading'] = 'All Contracts';
+			$this->data['icon'] = 'icmn-home2';
+			$this->data['contracts'] = $this->Util_model->read('contract');
+			$this->load->view('customer/all_contracts', $this->data);
+		}
+	}
 	
 	
 	

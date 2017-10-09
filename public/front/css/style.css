@@ -1341,3 +1341,84 @@ font-weight:bold;
 	color:red;
 }
 
+/************create contract ***************/
+.create_contract, .sub-cat {
+    border: 1px solid #e0d5c8;
+    padding: 10px 20px 20px;
+    text-align: initial;
+        float: left;
+    width: 100%;
+}
+.create_contract h3 {
+    color: #f7901e;
+    font-weight: bold;
+    border-bottom: 1px solid #e0d5c8;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    font-size: 24px;
+    padding-left: 10px;
+}
+.create_contract a {
+    font-weight: bold;
+}
+.sub-cat h3 {
+    border-bottom: 1px solid #e0d5c8;
+    font-size: 24px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    font-weight: bold;
+    color: #5c5954;
+}
+.sub-cat a {
+    font-size: 16px;
+    margin-left: 12px;
+}
+.headings {
+    font-size: 16px;
+    color: #5c5954;
+    font-weight: bold;
+}
+.all_contracts hr {
+    float: left;
+    width: 100%;
+    border-color: #e0d5c8;
+    margin: 10px 0 0;
+}
+.contract_data {
+    color: #5c5954;
+    font-size: 16px;
+    padding:20px 0;
+        float: left;
+    width: 100%;
+}
+.all_contracts {
+    text-align: initial;
+}
+.contract_data a {
+    text-transform: capitalize;
+    font-weight: bold;
+}
+.suggestion {
+    border: 1px solid #e0d5c8;
+    float: left;
+    width: 100%;
+    text-align: initial;
+}
+.suggestion_head h3 {
+    color: #f7901e;
+    font-weight: bold;
+}
+.suggestion_head p {
+    font-size: 16px;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+.suggestion_head{
+    padding: 20px;
+}
+.suggestion_data {
+    padding: 10px 20px;
+        border-bottom: 1px solid #e0d5c8;
+    border-top: 1px solid #e0d5c8;
+}
