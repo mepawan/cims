@@ -75,9 +75,10 @@ class Util_model extends CI_Model{
     }
 
 
-	function delete($tbl, $user_id, $idx = 'id' ) {
-		if(!$user_id) { return false; }
-		$this->db->where($idx, $user_id);
+	function delete($tbl, $data, $idx = 'id' ) {
+		 $id = $data[$idx];
+		if(!$id){ return false; }
+		 $this->db->where($idx, $id);
 		$this->db->delete($tbl);
 		return $this->db->affected_rows() > 0;
 

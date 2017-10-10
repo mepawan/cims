@@ -13,20 +13,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<div class="container">
 						<div class="row">
 
-							<section id="provider-details">
-								<div class="col-md-2">
+							<section id="content">
+								<div class="col-md-2 left-section ">
 									<?php $this->load->view('part/user_left'); ?>
 								</div>
-								<div class="col-md-10">
-									<div class="col-md-12 " >
+								<div class="col-md-10 content-section">
 										<?php if(isset($heading) && $heading){ ?>
 											<span id="mm_title">
 												<h2 class="title_s"> <?php echo $heading; ?></h2>
 											</span>
 										<?php } ?>
-									</div>
+										<div class="content-wrap">
 									
-									
+										</div>
 								</div>
 							</section>
 							

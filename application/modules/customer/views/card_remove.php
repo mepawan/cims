@@ -16,14 +16,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<section class="general-message ands_work">
 					<div class="container">
 						<div class="row">
-							<div class="col-md-12 <?php if(isset($msg_type) && $msg_type){ echo $msg_type; }?>" >
-								<?php if(isset($heading) && $heading){ ?>
-									<span id="mm_title">
-										<h2 class="title_s"> <?php echo $heading; ?></h2>
-									</span>
-								<?php } ?>
-							</div>
-							<section id="provider-details">
+							
+							<section id="content">
 								<div class="col-md-2">
 									<?php $this->load->view('part/user_left'); ?>
 								</div>

@@ -48,6 +48,7 @@ class Customer extends MX_Controller {
 		$user = $user[0];
 		$this->data['user'] = $user;
 		$this->data['countries'] = $this->Util_model->read('country');
+		$this->data['user_cards'] = $this->Util_model->read('payment_cards',array('where'=>array('uid' => $this->ciauth->get_user_id())));
 		$this->load->view('customer/setting', $this->data);
 		
 	}
@@ -81,6 +82,10 @@ class Customer extends MX_Controller {
 			
 		}
 		
+		if(isset($post_data['address'])){
+			$val->set_rules('address', 'Address', 'trim|required');
+		}
+		
 		
 		if ($val->run()){
 			$this->Util_model->update('users',$update_data);
@@ -104,201 +109,62 @@ class Customer extends MX_Controller {
 			die;
 		}
 		
-		
-		print_r($post_data);
 		die;
 	}
-	public function profile(){
-		//$uid = $this->ciauth->get_user();
-		//echo "<pre>"; print_r($uid); die;
-		if($this->input->post()){
-				
-				
-			$val = $this->form_validation;
-			// Set form validation rules
-			$val->set_rules('first_name', 'First Name', 'trim|required');
-			$val->set_rules('last_name', 'Last Name', 'trim|required');
-			//$val->set_rules('bio', 'Bio', 'trim|required');
-			//$val->set_rules('address', 'Address', 'trim|required');
-			//$val->set_rules('city', 'City', 'trim|required');
-			//$val->set_rules('state', 'State', 'trim|required');
-			//$val->set_rules('zipcode', 'Zipcode', 'trim|required');
-			//$val->set_rules('country', 'Country', 'trim|required');
-			//$val->set_rules('phone', 'Phone', 'trim|required');
-				
-			if($this->input->post('email') && $this->input->post('email') != $this->ciauth->get_user('email')){
-				$val->set_rules('email', 'Email', 'trim|required|valid_email|callback_email_check');
-			}
-			if($this->input->post('username') && $this->input->post('username') != $this->ciauth->get_user('username')){
-				$val->set_rules('username', 'Username', 'trim|required|callback_username_check');
-			}
+	public function save_card(){
+		
+		$val = $this->form_validation;
+		$val->set_rules('number', 'Number', 'trim|required|numeric');
+		$val->set_rules('exp_month', 'Expiry Month', 'trim|required|numeric');
+		$val->set_rules('exp_year', 'Expiry Year', 'trim|required|numeric');
+		$val->set_rules('name', "Card Holder's Name", 'trim|required');
+		
+		if ($val->run()){
+			$post_data = $this->input->post();
+			$update_data = array(
+				'uid' => $this->ciauth->get_user_id(),
+				'number' => $post_data['number'],
+				'type' => $post_data['type'],
+				'exp' => $post_data['exp_month'].'/'.$post_data['exp_year'],
+				'name' => $post_data['name'],
+			);
 			
-			if ($val->run()){
-				//update users table
-				$user_data = array(
-					'id' => $this->ciauth->get_user_id(),
-					'first_name' => $this->input->post('first_name'),
-					'last_name' => $this->input->post('last_name'),
-					'bio' => $this->input->post('bio'),
-					'address' => $this->input->post('address'),
-					'city' => $this->input->post('city'),
-					'state' => $this->input->post('state'),
-					'zipcode' => $this->input->post('zipcode'),
-					'country' => $this->input->post('country'),
-					'phone' => $this->input->post('phone'),
-				);
-				if($this->input->post('email') != $this->ciauth->get_user('email')){ 
-					$user_data['email'] = $this->input->post('email');
-				}
-				if($this->input->post('username') != $this->ciauth->get_user('username')){
-					$user_data['username'] = $this->input->post('username');
-				}
-
-				$this->Util_model->update('users',$user_data);
-				
-				//update customer_profile table
-				/*
-				$user_profile_data = $this->input->post('profile');
-				if(!isset($user_profile_data['uid']) || $user_profile_data['uid']){
-					$user_profile_data['uid']  = $this->ciauth->get_user_id();
-				}
-				$customer_profile = $this->Util_model->read('customer_profile',array('where' => array('uid'=>$user_data['id'])));
-				if(!empty($customer_profile)){
-					$this->Util_model->update('customer_profile',$user_profile_data,'uid');
-				}
-				else{
-					$this->Util_model->create('customer_profile',$user_profile_data);
-				}
-				*/
-				$user = $this->Util_model->read('users',array('where' => array('id'=>$user_data['id'])));
-
-				if($user){
-					$user = $user[0];
-					$user = $user;
-					$this->ciauth->_set_session($user);
-					$this->data['status'] = 'success';
-					$this->data['msg']= 'Profile updated successfully';
-				} else {
-					$this->data['status'] = 'fail';
-					$this->data['msg'] = 'There is some problem to process request';
-				}
+			if(isset($post_data['id']) && $post_data['id']){
+				$update_data['id'] = $post_data['id'];
+				$this->Util_model->update('payment_cards',$update_data);
+				$this->data['msg']= 'Card info updated successfully';
 			} else {
-				$this->data['status'] = 'fail';
-				$this->data['form_errors'] = $this->form_validation->error_array();
+				$this->Util_model->create('payment_cards',$update_data);
+				$this->data['msg']= 'Card added successfully';
 			}
+			$this->data['status'] = 'success';
+			$this->data['card'] = $update_data;
+		} else {
+			$this->data['status'] = 'fail';
+			$this->data['form_errors'] = $this->form_validation->error_array();
 		}
 		if(is_ajax()){
 			echo json_encode($this->data);
 			die;
+		}
+		
+	}
+	public function delete_card(){
+		$id = $this->input->post('id');
+		if($id){
+			$this->Util_model->delete('payment_cards',array('id' => $id));
+			$this->data['status'] = 'success';
+			$this->data['msg'] = 'Card removed successfully';
 		} else {
-			$this->data['entity'] = 'profile';
-			$this->data['heading'] = 'Profile';
-			$this->data['user'] = $this->ciauth->get_user();
-			$this->data['add_recaptcha_js'] = true;
-			$provider_profile = $this->Util_model->read('customer_profile',array('where' => array('uid'=>$this->ciauth->get_user_id())));
-			
-			$this->data['profile'] = ($provider_profile)?$provider_profile[0]:'';
-			$this->data['countries'] = $this->Util_model->read('country');
-			$this->load->view('customer/profile', $this->data);
+			$this->data['status'] = 'fail';
+			$this->data['msg'] = 'Card id not found';
 		}
-	}
-	public function payment(){
-		if($this->input->post()){
-			$val = $this->form_validation;
-			// Set form validation rules
-			$val->set_rules('card_number', 'Card Number', 'trim|required');
-			$val->set_rules('exp_date', 'Expiry Date', 'trim|required');
-			$val->set_rules('name_on_card', 'Name on card', 'trim|required');
-			$val->set_rules('card_type', 'Card Type', 'trim|required');
-			
-			if ($val->run()){
-				//update users table
-				
-				$card_data = array(
-					'uid' => $this->ciauth->get_user_id(),
-					'card_number' => $this->input->post('card_number'),
-					'exp_date' => $this->input->post('exp_date'),
-					'name_on_card' => $this->input->post('name_on_card'),
-					'card_type' => $this->input->post('card_type'),
-				);
-				
-
-				$card = $this->Util_model->create('payment_cards',$card_data);
-				
-
-				if($card){
-					$this->data['status'] = 'success';
-					$this->data['msg']= 'Card Added successfully';
-				} else {
-					$this->data['status'] = 'fail';
-					$this->data['msg'] = 'There is some problem to process request';
-				}
-			}
-			
+		if(is_ajax()){
+			echo json_encode($this->data);
+			die;
 		}
-		
-		$this->data['cards'] = $this->Util_model->read('payment_cards',array('where' => array('uid'=>$this->ciauth->get_user_id())));
-		$this->data['entity'] = 'Payment';
-		$this->data['heading'] = 'Customer Payment';
-		$this->data['submit_text'] = 'Add';
-		$this->data['icon'] = 'icmn-home2';
-		$this->load->view('customer/card', $this->data);
-	}
-	
-	public function card_edit(){
-		$id = $_GET['id'];
-		if($this->input->post()){
-			$val = $this->form_validation;
-			// Set form validation rules
-			$val->set_rules('card_number', 'Card Number', 'trim|required');
-			$val->set_rules('exp_date', 'Expiry Date', 'trim|required');
-			$val->set_rules('name_on_card', 'Name on card', 'trim|required');
-			$val->set_rules('card_type', 'Card Type', 'trim|required');
-			
-			if ($val->run()){
-				$card_data = array(
-					'uid' => $this->ciauth->get_user_id(),
-					'card_number' => $this->input->post('card_number'),
-					'exp_date' => $this->input->post('exp_date'),
-					'name_on_card' => $this->input->post('name_on_card'),
-					'card_type' => $this->input->post('card_type'),
-				);
-				
-				$card_data['id']  = $id;
-				$card = $this->Util_model->update('payment_cards',$card_data);
-				if($card){
-					redirect('customer/payment');
-				} else {
-					$this->data['status'] = 'fail';
-					$this->data['msg'] = 'There is some problem to process request';
-				}
-			}
-		}
-		
-		
-		$id = $_GET['id'];
-		$card_details = $this->Util_model->read('payment_cards',array('where' => array('id'=>$id)));
-		$this->data['card'] = $card_details[0];
-		$this->data['entity'] = 'Card Edit';
-		$this->data['heading'] = 'Card Edit';
-		$this->data['submit_text'] = 'Edit';
-		$this->data['icon'] = 'icmn-home2';
-		$this->load->view('customer/card', $this->data);
 	}
 
-	public function card_remove(){
-		if($this->input->post()){
-			
-			$this->Util_model->delete('payment_cards',$this->input->post('id'));
-			redirect('customer/payment');
-			
-		}
-		$this->data['entity'] = 'remove';
-		$this->data['id'] = $_GET['id'];
-		$this->data['heading'] = 'Card Remove';
-		$this->data['icon'] = 'icmn-home2';
-		$this->load->view('customer/card_remove', $this->data);
-	}
 	public function create_contract(){
 		$this->data['entity'] = 'contract';
 		$this->data['heading'] = 'Create Contract';
@@ -360,18 +226,31 @@ class Customer extends MX_Controller {
 	}
 	public function contracts(){
 		if(isset($_GET['area_exp'])){
-			$provider = $this->Util_model->read('provider_profile', array('where' => array('area_of_experience'=> $_GET['area_exp'])) );
-			$this->data['users']  = $this->Util_model->read('users', array('where' => array('id'=> $provider['0']['uid'])) );
+			$this->data['entity'] = 'contracts';
+			$provider = $this->Util_model->read('provider_profile', array('like' => array('area_of_experience'=> $_GET['area_exp']), 'limit' => '5') );
+			$this->data['provider']  = $provider;
+			$users = array();
+			foreach($provider as $provider){
+				$users[]  = $this->Util_model->read('users', array('where' => array('id'=> $provider['uid'])) );
+			}
+			$this->data['users']  = $users;
 			$this->data['contracts'] = $this->Util_model->read('contract',  array('where' => array('id'=> $_GET['id'])));
 			$this->load->view('customer/all_contracts', $this->data);
 		}
 		else{
-			$this->data['entity'] = 'contract';
+			$this->data['entity'] = 'contracts';
 			$this->data['heading'] = 'All Contracts';
 			$this->data['icon'] = 'icmn-home2';
 			$this->data['contracts'] = $this->Util_model->read('contract');
 			$this->load->view('customer/all_contracts', $this->data);
 		}
+	}
+	public function email_pref(){
+			$this->data['entity'] = 'email_pref';
+			$this->data['heading'] = 'Email Preferences';
+			$this->data['icon'] = 'icmn-home2';
+			$this->data['contracts'] = $this->Util_model->read('contract');
+			$this->load->view('customer/email_pref', $this->data);
 	}
 	
 	
