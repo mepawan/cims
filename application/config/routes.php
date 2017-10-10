@@ -56,7 +56,13 @@ $route['preview/(:any)'] = 'welcome/preview/$1';
 $route['auth'] = 'welcome/auth';
 $route['auth/(:any)'] = 'welcome/auth/$1';
 $route['auth/(:any)/(:any)'] = 'welcome/auth/$1/$2';
+
+$route['hauth'] = 'welcome/hauth';
+$route['hauth/(:any)'] = 'welcome/hauth/$1';
+$route['hauth/(:any)/(:any)'] = 'welcome/hauth/$1/$2';
+$route['hauth/(:any)/(:any)/(:any)'] = 'welcome/hauth/$1/$2/$3';
+
 $route['admin/menuitems/(:any)'] = 'admin/menuitems/index/$1';
 
-$route['404_override'] = 'welcome/page404';
+$route['404_override'] = '';
 $route['translate_uri_dashes'] = TRUE;

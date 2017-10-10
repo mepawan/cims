@@ -225,13 +225,7 @@ jQuery.fn.dt_loaded = function(tblid){
 			e.preventDefault();
 			var id = $(this).parent().parent().attr('id');
 			
-			window.location = ci_base_url+"admin/menuitems/"+id;
-		});
-		jQuery(".category-items").click( function(e){
-			e.preventDefault();
-			var id = $(this).parent().parent().attr('id');
-			
-			window.location = ci_base_url+"admin/subcategory/"+id;
+			window.location = ci_base_url+"/admin/menuitems/"+id;
 		});
 		
 		jQuery("#"+tblid+" tbody tr").unbind('click').bind('click',function(e){

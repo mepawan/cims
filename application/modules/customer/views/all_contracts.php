@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <?php 
-	//echo "<pre>"; print_r($contracts); die;
+	//echo "<pre>"; print_r($users); die;
 ?>
 <?php $this->load->view('part/head'); ?>
 <body>
@@ -16,18 +16,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<section class="general-message ands_work">
 					<div class="container">
 						<div class="row">
-							<div class="col-md-12 <?php if(isset($msg_type) && $msg_type){ echo $msg_type; }?>" >
-								<?php if(isset($heading) && $heading){ ?>
-									<span id="mm_title">
-										<h2 class="title_s"> <?php echo $heading; ?></h2>
-									</span>
-								<?php } ?>
-							</div>
+							
 							<section id="provider-details">
-								<div class="col-md-2">
+								<div class="col-md-2 left-bar">
 									<?php $this->load->view('part/user_left'); ?>
 								</div>
-								<div class="col-md-10">
+								<div class="col-md-10 right-bar">
+									<div class="col-md-12 " >
+										<?php if(isset($heading) && $heading){ ?>
+											<span id="mm_title">
+												<h2 class="title_s"> <?php echo $heading; ?></h2>
+											</span>
+										<?php } ?>
+									</div>
 									<?php $this->load->view('part/user_top'); ?>
 								
 									<?php if(isset($status) && $status == 'fail'){   ?>
@@ -68,9 +69,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<p>The pros below, while not an exact match for your request, may be able to help. Please contact them directly.</p>
 											</div>
 											<div class="suggestion_data">
-												<?php foreach($users as $users){ ?>
-													<div class="col-ms-12">
-														<p><?php echo $users['first_name']." ".$users['last_name']; ?></p>
+												<?php foreach($users as $users){  ?>
+													<div class="sugg_result">
+														<div class="col-md-6">
+															<p><?php echo $users[0]['first_name']." ".$users[0]['last_name']; ?></p>
+															<span><strong>Area of experience: </strong></span>
+															<?php foreach($provider as $providers){ 
+																if($users['0']['id'] == $providers['uid']){
+																	echo "<span>".str_replace("_", " ", $providers['area_of_experience'])."</span>";
+																}
+																?>
+															<?php } ?>
+														</div>
+														<div class="col-md-6">
+															<?php if(!empty($users[0]['phone'])){ ?><span><strong>Phone:</strong> <?php echo $users[0]['phone']; ?></span> <?php } ?>
+														</div>
+														<div class="clearfix clear"></div>
 													</div>
 												
 												<?php } ?>

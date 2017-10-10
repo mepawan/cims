@@ -54,12 +54,12 @@ class Pages extends MX_Controller {
 		
 		if(isset($_POST['title'])){
 			$userid = $this->ciauth->get_user_id();
+			
 			$alias = title_alias('pages', $_POST['title']);
 			
 			$data = array(
 						'title' => $_POST['title'],
 						'alias' => $alias,
-						'sidebar' => $_POST['sidebar'],
 						'content' => $_POST['html'],
 						'content_css' => $_POST['css'],
 						'author' => $userid
@@ -138,16 +138,14 @@ class Pages extends MX_Controller {
 			$userid = $this->ciauth->get_user_id();
 			
 			$alias = title_alias('pages', $_POST['title']);
-						
+			
 			$data = array(
 						'id' => $_POST['id'],
 						'title' => $_POST['title'],
 						'content' => $_POST['html'],
 						'content_css' => $_POST['css'],
 						'updated_date_time' => date("Y-m-d h:i:s"),
-						'sidebar' => $_POST['sidebar'],
 						);
-			
 			
 			$rs = $this->Util_model->update('pages', $data);
 			

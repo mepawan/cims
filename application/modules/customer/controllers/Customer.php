@@ -17,7 +17,7 @@ class Customer extends MX_Controller {
 	}
  	public function index(){
 		$this->data['entity'] = 'dashboard';
-		$this->data['heading'] = 'Customer Dashboard';
+		$this->data['heading'] = 'Welcome, ' . $this->ciauth->get_user('first_name');
 		$this->data['icon'] = 'icmn-home2';
 		$this->data['user'] = $this->ciauth->get_user();
 		$customer_profile = $this->Util_model->read('customer_profile',array('where' => array('uid'=>$this->ciauth->get_user_id())));
@@ -40,6 +40,73 @@ class Customer extends MX_Controller {
 		}
 				
 		return $result;
+	}
+	function setting(){
+		$this->data['entity'] = 'setting';
+		$this->data['heading'] = 'Setting';
+		$user = $this->Util_model->read('users',array('where' => array('id' => $this->ciauth->get_user_id())));
+		$user = $user[0];
+		$this->data['user'] = $user;
+		$this->data['countries'] = $this->Util_model->read('country');
+		$this->load->view('customer/setting', $this->data);
+		
+	}
+	function save_setting(){
+		global $ci_settings;
+		$post_data = $this->input->post();
+		
+		$update_data = $post_data;
+		$update_data['id'] = $this->ciauth->get_user_id();
+		$val = $this->form_validation;
+		if(isset($post_data['first_name'])){
+			$val->set_rules('first_name', 'First Name', 'trim|required');
+		}
+		if(isset($post_data['last_name'])){
+			$val->set_rules('last_name', 'Last Name', 'trim|required');
+		}
+		if(isset($post_data['email']) && $post_data['email'] != $this->ciauth->get_user('email') ){
+			$val->set_rules('email', 'Email', 'trim|required|valid_email|callback_email_check');
+		} else {
+			unset($update_data['email']);
+		}
+		if(isset($post_data['username']) && $post_data['username'] != $this->ciauth->get_user('username') ){
+			$val->set_rules('username', 'Username', 'trim|required|callback_username_check');
+		} else {
+			unset($update_data['username']);
+		}
+		
+		if(isset($post_data['password'])){
+			$val->set_rules('password', 'Password', 'trim|required|min_length['.$ci_settings['min_password_length'].']|max_length['.$ci_settings['max_password_length'].']|matches[confirm_password]');
+			$val->set_rules('confirm_password', 'Confirm Password', 'trim|required');
+			
+		}
+		
+		
+		if ($val->run()){
+			$this->Util_model->update('users',$update_data);
+			$user = $this->Util_model->read('users',array('where' => array('id'=>$update_data['id'])));
+			if($user){
+				$user = $user[0];
+				$user = $user;
+				$this->ciauth->_set_session($user);
+				$this->data['status'] = 'success';
+				$this->data['msg']= 'Profile updated successfully';
+			} else {
+				$this->data['status'] = 'fail';
+				$this->data['msg'] = 'There is some problem to process request';
+			}
+		} else {
+			$this->data['status'] = 'fail';
+			$this->data['form_errors'] = $this->form_validation->error_array();
+		}
+		if(is_ajax()){
+			echo json_encode($this->data);
+			die;
+		}
+		
+		
+		print_r($post_data);
+		die;
 	}
 	public function profile(){
 		//$uid = $this->ciauth->get_user();
@@ -178,7 +245,6 @@ class Customer extends MX_Controller {
 		$this->load->view('customer/card', $this->data);
 	}
 	
-	
 	public function card_edit(){
 		$id = $_GET['id'];
 		if($this->input->post()){
@@ -190,8 +256,6 @@ class Customer extends MX_Controller {
 			$val->set_rules('card_type', 'Card Type', 'trim|required');
 			
 			if ($val->run()){
-				//update users table
-				
 				$card_data = array(
 					'uid' => $this->ciauth->get_user_id(),
 					'card_number' => $this->input->post('card_number'),
@@ -202,8 +266,6 @@ class Customer extends MX_Controller {
 				
 				$card_data['id']  = $id;
 				$card = $this->Util_model->update('payment_cards',$card_data);
-				
-
 				if($card){
 					redirect('customer/payment');
 				} else {
@@ -211,7 +273,6 @@ class Customer extends MX_Controller {
 					$this->data['msg'] = 'There is some problem to process request';
 				}
 			}
-			
 		}
 		
 		
@@ -224,6 +285,7 @@ class Customer extends MX_Controller {
 		$this->data['icon'] = 'icmn-home2';
 		$this->load->view('customer/card', $this->data);
 	}
+
 	public function card_remove(){
 		if($this->input->post()){
 			
@@ -237,7 +299,6 @@ class Customer extends MX_Controller {
 		$this->data['icon'] = 'icmn-home2';
 		$this->load->view('customer/card_remove', $this->data);
 	}
-	
 	public function create_contract(){
 		$this->data['entity'] = 'contract';
 		$this->data['heading'] = 'Create Contract';
@@ -299,18 +360,31 @@ class Customer extends MX_Controller {
 	}
 	public function contracts(){
 		if(isset($_GET['area_exp'])){
-			$provider = $this->Util_model->read('provider_profile', array('where' => array('area_of_experience'=> $_GET['area_exp'])) );
-			$this->data['users']  = $this->Util_model->read('users', array('where' => array('id'=> $provider['0']['uid'])) );
+			$this->data['entity'] = 'contracts';
+			$provider = $this->Util_model->read('provider_profile', array('like' => array('area_of_experience'=> $_GET['area_exp']), 'limit' => '5') );
+			$this->data['provider']  = $provider;
+			$users = array();
+			foreach($provider as $provider){
+				$users[]  = $this->Util_model->read('users', array('where' => array('id'=> $provider['uid'])) );
+			}
+			$this->data['users']  = $users;
 			$this->data['contracts'] = $this->Util_model->read('contract',  array('where' => array('id'=> $_GET['id'])));
 			$this->load->view('customer/all_contracts', $this->data);
 		}
 		else{
-			$this->data['entity'] = 'contract';
+			$this->data['entity'] = 'contracts';
 			$this->data['heading'] = 'All Contracts';
 			$this->data['icon'] = 'icmn-home2';
 			$this->data['contracts'] = $this->Util_model->read('contract');
 			$this->load->view('customer/all_contracts', $this->data);
 		}
+	}
+	public function email_pref(){
+			$this->data['entity'] = 'email_pref';
+			$this->data['heading'] = 'Email Preferences';
+			$this->data['icon'] = 'icmn-home2';
+			$this->data['contracts'] = $this->Util_model->read('contract');
+			$this->load->view('customer/email_pref', $this->data);
 	}
 	
 	

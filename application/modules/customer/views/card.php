@@ -24,10 +24,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<?php } ?>
 							</div>
 							<section id="provider-details">
-								<div class="col-md-2">
+								<div class="col-md-2 left-bar">
 									<?php $this->load->view('part/user_left'); ?>
 								</div>
-								<div class="col-md-10">
+								<div class="col-md-10 right-bar">
 									<?php $this->load->view('part/user_top'); ?>
 								
 									<?php if(isset($status) && $status == 'fail'){   ?>

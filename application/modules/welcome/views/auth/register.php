@@ -123,7 +123,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<?php } ?>
 									</div>
 									<div class="col-sm-6 login-wrap">
-										<h3>Sign In</h3>
+										<h3> <?php if(isset($role) && $role){ echo ucfirst($role); } ?> Login <?php 
+												if(isset($role) && $role == 'customer'){
+													echo '<a class="btn btn-primary pull-right" href="'.ci_base_url().'auth/register/provider">Login As Provider</a>';
+												} else {
+													echo '<a class="btn btn-primary pull-right" href="'.ci_base_url().'auth/register">Login As Customer</a>';
+												}
+
+											?><div class="clearfix clear"></div>
+										</h3>
 										<div class="social-login"><?php echo bybridauth_links();?></div>
 										<div class="l-login-padding login-big-or horizontal-or">
 											<div class="t-middle-line">

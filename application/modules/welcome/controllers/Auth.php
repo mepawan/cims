@@ -167,7 +167,7 @@ class Auth extends MX_Controller {
 			$this->redirect_loggedin_user();
 		}
 		global $ci_settings;
-		
+		$this->session->set_userdata('social_login_role',$role);
 		if($this->input->post()){
 			$val = $this->form_validation;
 			$val->set_rules('first_name', 'First Name', 'trim|required');

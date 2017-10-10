@@ -15,7 +15,7 @@ $config['field_wraps'] = array(
 								<label class="form-control-label" for="{id}">{label}</label>
 							</div>
 							<div class="col-md-9">
-								<select class="form-control" name="{name}" id="{id}"><option value="0">-Select-</option>{options}</select>
+								<select class="form-control" name="{name}" id="{id}">{options}</select>
 							</div>
 						</div>',
 			'textarea' => '<div class="form-group row">

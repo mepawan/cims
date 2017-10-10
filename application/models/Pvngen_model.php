@@ -375,7 +375,6 @@ class Pvngen_model extends CI_Model
 		//print_r($this->conf);die;
 	}
 	function get_db_source($tbl,$fields = array()){
-		
 		if($fields && is_array($fields) && count($fields)){
 			$field_str = implode(",", $fields);
 		} else {

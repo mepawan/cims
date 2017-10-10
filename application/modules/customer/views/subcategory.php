@@ -24,10 +24,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<?php } ?>
 							</div>
 							<section id="provider-details">
-								<div class="col-md-2">
+								<div class="col-md-2 left-bar">
 									<?php $this->load->view('part/user_left'); ?>
 								</div>
-								<div class="col-md-10">
+								<div class="col-md-10 right-bar">
 									<?php $this->load->view('part/user_top'); ?>
 								<div class="sub-cat">
 									<h3>Get Matched to Top-Rated <?php echo $parent['0']['title'] ?></h3>

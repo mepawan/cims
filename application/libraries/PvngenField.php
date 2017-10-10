@@ -1,9 +1,6 @@
 <?php
 class PvngenField {
 	function __construct($params = array()){
-		$this->ci =& get_instance();
-		$this->ci->load->model('Pvngen_model');
-		$this->model = $this->ci->Pvngen_model;
 		
 		$this->ci =& get_instance();
 		$this->ci->load->config('pvngen');
@@ -120,29 +117,43 @@ class PvngenField {
 	}
 
 	function select($k, $f, $v = '', $a = ''){ 
+
 		$required = (isset($f['required']) && $f['required'])?'required':'';
+
 		$id = (isset($f['attributes']) && isset($f['attributes']['id']))?$f['attributes']['id']:'pvngen_'.$k;
+
 		$id .= '_'.$a;
-		if(!isset($f['attributes']) && !isset($f['attributes']['placeholder'])){
-			$f['attributes']['placeholder'] = $f['label'];
-		}
+
+		$placeholder = (isset($f['attributes']) && isset($f['attributes']['placeholder']))?$f['attributes']['placeholder']:$f['label'];
+
+		unset($f['attributes']['placeholder']);
+
 		$attr_str = '';
+
 		if(isset($f['attributes']) && is_array($f['attributes'])){
+
 			array_walk($f['attributes'], function($item, $index) use (&$attr_str){
+
 				$attr_str .= ' '.$index.'="'.$item.'" ';
+
 			});
+
 		}
+
 		$value = ($v)?$v:(isset($f['default'])?$f['default']:'');
-		$field_wrap = $this->field_wraps['select'];
-		
-	
-		$options .= $this->get_source($k,$f, $v);
-		$html = str_replace(
-							array('{type}','{name}','{id}','{val}','{label}','{attributes}','{required}','{options}'),
-							array($f['type'],$k,$id,$value,$f['label'],$attr_str,$required,$options),
-							$field_wrap
-					);
-		
+
+		$html = '<label class="field select" for="'.$id.'">
+
+					<select '.$required.' name="'.$k.'" id="'.$id.'" '.$attr_str.' >';
+
+		$html .= 	'<option value="">Select '.$placeholder.'</option>';
+
+		$html .= $this->get_source($k,$f, $v);
+
+		$html .= '</select> <i class="arrow"></i>
+
+				</label>';
+
 		return $html;
 
 	}
@@ -206,91 +217,6 @@ class PvngenField {
 
 	}
 
-	function get_source($k,$f, $v = ''){
-		
-		$source_type = array_keys($f['source'])[0];
-
-		$source_list = array();
-
-		$xpr = (isset($f['source']['expression']))?$f['source']['expression']:'';
-
-		
-
-		if($source_type == 'options'){
-
-			$source_list = $f['source'][$source_type];
-
-			$source_html = '';
-
-			array_walk($source_list, function($item, $index) use(&$source_html,&$v,&$xpr,&$fields){
-
-				$sel = ($v == $index)?'selected="selected"':'';
-
-				$txt = ($xpr)?str_replace($fields,$item,$xpr):$item;
-
-				$source_html .= '<option value="'.$index.'" '.$sel.'>'.$txt.'</option>';
-
-			});
-
-			return $source_html;
-
-		} else {
-				$vf = $f['source']['value_field'];
-
-				$tf = $f['source']['text_field'];
-
-				$tbl = $f['source'][$source_type];
-
-				$fields = (is_array($tf))?$tf:explode(',',$tf);
-
-				if(count($fields) > 1 && !$xpr){
-
-					return '<option>Error - check expression or text-field names</option>';
-
-				}
-				
-				$fields[] = $vf;
-
-				switch($source_type){
-					
-					case 'table':
-					
-						$source_list = $this->model->get_db_source($tbl,$fields);
-						
-						break;
-
-					case 'ajax':
-
-						break;
-
-					case 'json_file':
-
-						break;
-
-					case 'xml_file':
-
-						break;
-
-				}
-
-				$source_html = '';
-
-				array_walk($source_list, function($item) use(&$source_html,&$vf,&$tf,&$v,&$xpr,&$fields){
-
-					$sel = ($v == $item[$vf])?'selected="selected"':'';
-
-					$txt = ($xpr)?str_replace($fields,$item,$xpr):$item[$tf];
-
-					$source_html .= '<option value="'.$item[$vf].'" '.$sel.'>'.$txt.'</option>';
-
-				});
-
-				return $source_html;
-
-		}
-
-	
-	}
 
 	
 }
