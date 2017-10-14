@@ -1529,12 +1529,46 @@ div#top_move p {
 
 
 /************create contract ***************/
-.create_contract, .sub-cat {
-    border: 1px solid #e0d5c8;
-    padding: 10px 20px 20px;
-    text-align: initial;
-        float: left;
-    width: 100%;
+.cats-list ul{
+	list-style:none;
+	padding:0;
+	
+}
+.cats-list ul li{
+	float:left;
+	width:49%;
+}
+.cats-list ul li a{
+	padding:10px 15px;
+	margin:8px;
+	display:block;
+	background:#eee;
+}
+.cats-list ul li a:hover{
+	background:#ccc;
+}
+
+.cat-hierarchy{
+	margin: 50px auto;
+}
+.cat-hierarchy ul{
+	list-style:none;
+	padding:0;
+	
+}
+.cat-hierarchy ul li{
+	float:left;
+}
+.cat-hierarchy ul li a{
+	padding:0px 5px;
+	margin:0 8px;
+	display:block;
+}
+.cat-hierarchy ul li a:hover{
+
+}
+.clearfix{
+	float:none !important;
 }
 .create_contract h3 {
     color: #f7901e;
@@ -1549,19 +1583,7 @@ div#top_move p {
 .create_contract a {
     font-weight: bold;
 }
-.sub-cat h3 {
-    border-bottom: 1px solid #e0d5c8;
-    font-size: 24px;
-    margin-top: 10px;
-    margin-bottom: 15px;
-    padding-bottom: 15px;
-    font-weight: bold;
-    color: #5c5954;
-}
-.sub-cat a {
-    font-size: 16px;
-    margin-left: 12px;
-}
+
 .headings {
     font-size: 16px;
     color: #5c5954;
@@ -1643,4 +1665,74 @@ div#top_move p {
 .cards-listing-tbl td{
 	border:1px solid #ddd;
 	padding: 0 5px;
+}
+.pref-tbl{
+	width:100%;
+} 
+.pref-tbl th{
+	border-bottom: 1px solid #999;
+	padding: 5px 7px;
+}
+.pref-tbl td{
+	padding: 5px 10px;
+border-bottom: 1px solid #eee;
+}
+.pref-tbl td label{
+	font-weight:normal;
+}
+
+.pcheckbox {
+	
+}
+.pcheckbox input[type="checkbox"] {
+  visibility: hidden;
+  display:none;
+}
+.pcheckbox label {
+  cursor: pointer;
+}
+.pcheckbox input[type="checkbox"] + label:before {
+  border: 1px solid #999;
+  content: "\00a0";
+  display: inline-block;
+  font: 16px/1em sans-serif;
+  height: 18px;
+  margin: 0 .25em 0 0;
+  padding: 0;
+  vertical-align: top;
+  width: 18px;
+}
+.pcheckbox input[type="checkbox"]:checked + label:before {
+  background: #fff;
+  color: #333;
+  content: "\2713";
+  text-align: center;
+  border: 1px solid #333;
+}
+.pcheckbox input[type="checkbox"]:checked + label:after {
+  font-weight: bold;
+}
+
+.pcheckbox input[type="checkbox"]:focus + label::before {
+    outline: rgb(59, 153, 252) auto 5px;
+}
+.contracts-tbl{
+	width:100%;
+}
+.contracts-tbl th{
+	border-bottom:1px solid;
+	padding: 10px 5px;
+}
+.contracts-tbl td{
+	padding: 10px 5px;
+}
+.contract-info {
+	padding: 12px 0;
+}
+.contract-info ul{
+	list-style:none;
+}
+.contract-info ul li{
+	list-style:none;
+	display:inline-block;
 }

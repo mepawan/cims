@@ -165,92 +165,90 @@ class Customer extends MX_Controller {
 		}
 	}
 
-	public function create_contract(){
+	public function create_contract($catid = '', $subcatid = ''){
 		$this->data['entity'] = 'contract';
 		$this->data['heading'] = 'Create Contract';
 		$this->data['icon'] = 'icmn-home2';
-		$this->data['category'] = $this->Util_model->read('category', array('where' => array('parent'=>'0')));
-		$this->load->view('customer/create_contract', $this->data);
-	}
-	public function subcategory(){
-		$parent = array('where' => array('parent'=>$_GET['id']));
 		
-		$this->data['entity'] = 'contract';
-		$this->data['heading'] = 'Create Contract';
-		$this->data['icon'] = 'icmn-home2';
-		$this->data['category'] = $this->Util_model->read('category',$parent);
-		$this->data['parent'] = $this->Util_model->read('category',array('where' => array('id'=>$_GET['id'])));
-		
-		if(empty($this->data['category'])){
-			redirect('/customer/contract?id='.$_GET['id'].'');
-		}
-		
-		$this->load->view('customer/subcategory', $this->data);
-	}
-	public function contract(){
 		if($this->input->post()){
-				
-				$category = $this->Util_model->read('category', array('where' => array('id'=> $_GET['id'])));
-				if(isset($_GET['parent'])){
-					$parent = $this->Util_model->read('category', array('where' => array('id'=> $_GET['parent'])));
-				}
-				//echo "<pre>"; print_r($parent); die;
-				
 				$contract_data = array(
 					'area_of_experience' => $this->input->post('area_of_experience'),
 					'years_of_experience' => $this->input->post('years_of_experience'),
-					'category' => $category[0]['title'],
-					'sub-categeory' => $parent[0]['title']?$parent[0]['title']:'',
+					'category' => $this->input->post('category'),
+					'title' => $this->input->post('title'),
 				);
-				
-				
 				$contract = $this->Util_model->create('contract',$contract_data);
+				redirect('customer/contracts');
 				
-
-				if($contract){
-					$this->data['status'] = 'success';
-					$this->data['msg'] = 'Contract Added successfully';
-				} else {
-					$this->data['status'] = 'fail';
-					$this->data['msg'] = 'There is some problem to process request';
+		} else {
+			$step = 1;
+			if($catid){
+				$this->data['categories'] = $this->Util_model->read('category', array('where' => array('parent'=>$catid)));
+				$parent =  $this->Util_model->read('category', array('where' => array('id'=>$catid)));
+				$this->data['parent'] = ($parent)?$parent[0]:'';
+				if($this->data['categories']){
+					$step = 2;
+				}  else {
+					$step = 3;
 				}
-			
-			
-		}
-		
-		$this->data['entity'] = 'contract';
-		$this->data['heading'] = 'Contract';
-		$this->data['submit_text'] = 'Save';
-		$this->data['icon'] = 'icmn-home2';
-		$this->load->view('customer/contract', $this->data);
-	}
-	public function contracts(){
-		if(isset($_GET['area_exp'])){
-			$this->data['entity'] = 'contracts';
-			$provider = $this->Util_model->read('provider_profile', array('like' => array('area_of_experience'=> $_GET['area_exp']), 'limit' => '5') );
-			$this->data['provider']  = $provider;
-			$users = array();
-			foreach($provider as $provider){
-				$users[]  = $this->Util_model->read('users', array('where' => array('id'=> $provider['uid'])) );
+			} else {
+				$this->data['categories'] = $this->Util_model->read('category', array('where' => array('parent'=>0)));
 			}
-			$this->data['users']  = $users;
-			$this->data['contracts'] = $this->Util_model->read('contract',  array('where' => array('id'=> $_GET['id'])));
-			$this->load->view('customer/all_contracts', $this->data);
+			if($subcatid){
+				$category = $this->Util_model->read('category', array('where' => array('id'=>$subcatid)));
+				$this->data['sub_category'] = ($category)?$category[0]:'';
+				$step = 3;
+			}
+			$this->data['step'] = $step;
+			$this->load->view('customer/create_contract', $this->data);
+		}
+	}
+
+	public function contracts($id = ''){
+		$this->data['entity'] = 'contracts';
+		
+		$this->data['icon'] = 'icmn-home2';
+		if($id){
+			$contract = $this->Util_model->read('contract', array('where' => array('id'=> $id)) );
+			$this->data['contract']  = ($contract)?$contract[0]:'';
+			
+			$provider_sql = "select u.*, pf.* from users u left join provider_profile pf on (u.id=pf.uid) where area_of_experience like '*%".$this->data['contract']['area_of_experience']."%*'";
+			$providers = $this->Util_model->custom_query($provider_sql);
+			$this->data['providers']  = $providers;
+			$this->data['heading'] = ($this->data['contract'])?$this->data['contract']['title'] : "Not Found";
+			$this->load->view('customer/contract_detail', $this->data);
 		}
 		else{
-			$this->data['entity'] = 'contracts';
 			$this->data['heading'] = 'All Contracts';
-			$this->data['icon'] = 'icmn-home2';
 			$this->data['contracts'] = $this->Util_model->read('contract');
 			$this->load->view('customer/all_contracts', $this->data);
 		}
+		
 	}
-	public function email_pref(){
-			$this->data['entity'] = 'email_pref';
-			$this->data['heading'] = 'Email Preferences';
+	public function preferences(){
+			$this->data['entity'] = 'preferences';
+			$this->data['heading'] = 'Preferences';
 			$this->data['icon'] = 'icmn-home2';
-			$this->data['contracts'] = $this->Util_model->read('contract');
-			$this->load->view('customer/email_pref', $this->data);
+			$prefs_raw = $this->Util_model->read('user_perferences',array('where' => array('uid' => $this->ciauth->get_user_id())));
+			$prefs = array();
+			array_walk($prefs_raw, function($prf) use(&$prefs){
+				$prefs[$prf['preference_key']] = $prf['preference_value'];
+			});
+			 $this->data['preferences'] = $prefs;
+			$this->load->view('customer/preferences', $this->data);
+	}
+	
+	public function save_prefs(){
+			$uid = $this->ciauth->get_user_id();
+			$key = $this->input->post('key');
+			$val = $this->input->post('val');
+			$sql = 'INSERT INTO user_perferences (uid,preference_key,preference_value) VALUES ("'.$uid.'", "'.$key.'", "'.$val.'") ON DUPLICATE KEY  UPDATE preference_value="'.$val.'";';
+			$this->Util_model->custom_query($sql,false);
+			
+			
+			echo json_encode(array('status' => 'success'));
+			die;
+			
 	}
 	
 	

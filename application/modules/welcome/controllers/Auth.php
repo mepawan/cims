@@ -32,7 +32,7 @@ class Auth extends MX_Controller {
 				$this->data['redirect'] = $redirect;
 			} else if($this->ciauth->is_role('provider')){
 				$this->data['redirect'] = ci_base_url().'provider';
-			} else {
+			} else if($this->ciauth->is_role('customer')){
 				$this->data['redirect'] = ci_base_url().'customer';
 			}
 			echo json_encode($this->data);
@@ -43,7 +43,7 @@ class Auth extends MX_Controller {
 				redirect($redirect);
 			} else if($this->ciauth->is_role('provider')){
 				redirect('/provider');
-			} else {
+			} else if($this->ciauth->is_role('customer')){
 				redirect('/customer');
 			}
 		}

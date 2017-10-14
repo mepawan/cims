@@ -1,9 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+//echo "<pre>"; print_r($user); die;
 ?>
-<?php 
-	//echo "<pre>"; print_r($category); die;
-?>
+
 <?php $this->load->view('part/head'); ?>
 <body>
 	<div class="contain_wrapper">
@@ -16,7 +15,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<section class="general-message ands_work">
 					<div class="container">
 						<div class="row">
-							<div class="col-md-12 <?php if(isset($msg_type) && $msg_type){ echo $msg_type; }?>" >
+							<div class="col-md-12" >
 								<?php if(isset($heading) && $heading){ ?>
 									<span id="mm_title">
 										<h2 class="title_s"> <?php echo $heading; ?></h2>
@@ -29,16 +28,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								</div>
 								<div class="col-md-10">
 									<?php $this->load->view('part/user_top'); ?>
-								<div class="sub-cat">
-									<h3>Get Matched to Top-Rated <?php echo $parent['0']['title'] ?></h3>
-									
-									<?php foreach($category as $category){ ?>
-										<a href="<?php echo ci_base_url();?>customer/contract?id=<?php echo $category['id']; ?>&parent=<?php echo $category['parent']; ?>"><?php echo $category['title']; ?></a>
-										
-									<?php } ?>
 								</div>
-							</div>
 							</section>
+							
 						</div>
 					</div>
 				</section>

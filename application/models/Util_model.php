@@ -15,6 +15,8 @@ class Util_model extends CI_Model{
 		$q = $this->db->query($query);
 		if($return){
 			return ($q->num_rows() > 0)?$q->result_array():array();
+		} else {
+			return $q;
 		}
 	}
 	public function create($tbl,$data){

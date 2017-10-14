@@ -1,15 +1,8 @@
-<?php $user = $this->ciauth->get_user();  ?>
-
-<div class="profile_img"><img src="<?php echo ci_public('upload'); ?><?php if($user['profile_pic']){ echo $user['profile_pic']; } else { echo 'default_profile_pic.png'; } ?>" height="140px" width="250px"></div>
-<button>update</button>
 <div class="profile-menu">
 	<ul>
-		<li><a href="<?php echo ci_base_url();?>provider">Dashboard</a></li>
-		<li><a href="<?php echo ci_base_url();?>provider/profile">Edit Profile</a></li>
-		<li><a href="<?php echo ci_base_url();?>provider/payment">Payment</a></li>
-		<li><a href="<?php echo ci_base_url();?>provider/create-contract">Create Contract</a></li>
-		<li><a href="<?php echo ci_base_url();?>auth/logout_user">Logout</a></li>
-		
-		
+		<li><a class="<?php if(!isset($entity) || $entity == 'dashboard') { echo 'active'; } ?>" href="<?php echo ci_base_url();?>provider">Dashboard</a></li>
+		<li><a class="<?php if(isset($entity) && $entity == 'preferences') { echo 'active'; } ?>" href="<?php echo ci_base_url();?>provider/preferences">Preferences </a></li>
+		<li><a class="<?php if(isset($entity) && $entity == 'setting') { echo 'active'; } ?>" href="<?php echo ci_base_url();?>provider/setting">Setting</a></li>
+		<li><a class="<?php if(isset($entity) && $entity == 'logout') { echo 'active'; } ?>" href="<?php echo ci_base_url();?>auth/logout_user">Logout</a></li>
 	</ul>
 </div>
