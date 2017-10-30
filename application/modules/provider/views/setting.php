@@ -25,12 +25,64 @@ $this->load->view('part/head');
 									<?php $this->load->view('part/user_left'); ?>
 								</div>
 								<div class="col-md-10 content-section">
+										
 										<?php if(isset($heading) && $heading){ ?>
 											<span id="mm_title">
 												<h2 class="title_s"> <?php echo $heading; ?></h2>
 											</span>
 										<?php } ?>
 										<div class="content-wrap">
+											<div class="setting-row">
+												<div class="col-md-4 left">
+													<h3> Profile Picture </h3>
+												</div>
+												<div class="col-md-8 right ">
+													<div class="view-section">
+														<div class="col-md-10">
+															<label class="view-item"> 
+																<?php
+																	$pic = ( $user['profile_pic'] ) ? $user['profile_pic'] : ci_base_url . 'public/upload/default_profile_pic.png';
+																	
+																?>
+																<img class="profilepic" style="max-width:80px;" id="profilepic" src="<?php echo $pic;?>" />
+															</label>
+														</div>
+														<div class="col-md-2">
+															<a class="edit-setting-btn" href="javascript:void(0);"> Edit </a>
+														</div>
+														<div class="clearfix clear"></div>
+													</div>
+													<div class="form-section">
+														<div class="col-md-10">
+															<span class="msg-wrap"></span>
+															<form method="post" action="#" name="form-validation" class="setting-form" id="form_profile_pic" enctype="multipart/form-data">
+																
+																<div class="form-group">
+																	<label for="profile_pic" class="form-label col-sm-4">Upload Picture<span class="red">*</span></label>
+																	<div class="col-sm-8">
+																		<input required type="file"  name="profile_pic" class="" id="profile_pic" value=""  />
+																	</div>
+																</div>
+																<div class="form-group">
+																	<div class="col-sm-8">
+																		<img class="profilepic" style="max-width:80px;margin: 10px;" id="profilepic2" src="<?php echo $pic;?>" />
+																	</div>
+																</div>
+																<div class="form-group text-center">
+																	<button class="btn btn-primary width-150" type="submit">Upload</button>
+																</div>
+															</form>
+														</div>
+														<div class="col-md-2">
+															<button class="btn btn-warning width-150 close-form-view-btn" type="button">Cancel</button>
+														</div>
+													</div>
+												</div>
+												<div class="clearfix clear"></div>
+											</div> <!-- end setting-row -->
+										
+										
+										
 											<div class="setting-row">
 												<div class="col-md-4 left">
 													<h3> Personal Information </h3>
@@ -373,7 +425,18 @@ $this->load->view('part/head');
 																	<div class="clearfix clear"></div>
 																</div>
 																
+																<div class="form-group">
+																	<label for="languages" class="form-label col-sm-4">Languages Spoken</label>
+																	<div  class="col-sm-8">
+																		<select name="profile[languages][]" multiple id="languages">
+																		  <option value="akan" <?php if($profile && in_array('akan',$languages)) { echo "selected";} ?>>Akan</option>
+																		  <option value="amharic" <?php if($profile && in_array('amharic',$languages)) { echo "selected";} ?>>Amharic</option>
+																		  <option value="arabic" <?php if($profile && in_array('arabic',$languages)) { echo "selected";} ?>>Arabic</option>
+																		  <option value="assamese" <?php if($profile && in_array('assamese',$languages)) { echo "selected";} ?>>Assamese</option>
 																
+																		</select>
+																	</div>
+																</div>
 																
 																
 																
@@ -516,32 +579,80 @@ $this->load->view('part/head');
 				e.preventDefault();
 				var dis = jQuery(this);
 				jQuery('button[type="submit"]',jQuery(dis)).html('Please wait...');
-				jQuery.post(ci_base_url+'provider/save-setting',jQuery(this).serialize(),function(resp){
-					
-					var msgtype = resp.status;
-					if(resp.status == 'fail'){
-						msgtype = 'error';
-					} 
-					if(resp.msg != undefined){
-						jQuery(dis).prev('.msg-wrap').html('<div class="alert alert-'+msgtype+'"> <a href="#" class="close" data-dismiss="alert">&times;</a><strong>'+msgtype.toUpperCase()+'!</strong> '+resp.msg+'  </div>');
-						pvn_notify(resp.msg,msgtype);
-					} 
-					if(resp.form_errors != undefined){
-						for(var i in resp.form_errors ){
-							var msg = resp.form_errors[i];
-							//jQuery("#"+i).popover('destroy');
-							
-							jQuery("#"+i).popover({ title: '', placement:'right', content: msg});
-							jQuery("#"+i).popover("show");
-							
-							jQuery(".popover-content",jQuery(dis)).html(msg).css('color','red');
-							jQuery(".popover",jQuery(dis)).addClass("form");
+				if(jQuery(this).attr('id') == 'form_profile_pic'){
+					var formData = new FormData();
+					formData.append('profile_pic', jQuery('#profile_pic')[0].files[0]); 
+					jQuery.ajax({
+						url: ci_base_url+'provider/save-setting',
+						type: "POST",
+						dataType:'json',
+						data: formData,
+						processData: false,
+						contentType: false,
+						success: function(resp) {
+							var msgtype = resp.status;
+							if(resp.status == 'fail'){
+								msgtype = 'error';
+							} 
+							if(resp.status == 'success'){
+								var reader = new FileReader();
+								reader.onload = function(e) {
+									jQuery('#profilepic').attr('src', e.target.result);
+									jQuery('#profilepic2').attr('src', e.target.result);
+								}
+								reader.readAsDataURL(jQuery('#profile_pic')[0].files[0]);
+							}
+							if(resp.msg != undefined){
+								jQuery(dis).prev('.msg-wrap').html('<div class="alert alert-'+msgtype+'"> <a href="#" class="close" data-dismiss="alert">&times;</a><strong>'+msgtype.toUpperCase()+'!</strong> '+resp.msg+'  </div>');
+								pvn_notify(resp.msg,msgtype);
+							} 
+							if(resp.form_errors != undefined){
+								for(var i in resp.form_errors ){
+									var msg = resp.form_errors[i];
+									//jQuery("#"+i).popover('destroy');
+									
+									jQuery("#"+i).popover({ title: '', placement:'right', content: msg});
+									jQuery("#"+i).popover("show");
+									
+									jQuery(".popover-content",jQuery(dis)).html(msg).css('color','red');
+									jQuery(".popover",jQuery(dis)).addClass("form");
+								}
+							}
+							jQuery('button[type="submit"]',jQuery(dis)).html('Save');
+						},
+						error: function(jqXHR, textStatus, errorMessage) {
+							console.log(errorMessage); // Optional
 						}
-					}
-					jQuery('button[type="submit"]',jQuery(dis)).html('Save');
-				},'json');
+					});
+					
+				} else {
+					jQuery.post(ci_base_url+'provider/save-setting',  jQuery(this).serialize() ,function(resp){
+						var msgtype = resp.status;
+						if(resp.status == 'fail'){
+							msgtype = 'error';
+						} 
+						if(resp.msg != undefined){
+							jQuery(dis).prev('.msg-wrap').html('<div class="alert alert-'+msgtype+'"> <a href="#" class="close" data-dismiss="alert">&times;</a><strong>'+msgtype.toUpperCase()+'!</strong> '+resp.msg+'  </div>');
+							pvn_notify(resp.msg,msgtype);
+						} 
+						if(resp.form_errors != undefined){
+							for(var i in resp.form_errors ){
+								var msg = resp.form_errors[i];
+								//jQuery("#"+i).popover('destroy');
+								
+								jQuery("#"+i).popover({ title: '', placement:'right', content: msg});
+								jQuery("#"+i).popover("show");
+								
+								jQuery(".popover-content",jQuery(dis)).html(msg).css('color','red');
+								jQuery(".popover",jQuery(dis)).addClass("form");
+							}
+						}
+						jQuery('button[type="submit"]',jQuery(dis)).html('Save');
+					},'json');
 				
+				}
 				
+
 				
 			});
 			jQuery("input,select,textarea").click(function(e){

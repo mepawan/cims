@@ -21,6 +21,31 @@ class Customer extends MX_Controller {
 		$this->data['icon'] = 'icmn-home2';
 		$this->data['user'] = $this->ciauth->get_user();
 		$customer_profile = $this->Util_model->read('customer_profile',array('where' => array('uid'=>$this->ciauth->get_user_id())));
+		//search query
+		if($this->input->post('keywords')){
+			$keywords = $this->input->post('keywords');
+			$keywords = explode(" ",$keywords);
+
+			$where = ' where u.role_id=3 ';
+			$search_fields = array('u.first_name','u.last_name','pp.area_of_experience','pp.area_of_experience_other','pp.education');
+			$where_kw = '';
+			array_walk($keywords, function($kw) use(&$where_kw, &$search_fields ){
+				array_walk($search_fields, function($sf) use(&$kw,&$where) {
+					if(!$where_kw){
+						$where_kw .= " " . $sf . " like '%".$kw."%' ";
+					} else {
+						$where_kw .= " OR " . $sf . " like '%".$kw."%' ";
+					}
+				}); 
+			});
+			if($where_kw){
+				$where = ' AND ' . $where_kw;
+			}
+			$sql = 'select u.*,pp.* from users u left join provider_profile pp on (u.id=pp.uid) '. $where. ' ';
+			$this->data['providers'] = $this->Util_model->custom_query($sql);
+			
+		}
+
 		$this->data['profile'] = ($customer_profile)?$customer_profile[0]:'';
 		$this->load->view('customer/dashboard', $this->data);
 	}
@@ -49,29 +74,36 @@ class Customer extends MX_Controller {
 		$this->data['user'] = $user;
 		$this->data['countries'] = $this->Util_model->read('country');
 		$this->data['user_cards'] = $this->Util_model->read('payment_cards',array('where'=>array('uid' => $this->ciauth->get_user_id())));
+		$user_profile = $this->Util_model->read('customer_profile',array('where'=>array('uid' => $this->ciauth->get_user_id())));
+		$this->data['user_profile'] = ($user_profile)?$user_profile[0]:array();
 		$this->load->view('customer/setting', $this->data);
 		
 	}
 	function save_setting(){
 		global $ci_settings;
 		$post_data = $this->input->post();
-		
 		$update_data = $post_data;
 		$update_data['id'] = $this->ciauth->get_user_id();
 		$val = $this->form_validation;
+		$validate = false;
+		
 		if(isset($post_data['first_name'])){
 			$val->set_rules('first_name', 'First Name', 'trim|required');
+			$validate = true;
 		}
 		if(isset($post_data['last_name'])){
 			$val->set_rules('last_name', 'Last Name', 'trim|required');
+			$validate = true;
 		}
 		if(isset($post_data['email']) && $post_data['email'] != $this->ciauth->get_user('email') ){
 			$val->set_rules('email', 'Email', 'trim|required|valid_email|callback_email_check');
+			$validate = true;
 		} else {
 			unset($update_data['email']);
 		}
 		if(isset($post_data['username']) && $post_data['username'] != $this->ciauth->get_user('username') ){
 			$val->set_rules('username', 'Username', 'trim|required|callback_username_check');
+			$validate = true;
 		} else {
 			unset($update_data['username']);
 		}
@@ -79,26 +111,45 @@ class Customer extends MX_Controller {
 		if(isset($post_data['password'])){
 			$val->set_rules('password', 'Password', 'trim|required|min_length['.$ci_settings['min_password_length'].']|max_length['.$ci_settings['max_password_length'].']|matches[confirm_password]');
 			$val->set_rules('confirm_password', 'Confirm Password', 'trim|required');
+			$validate = true;
 			
 		}
 		
-		if(isset($post_data['address'])){
-			$val->set_rules('address', 'Address', 'trim|required');
+		
+		$profile_post = $this->input->post('profile');
+		if($profile_post){
+			//$profile_post['languages'] = ($profile_post['languages'])?implode(",",$profile_post['languages']):'';
+			//$profile_post['area_of_experience'] = ($profile_post['area_of_experience'])?implode(",",$profile_post['area_of_experience']):'';
+			//$profile_post['availabe_days_time'] = ($profile_post['availabe_days_time'])?implode(",",$profile_post['availabe_days_time']):'';
+			$profile_post['preferred_contact_method'] = ($profile_post['preferred_contact_method'])?implode(",",$profile_post['preferred_contact_method']):'';
+			unset($update_data);
 		}
 		
-		
-		if ($val->run()){
-			$this->Util_model->update('users',$update_data);
-			$user = $this->Util_model->read('users',array('where' => array('id'=>$update_data['id'])));
-			if($user){
-				$user = $user[0];
-				$user = $user;
-				$this->ciauth->_set_session($user);
+		if (!$validate || $val->run()){
+			if($update_data && count($update_data) > 0){
+				$this->Util_model->update('users',$update_data);
+				$user = $this->Util_model->read('users',array('where' => array('id'=>$update_data['id'])));
+				if($user){
+					$user = $user[0];
+					$user = $user;
+					$this->ciauth->_set_session($user);
+					$this->data['status'] = 'success';
+					$this->data['msg']= 'Profile updated successfully';
+				} else {
+					$this->data['status'] = 'fail';
+					$this->data['msg'] = 'There is some problem to process request';
+				}
+			} else if($profile_post && count($profile_post) > 0){
+				
+				$user_profile = $this->Util_model->read('customer_profile',array('where'=>array('uid' => $this->ciauth->get_user_id())));
+				$profile_post['uid'] = $this->ciauth->get_user_id();
+				if($user_profile){
+					$this->Util_model->update('customer_profile',$profile_post,'uid');
+				} else {
+					$this->Util_model->create('customer_profile',$profile_post);
+				}
 				$this->data['status'] = 'success';
 				$this->data['msg']= 'Profile updated successfully';
-			} else {
-				$this->data['status'] = 'fail';
-				$this->data['msg'] = 'There is some problem to process request';
 			}
 		} else {
 			$this->data['status'] = 'fail';
@@ -126,6 +177,7 @@ class Customer extends MX_Controller {
 				'number' => $post_data['number'],
 				'type' => $post_data['type'],
 				'exp' => $post_data['exp_month'].'/'.$post_data['exp_year'],
+				'code' => $post_data['code'],
 				'name' => $post_data['name'],
 			);
 			

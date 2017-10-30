@@ -24,7 +24,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											</span>
 										<?php } ?>
 										<div class="content-wrap">
-									
+											<h3 class="find-providers-title">Find Service Providers </h3>
+											<div class="search-provider-wrap">
+												<div class="search-form-wrap">
+													<form method="post" action="">
+														<input required type="text" class="search-box inline" name="keywords" placeholder="Keywords" value="<?php if(isset($_POST['keywords'])) { echo $_POST['keywords']; } ?>" />
+														<input type="submit" class="search-btn inline" name="search-provider" value="Search" />
+													</form>
+												</div>
+												<div class="search-results-wrap">
+												<?php
+													if(isset($providers)){
+												?>	
+														<h3>Search Result</h3>
+														<div class="row grid">
+														<?php
+															foreach($providers as $prv){
+														?>	
+															<div class="col-md-4 provider">
+																<h4><?php echo $prv['first_name'] . ' ' . $prv['last_name'];?><h4>
+															</div>
+														<?php
+															}
+														?>
+														</div>
+												<?php
+													}
+												?>
+												</div>
+											</div>
 										</div>
 								</div>
 							</section>

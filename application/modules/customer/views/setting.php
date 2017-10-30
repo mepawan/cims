@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+if($user_profile) { $preferred_contact_method = explode(',', $user_profile['preferred_contact_method']); }
 ?>
 
 <?php $this->load->view('part/head'); ?>
@@ -246,20 +247,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 														<div class="col-md-12">
 															<table class="cards-listing-tbl">
 															<colgroup>
-																<col width="30%">
+																<col width="22%">
 																<col width="15%">
-																<col width="30%">
+																<col width="25%">
+																<col width="10%">
 																<col width="10%">
 																<col width="20%">
 																
 															</colgroup>
-																<tr><th>Card Number</th><th>Type</th><th>Name on Card</th><th>Expiry </th><th></th></tr>
+																<tr><th>Card Number</th><th>Type</th><th>Name on Card</th><th>Expiry </th><th>CVV</th><th></th></tr>
 																<?php
 																	$cnt = 1;
 																	if(isset($user_cards)){
 																		foreach($user_cards as $card){
 																?>
-																			<tr id="card_<?php echo $card['id'];?>" data-id="<?php echo $card['id'];?>"><td><?php echo $card['number'];?></td><td><?php echo $card['type'];?></td><td><?php echo $card['name'];?></td><td><?php echo $card['exp'];?></td><td> <a class="btn btn-info edit-card-btn" href="javascript:void(0);"><i class="fa fa-pencil" aria-hidden="true"></i></a> <a class="btn btn-danger delete-card-btn" href=""><i class="fa fa-trash" aria-hidden="true"></i></a> </td></tr>
+																			<tr id="card_<?php echo $card['id'];?>" data-id="<?php echo $card['id'];?>"><td><?php echo $card['number'];?></td><td><?php echo $card['type'];?></td><td><?php echo $card['name'];?></td><td><?php echo $card['exp'];?></td><td><?php echo $card['code'];?></td><td> <a class="btn btn-info edit-card-btn" href="javascript:void(0);"><i class="fa fa-pencil" aria-hidden="true"></i></a> <a class="btn btn-danger delete-card-btn" href=""><i class="fa fa-trash" aria-hidden="true"></i></a> </td></tr>
 																<?php
 																		}
 																	}
@@ -272,6 +274,52 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												</div>
 												<div class="clearfix clear"></div>
 											</div>
+											<div class="setting-row">
+												<div class="col-md-4 left">
+													<h3> Profile </h3>
+												</div>
+												<div class="col-md-8 right ">
+													<div class="view-section">
+														<div class="col-md-10">
+															<label class="view-item"> 
+																 
+															</label>
+															<label class="view-item"> <?php echo $user_profile['preferred_contact_method']; ?> </label>
+															
+														</div>
+														<div class="col-md-2">
+															<a class="edit-setting-btn" href="javascript:void(0);"> Edit </a>
+														</div>
+														<div class="clearfix clear"></div>
+													</div>
+													<div class="form-section">
+														<div class="col-md-10">
+															<span class="msg-wrap"></span>
+															<form method="post" action="#" name="form-validation" class="setting-form" id="form_personal_info" enctype="multipart/form-data">
+																<div class="form-group ">
+																	<label for="preferred_contact_method" class="form-label col-sm-4">Preferred Contact Method?</label>
+																	<div  class="col-sm-8">
+																		<select name="profile[preferred_contact_method][]" multiple id="preferred_contact_method">
+																			<option value="facetime" <?php if($user_profile && in_array('facetime',$preferred_contact_method)){ echo "selected";} ?>>Face Time</option>
+																			<option value="tango" <?php if($user_profile && in_array('tango',$preferred_contact_method)) { echo "selected";} ?>>Tango</option>
+																			<option value="skype" <?php if($user_profile && in_array('skype',$preferred_contact_method)) { echo "selected";} ?>>Skype</option>
+																			<option value="android_video_calling" <?php if($user_profile && in_array('android_video_calling',$preferred_contact_method)) { echo "selected";} ?>>Android Video Calling</option>
+																		</select>
+																	</div>
+																</div>
+																<div class="form-group text-center">
+																	<button class="btn btn-primary width-150" type="submit">Save</button>
+																	
+																</div>
+															</form>
+														</div>
+														<div class="col-md-2">
+															<button class="btn btn-warning width-150 close-form-view-btn" type="button">Cancel</button>
+														</div>
+													</div>
+												</div>
+												<div class="clearfix clear"></div>
+											</div> <!-- end setting-row -->
 											
 										</div>
 									
@@ -345,6 +393,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									</div>
 									<div class="clearfix clear"></div>
 								</div>
+								
+								
+								<div class="form-group">
+									<label for="card-code" class="form-label col-sm-3">Security Code (CVV)<span class="red">*</span></label>
+									<div class="col-sm-8">
+										<input type="text" required id="card-code" placeholder="Security Code (CVV)"  name="code" class=""  />
+									</div>
+									<div class="clearfix clear"></div>
+								</div>
+								
 								<div class="form-group">
 									<label for="card-hname" class="form-label col-sm-3">Card Hoder's Name<span class="red">*</span></label>
 									<div class="col-sm-8">

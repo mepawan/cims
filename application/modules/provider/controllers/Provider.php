@@ -62,6 +62,7 @@ class Provider extends MX_Controller {
 		$validate = false;
 		if(isset($post_data['first_name'])){
 			$val->set_rules('first_name', 'First Name', 'trim|required');
+			$validate = true;
 		}
 		if(isset($post_data['last_name'])){
 			$val->set_rules('last_name', 'Last Name', 'trim|required');
@@ -96,6 +97,13 @@ class Provider extends MX_Controller {
 			unset($update_data);
 		}
 		
+		if(isset($_FILES['profile_pic'])){
+			$profile_pic = ci_base_url() . 'public/upload/profilepic_'.$this->ciauth->get_user_id().'.png';
+			move_uploaded_file($_FILES['profile_pic']['tmp_name'],FCPATH .'public/upload/profilepic_'.$this->ciauth->get_user_id().'.png');
+			$update_data['profile_pic'] = $profile_pic;
+		}
+		
+		
 		if (!$validate || $val->run()){
 			if($update_data && count($update_data) > 0){
 				$this->Util_model->update('users',$update_data);
@@ -111,10 +119,9 @@ class Provider extends MX_Controller {
 					$this->data['msg'] = 'There is some problem to process request';
 				}
 			} else if($profile_post && count($profile_post) > 0){
-				
 				$user_profile = $this->Util_model->read('provider_profile',array('where'=>array('uid' => $this->ciauth->get_user_id())));
+				$profile_post['uid'] = $this->ciauth->get_user_id();
 				if($user_profile){
-					$profile_post['uid'] = $this->ciauth->get_user_id();
 					$this->Util_model->update('provider_profile',$profile_post,'uid');
 				} else {
 					$this->Util_model->create('provider_profile',$profile_post);
@@ -122,7 +129,6 @@ class Provider extends MX_Controller {
 				$this->data['status'] = 'success';
 				$this->data['msg']= 'Profile updated successfully';
 			}
-			
 		} else {
 			$this->data['status'] = 'fail';
 			$this->data['form_errors'] = $this->form_validation->error_array();
@@ -131,7 +137,6 @@ class Provider extends MX_Controller {
 			echo json_encode($this->data);
 			die;
 		}
-		
 		die;
 	}
 

@@ -1736,3 +1736,19 @@ border-bottom: 1px solid #eee;
 	list-style:none;
 	display:inline-block;
 }
+.inline{
+	display:inline-block;
+}
+.search-form-wrap{
+	text-align:center;
+}
+.search-form-wrap .search-box{
+	width:400px;
+	margin-right:5px;
+	float:none;
+}
+.find-providers-title{
+	text-align:center;
+	margin-top:25px;
+	
+}
