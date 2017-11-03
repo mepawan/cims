@@ -30,7 +30,7 @@ class Customer extends MX_Controller {
 			$search_fields = array('u.first_name','u.last_name','pp.area_of_experience','pp.area_of_experience_other','pp.education');
 			$where_kw = '';
 			array_walk($keywords, function($kw) use(&$where_kw, &$search_fields ){
-				array_walk($search_fields, function($sf) use(&$kw,&$where) {
+				array_walk($search_fields, function($sf) use(&$kw,&$where_kw) {
 					if(!$where_kw){
 						$where_kw .= " " . $sf . " like '%".$kw."%' ";
 					} else {
@@ -39,11 +39,11 @@ class Customer extends MX_Controller {
 				}); 
 			});
 			if($where_kw){
-				$where = ' AND ' . $where_kw;
+				$where .= ' AND ' . $where_kw;
 			}
 			$sql = 'select u.*,pp.* from users u left join provider_profile pp on (u.id=pp.uid) '. $where. ' ';
 			$this->data['providers'] = $this->Util_model->custom_query($sql);
-			
+						
 		}
 
 		$this->data['profile'] = ($customer_profile)?$customer_profile[0]:'';
@@ -301,6 +301,18 @@ class Customer extends MX_Controller {
 			echo json_encode(array('status' => 'success'));
 			die;
 			
+	}
+	public function provider($id = ""){
+		if(isset($id)){
+			$this->data['entity'] = 'provider';
+			$this->data['heading'] = 'Provider Profile';
+			$this->data['icon'] = 'icmn-home2';
+			$where = ' where pp.id= '.$id;
+			$sql = 'select u.*,pp.* from provider_profile pp left join users u on (u.id=pp.uid) '. $where. ' ';
+			$this->data['providers'] = $this->Util_model->custom_query($sql);
+			
+			$this->load->view('customer/provider_profile', $this->data);
+		}
 	}
 	
 	

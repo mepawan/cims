@@ -37,12 +37,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													if(isset($providers)){
 												?>	
 														<h3>Search Result</h3>
+														<?php if(empty($providers)){ echo "No search result found with your Keyword"; } ?>
 														<div class="row grid">
 														<?php
 															foreach($providers as $prv){
 														?>	
-															<div class="col-md-4 provider">
-																<h4><?php echo $prv['first_name'] . ' ' . $prv['last_name'];?><h4>
+															<div class="col-md-3 provider">
+																
+																<?php if(!empty($prv['profile_pic'])){ ?>
+																	<a href="<?php echo ci_base_url('customer/provider/'.$prv['id']); ?>"><img src="<?php echo $prv['profile_pic']; ?>" height="100px" width="100%"></a>
+																<?php } else { ?>
+																	<a href="<?php echo ci_base_url('customer/provider/'.$prv['id']); ?>"><img src="<?php echo ci_base_url('public/upload'); ?>/default_profile_pic.png" height="100px" width="100%"></a>
+																<?php } ?>
+																<a href="<?php echo ci_base_url('customer/provider/'.$prv['id']); ?>"><h4><?php echo $prv['first_name'] . ' ' . $prv['last_name'];?> <?php if(!empty($prv['years_of_experience'])){ ?> ( <?php echo $prv['years_of_experience']; ?> years ) <?php } ?><h4></a>
+																<p><?php echo str_replace("_", " ", $prv['area_of_experience']); ?></p>
+																
+																
+																	
 															</div>
 														<?php
 															}
@@ -50,6 +61,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 														</div>
 												<?php
 													}
+													
 												?>
 												</div>
 											</div>
