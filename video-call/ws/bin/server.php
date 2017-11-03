@@ -12,7 +12,7 @@ require '../vendor/autoload.php';
 use Amir\Comm;
 
 //set an array of origins allowed to connect to this server
-$allowed_origins = ['localhost','35.202.43.243' '127.0.0.1'];
+$allowed_origins = ['localhost','35.202.43.243', '127.0.0.1'];
 
 // Run the server application through the WebSocket protocol on port 8080
 $app = new Ratchet\App('35.202.43.243', 8080, '0.0.0.0');//App(hostname, port, 'whoCanConnectIP', '')
