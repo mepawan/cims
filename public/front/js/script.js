@@ -167,18 +167,3 @@ jQuery(document).ready(function(){
 	
 });
 
-
-	jQuery(document).ready(function(e){
-		var rh = jQuery(".right-bar").height();
-		var lh = jQuery(".left-bar").height();
-		console.log(rh);
-		console.log(lh);
-		if(lh < rh){
-			jQuery(".left-bar").height(rh);
-		} else {
-			jQuery(".right-bar").height(lh);
-		}
-		
-		
-	});
-

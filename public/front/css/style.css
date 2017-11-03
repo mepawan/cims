@@ -66,13 +66,6 @@ body {
 .red{
 	color:red;
 }
-.col-md-2.left-bar {
-    border-right: 1px solid #e0d5c8;
-    padding-right: 0;
-}
-.col-md-10.right-bar {
-    padding-left: 30px;
-}
 /*--------------Header nav start---------------*/
 #nav-primary {
 	float: right;
@@ -302,12 +295,10 @@ a.tog_icon:after {
 	background-repeat: no-repeat;
 }
 .ands_work {
-	padding: 64px 0;
+	padding: 5px 0;
 	text-align: center;
 }
- .content-section{
-	padding:50px 
- }
+
 .ands_work h2, .content-section h2 {
     font-size: 28px;
     line-height: 38px;
@@ -1359,14 +1350,17 @@ input:read-only {
 }
 /****************provider dashboard****************************/
 
-#provider-details{ text-align: left;}
+#content{ text-align: left;}
 
-#provider-details h3 {
+#content h3 {
     text-transform: capitalize;
     font-size: 26px;
     font-weight: bold;
     color: #0a003d !important;
     margin-bottom: 10px;
+}
+.profile-menu {
+
 }
 .profile-menu a {
     font-size: 16px;
@@ -1376,7 +1370,7 @@ input:read-only {
     padding: 0;
     list-style: none;
 }
-#provider-details p {
+#content p {
     font-size: 20px;
 }
 .services span:after {
@@ -1400,10 +1394,10 @@ div#top_move p {
     border-bottom: 1px solid;
     margin-bottom: 0px;
 }
-#provider-details .services {
+#content .services {
     margin-bottom: 30px;
 }
-#provider-details select {
+#content select {
     width: 100%;
 }
 
@@ -1535,12 +1529,46 @@ div#top_move p {
 
 
 /************create contract ***************/
-.create_contract, .sub-cat {
-    border: 1px solid #e0d5c8;
-    padding: 10px 20px 20px;
-    text-align: initial;
-        float: left;
-    width: 100%;
+.cats-list ul{
+	list-style:none;
+	padding:0;
+	
+}
+.cats-list ul li{
+	float:left;
+	width:49%;
+}
+.cats-list ul li a{
+	padding:10px 15px;
+	margin:8px;
+	display:block;
+	background:#eee;
+}
+.cats-list ul li a:hover{
+	background:#ccc;
+}
+
+.cat-hierarchy{
+	margin: 50px auto;
+}
+.cat-hierarchy ul{
+	list-style:none;
+	padding:0;
+	
+}
+.cat-hierarchy ul li{
+	float:left;
+}
+.cat-hierarchy ul li a{
+	padding:0px 5px;
+	margin:0 8px;
+	display:block;
+}
+.cat-hierarchy ul li a:hover{
+
+}
+.clearfix{
+	float:none !important;
 }
 .create_contract h3 {
     color: #f7901e;
@@ -1555,19 +1583,7 @@ div#top_move p {
 .create_contract a {
     font-weight: bold;
 }
-.sub-cat h3 {
-    border-bottom: 1px solid #e0d5c8;
-    font-size: 24px;
-    margin-top: 10px;
-    margin-bottom: 15px;
-    padding-bottom: 15px;
-    font-weight: bold;
-    color: #5c5954;
-}
-.sub-cat a {
-    font-size: 16px;
-    margin-left: 12px;
-}
+
 .headings {
     font-size: 16px;
     color: #5c5954;
@@ -1611,22 +1627,160 @@ div#top_move p {
     padding: 20px;
 }
 .suggestion_data {
-    border-bottom: 1px solid #e0d5c8;
+    padding: 10px 20px;
+        border-bottom: 1px solid #e0d5c8;
     border-top: 1px solid #e0d5c8;
 }
-.suggestion_data span {
-    font-size: 16px;
+.left-section{
+	
 }
-.sugg_result {
-    padding: 20px 10px;
-    border-bottom: 1px solid #e0d5c8;
+.content-section{
+	min-height:400px;
+	border-left:1px solid #999;
+	
 }
-/*******************profile left side************************/
-li.menu-link-active {
-    background: #e0d5c8;
-  padding: 10px;
+.profile-menu ul {
+	padding:0;
 }
-li.menu-link {padding: 10px; }
-li.menu-link a, li.menu-link-active a {
-    color: #5c5954;
+.profile-menu ul li{
+	margin:1px 0;
+}
+.profile-menu ul li a{
+	padding:10px 12px;
+	background:#ddd;
+	display: block;
+}
+.profile-menu ul li a:hover,.profile-menu ul li a.active{
+	background:#666;
+	color:#fff;
+}
+.cards-listing-tbl {
+	width:100%;
+	margin-top:10px;
+}
+.cards-listing-tbl th{
+	border:1px solid #888;
+	padding: 0 5px;
+}
+.cards-listing-tbl td{
+	border:1px solid #ddd;
+	padding: 0 5px;
+}
+.pref-tbl{
+	width:100%;
+} 
+.pref-tbl th{
+	border-bottom: 1px solid #999;
+	padding: 5px 7px;
+}
+.pref-tbl td{
+	padding: 5px 10px;
+border-bottom: 1px solid #eee;
+}
+.pref-tbl td label{
+	font-weight:normal;
+}
+
+.pcheckbox {
+	
+}
+.pcheckbox input[type="checkbox"] {
+  visibility: hidden;
+  display:none;
+}
+.pcheckbox label {
+  cursor: pointer;
+}
+.pcheckbox input[type="checkbox"] + label:before {
+  border: 1px solid #999;
+  content: "\00a0";
+  display: inline-block;
+  font: 16px/1em sans-serif;
+  height: 18px;
+  margin: 0 .25em 0 0;
+  padding: 0;
+  vertical-align: top;
+  width: 18px;
+}
+.pcheckbox input[type="checkbox"]:checked + label:before {
+  background: #fff;
+  color: #333;
+  content: "\2713";
+  text-align: center;
+  border: 1px solid #333;
+}
+.pcheckbox input[type="checkbox"]:checked + label:after {
+  font-weight: bold;
+}
+
+.pcheckbox input[type="checkbox"]:focus + label::before {
+    outline: rgb(59, 153, 252) auto 5px;
+}
+.contracts-tbl{
+	width:100%;
+}
+.contracts-tbl th{
+	border-bottom:1px solid;
+	padding: 10px 5px;
+}
+.contracts-tbl td{
+	padding: 10px 5px;
+}
+.contract-info {
+	padding: 12px 0;
+}
+.contract-info ul{
+	list-style:none;
+}
+.contract-info ul li{
+	list-style:none;
+	display:inline-block;
+}
+.inline{
+	display:inline-block;
+}
+.search-form-wrap{
+	text-align:center;
+}
+.search-form-wrap .search-box{
+	width:400px;
+	margin-right:5px;
+	float:none;
+}
+.find-providers-title{
+	text-align:center;
+	margin-top:25px;
+}
+.work-sample-wrap{
+	margin:10px 0;
+}
+
+.provider p {
+    font-size: 16px !important;
+    font-weight: normal;
+    line-height: 20px;
+    margin-top: 5px;
+    word-wrap: break-word;
+}
+.col-md-3.provider:nth-child(4n+1) {
+    clear: both;
+}
+.col-md-3.provider {
+    margin-bottom:20px;
+}
+.provider h4 {
+    margin-top: 8px;
+}
+.provider_pro p {
+    font-size: 18px !important;
+    font-weight: normal;
+}
+.provider_pro .col-md-6 h4 {
+       margin: 20px 0 10px;
+    font-size: 20px;
+    color: #0a003d;
+}
+.provider_pro .col-md-6 p {
+    font-size: 14px !important;
+    color: #222 !important;
 }

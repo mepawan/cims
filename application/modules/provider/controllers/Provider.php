@@ -17,11 +17,11 @@ class Provider extends MX_Controller {
 	}
  	public function index(){
 		$this->data['entity'] = 'dashboard';
-		$this->data['heading'] = 'Provider Dashboard';
+		$this->data['heading'] = 'Welcome, ' . $this->ciauth->get_user('first_name');
 		$this->data['icon'] = 'icmn-home2';
 		$this->data['user'] = $this->ciauth->get_user();
-		$provider_profile = $this->Util_model->read('provider_profile',array('where' => array('uid'=>$this->ciauth->get_user_id())));
-		$this->data['profile'] = ($provider_profile)?$provider_profile[0]:'';
+		$customer_profile = $this->Util_model->read('provider_profile',array('where' => array('uid'=>$this->ciauth->get_user_id())));
+		$this->data['profile'] = ($customer_profile)?$customer_profile[0]:'';
 		$this->load->view('provider/dashboard', $this->data);
 	}
 	function email_check($email) {
@@ -41,104 +41,108 @@ class Provider extends MX_Controller {
 				
 		return $result;
 	}
-	public function profile(){
-		//$uid = $this->ciauth->get_user();
-		//echo "<pre>"; print_r($uid); die;
-		if($this->input->post()){
-				
-				
-			$val = $this->form_validation;
-			// Set form validation rules
+	function setting(){
+		$this->data['entity'] = 'setting';
+		$this->data['heading'] = 'Setting';
+		$user = $this->Util_model->read('users',array('where' => array('id' => $this->ciauth->get_user_id())));
+		$user = $user[0];
+		$this->data['user'] = $user;
+		$this->data['countries'] = $this->Util_model->read('country');
+		$user_profile = $this->Util_model->read('provider_profile',array('where'=>array('uid' => $this->ciauth->get_user_id())));
+		$this->data['user_profile'] = ($user_profile)?$user_profile[0]:array();
+		$this->load->view('provider/setting', $this->data);
+		
+	}
+	function save_setting(){
+		global $ci_settings;
+		$post_data = $this->input->post();
+		$update_data = $post_data;
+		$update_data['id'] = $this->ciauth->get_user_id();
+		$val = $this->form_validation;
+		$validate = false;
+		if(isset($post_data['first_name'])){
 			$val->set_rules('first_name', 'First Name', 'trim|required');
+			$validate = true;
+		}
+		if(isset($post_data['last_name'])){
 			$val->set_rules('last_name', 'Last Name', 'trim|required');
-			//$val->set_rules('bio', 'Bio', 'trim|required');
-			//$val->set_rules('address', 'Address', 'trim|required');
-			//$val->set_rules('city', 'City', 'trim|required');
-			//$val->set_rules('state', 'State', 'trim|required');
-			//$val->set_rules('zipcode', 'Zipcode', 'trim|required');
-			//$val->set_rules('country', 'Country', 'trim|required');
-			//$val->set_rules('phone', 'Phone', 'trim|required');
-				
-			if($this->input->post('email') && $this->input->post('email') != $this->ciauth->get_user('email')){
-				$val->set_rules('email', 'Email', 'trim|required|valid_email|callback_email_check');
-			}
-			if($this->input->post('username') && $this->input->post('username') != $this->ciauth->get_user('username')){
-				$val->set_rules('username', 'Username', 'trim|required|callback_username_check');
-			}
+			$validate = true;
+		}
+		if(isset($post_data['email']) && $post_data['email'] != $this->ciauth->get_user('email') ){
+			$val->set_rules('email', 'Email', 'trim|required|valid_email|callback_email_check');
+			$validate = true;
+		} else {
+			unset($update_data['email']);
+		}
+		if(isset($post_data['username']) && $post_data['username'] != $this->ciauth->get_user('username') ){
+			$val->set_rules('username', 'Username', 'trim|required|callback_username_check');
+			$validate = true;
+		} else {
+			unset($update_data['username']);
+		}
+		
+		if(isset($post_data['password'])){
+			$val->set_rules('password', 'Password', 'trim|required|min_length['.$ci_settings['min_password_length'].']|max_length['.$ci_settings['max_password_length'].']|matches[confirm_password]');
+			$val->set_rules('confirm_password', 'Confirm Password', 'trim|required');
+			$validate = true;
 			
-			if ($val->run()){
-				//update users table
-				$user_data = array(
-					'id' => $this->ciauth->get_user_id(),
-					'first_name' => $this->input->post('first_name'),
-					'last_name' => $this->input->post('last_name'),
-					'bio' => $this->input->post('bio'),
-					'address' => $this->input->post('address'),
-					'city' => $this->input->post('city'),
-					'state' => $this->input->post('state'),
-					'zipcode' => $this->input->post('zipcode'),
-					'country' => $this->input->post('country'),
-					'phone' => $this->input->post('phone'),
-				);
-				if($this->input->post('email') != $this->ciauth->get_user('email')){ 
-					$user_data['email'] = $this->input->post('email');
+		}
+		
+		$profile_post = $this->input->post('profile');
+		if($profile_post){
+			if(isset($profile_post['languages'])){
+				$profile_post['languages'] = implode(",",$profile_post['languages']);
+			}
+			if(isset($profile_post['area_of_experience'])){
+				$profile_post['area_of_experience'] = implode(",",$profile_post['area_of_experience']);
+			}
+			if(isset($profile_post['availabe_days_time'])){
+				$profile_post['availabe_days_time'] = implode(",",$profile_post['availabe_days_time']);
+			}
+			if(isset($profile_post['preferred_contact_method'])){
+				$profile_post['preferred_contact_method'] = implode(",",$profile_post['preferred_contact_method']);
+			}
+			unset($update_data);
+		}
+		//print_r($_FILES['profile_pic']);
+		if(isset($_FILES['profile_pic'])){
+			$profile_pic = ci_base_url() . 'public/upload/profilepic_'.$this->ciauth->get_user_id().'.png';
+			move_uploaded_file($_FILES['profile_pic']['tmp_name'],FCPATH .'public/upload/profilepic_'.$this->ciauth->get_user_id().'.png');
+			$update_data['profile_pic'] = $profile_pic;
+		}
+		$work_samples = array();
+		if(isset($_FILES['work_samples'])){
+			foreach($_FILES['work_samples']['name'] as $k => $v){
+				if(!file_exists(FCPATH .'public/upload/ws/'.$this->ciauth->get_user_id())){
+					@mkdir(FCPATH .'public/upload/ws/'.$this->ciauth->get_user_id(),0777);
 				}
-				if($this->input->post('username') != $this->ciauth->get_user('username')){
-					$user_data['username'] = $this->input->post('username');
+				if(move_uploaded_file($_FILES['work_samples']['tmp_name'][$k],FCPATH .'public/upload/ws/'.$this->ciauth->get_user_id().'/'.$v)){
+					$work_samples[] = ci_base_url() . 'public/upload/ws/'.$this->ciauth->get_user_id().'/'.$v;
+				} else {
+					echo $v . ' not saved';
 				}
-				
-				
-				$this->Util_model->update('users',$user_data);
-				
-				//update provider_profile table
-				$user_profile_data = $this->input->post('profile');
-				$languages = implode(',', $user_profile_data['languages']);
-				$area_of_experience = implode(',', $user_profile_data['area_of_experience']);
-				$availabe_days_time = implode(',', $user_profile_data['availabe_days_time']);
-				$video_calling_feature = implode(',', $user_profile_data['video_calling_feature']);
-				$user_profile_data['languages']  = $languages;
-				$user_profile_data['area_of_experience']  = $area_of_experience;
-				$user_profile_data['availabe_days_time']  = $availabe_days_time;
-				$user_profile_data['video_calling_feature']  = $video_calling_feature;
-				
-				if($_FILES["resume"]["name"])	{	
-					$target_dir = "public/upload/";
-					$pathinfo = pathinfo($_FILES["resume"]["name"]);
-					$resume_name = "resume_".$this->ciauth->get_user_id('email').".".$pathinfo['extension'];
-					$target_file = $target_dir . $resume_name ;
-					
-					if (move_uploaded_file($_FILES["resume"]["tmp_name"], $target_file)) {
-						$user_profile_data['resume'] = $resume_name; 
-					}
-				}
-				if($_FILES["pictures_of_work"]["name"])	{	
-					$target_dir = "public/upload/";
-					$pathinfo = pathinfo($_FILES["pictures_of_work"]["name"]);
-					$resume_name = "pictureswork_".$this->ciauth->get_user_id('email').".".$pathinfo['extension'];
-					$target_file = $target_dir . $resume_name ;
-					
-					if (move_uploaded_file($_FILES["pictures_of_work"]["tmp_name"], $target_file)) {
-						$user_profile_data['pictures_of_work'] = $resume_name; 
-					}
-				}
-				
-				if(!isset($user_profile_data['uid']) || $user_profile_data['uid']){
-					$user_profile_data['uid']  = $this->ciauth->get_user_id();
-				}
-				
-				$provider_profile = $this->Util_model->read('provider_profile',array('where' => array('uid'=>$user_data['id'])));
-				
-				//echo "<pre>"; print_r($user_profile_data); die;
-				if(!empty($provider_profile)){
-					$this->Util_model->update('provider_profile',$user_profile_data,'uid');
-				}
-				else{
-					$this->Util_model->create('provider_profile',$user_profile_data);
-				}
-				
-				$user = $this->Util_model->read('users',array('where' => array('id'=>$user_data['id'])));
-				
-				
+			}
+		}
+
+		$oldws = isset($_POST['oldws'])?$_POST['oldws']:'';
+		$rmws = isset($_POST['rmws']) && $_POST['rmws'] ?$_POST['rmws']:'';
+		if(isset($_POST['oldws'])){
+			$profile_post['work_samples'] = $oldws . implode(',',$work_samples);
+		}
+		if($rmws){
+			$rmws = explode(",",$rmws);
+			array_walk($rmws,function($rws){
+				$rws_path = str_replace(ci_base_url(),'',$rws);
+				unlink(FCPATH.$rws_path);
+			});
+		}
+		
+		print_r($profile_post);
+		
+		if (!$validate || $val->run()){
+			if($update_data && count($update_data) > 0){
+				$this->Util_model->update('users',$update_data);
+				$user = $this->Util_model->read('users',array('where' => array('id'=>$update_data['id'])));
 				if($user){
 					$user = $user[0];
 					$user = $user;
@@ -149,61 +153,51 @@ class Provider extends MX_Controller {
 					$this->data['status'] = 'fail';
 					$this->data['msg'] = 'There is some problem to process request';
 				}
-			} else {
-				$this->data['status'] = 'fail';
-				$this->data['form_errors'] = $this->form_validation->error_array();
-			}
-		}
-		if(is_ajax()){
-			echo json_encode($this->data);
-			die;
-		} else {
-			$this->data['entity'] = 'profile';
-			$this->data['heading'] = 'Profile';
-			$this->data['user'] = $this->ciauth->get_user();
-			$this->data['add_recaptcha_js'] = true;
-			$provider_profile = $this->Util_model->read('provider_profile',array('where' => array('uid'=>$this->ciauth->get_user_id())));
-			
-			$this->data['profile'] = ($provider_profile)?$provider_profile[0]:'';
-			$this->data['countries'] = $this->Util_model->read('country');
-			$this->load->view('provider/profile', $this->data);
-		}
-	}
-	public function payment(){
-		if($this->input->post()){
-			$val = $this->form_validation;
-			// Set form validation rules
-			$val->set_rules('paypal_email', 'Paypal Emal', 'trim|required|valid_email');
-			if ($val->run()){
-				//update users table
-				$profile_data = array(
-					'uid' => $this->ciauth->get_user_id(),
-					'paypal_email' => $this->input->post('paypal_email'),
-				);
-				$provider_profile = $this->Util_model->read('provider_profile',array('where' => array('uid'=>$this->ciauth->get_user_id())));
-				if(!empty($provider_profile)){
-					$this->Util_model->update('provider_profile',$profile_data,'uid');
-				} else{
-					$this->Util_model->create('provider_profile',$profile_data);
+			} else if($profile_post && count($profile_post) > 0){
+				$user_profile = $this->Util_model->read('provider_profile',array('where'=>array('uid' => $this->ciauth->get_user_id())));
+				$profile_post['uid'] = $this->ciauth->get_user_id();
+				if($user_profile){
+					$this->Util_model->update('provider_profile',$profile_post,'uid');
+				} else {
+					$this->Util_model->create('provider_profile',$profile_post);
 				}
-				$user = $this->Util_model->read('users',array('where' => array('id'=>$user_data['id'])));
 				$this->data['status'] = 'success';
-				$this->data['msg']= 'Payment setting updated successfully';
-			} else {
-				$this->data['status'] = 'fail';
-				$this->data['form_errors'] = $this->form_validation->error_array();
+				$this->data['msg']= 'Profile updated successfully';
 			}
+		} else {
+			$this->data['status'] = 'fail';
+			$this->data['form_errors'] = $this->form_validation->error_array();
 		}
 		if(is_ajax()){
 			echo json_encode($this->data);
 			die;
-		} else {
-			$provider_profile = $this->Util_model->read('provider_profile',array('where' => array('uid'=>$this->ciauth->get_user_id())));
-			$this->data['profile'] = ($provider_profile)?$provider_profile[0]:'';
-			$this->data['entity'] = 'payment';
-			$this->data['heading'] = 'Payment Setting';
-			$this->load->view('provider/payment', $this->data);
 		}
+		die;
 	}
 
+	public function preferences(){
+			$this->data['entity'] = 'preferences';
+			$this->data['heading'] = 'Preferences';
+			$this->data['icon'] = 'icmn-home2';
+			$prefs_raw = $this->Util_model->read('user_perferences',array('where' => array('uid' => $this->ciauth->get_user_id())));
+			$prefs = array();
+			array_walk($prefs_raw, function($prf) use(&$prefs){
+				$prefs[$prf['preference_key']] = $prf['preference_value'];
+			});
+			 $this->data['preferences'] = $prefs;
+			$this->load->view('provider/preferences', $this->data);
+	}
+	
+	public function save_prefs(){
+			$uid = $this->ciauth->get_user_id();
+			$key = $this->input->post('key');
+			$val = $this->input->post('val');
+			$sql = 'INSERT INTO user_perferences (uid,preference_key,preference_value) VALUES ("'.$uid.'", "'.$key.'", "'.$val.'") ON DUPLICATE KEY  UPDATE preference_value="'.$val.'";';
+			$this->Util_model->custom_query($sql,false);
+			
+			
+			echo json_encode(array('status' => 'success'));
+			die;
+			
+	}
 }
