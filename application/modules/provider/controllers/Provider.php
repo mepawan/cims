@@ -90,19 +90,54 @@ class Provider extends MX_Controller {
 		
 		$profile_post = $this->input->post('profile');
 		if($profile_post){
-			$profile_post['languages'] = ($profile_post['languages'])?implode(",",$profile_post['languages']):'';
-			$profile_post['area_of_experience'] = ($profile_post['area_of_experience'])?implode(",",$profile_post['area_of_experience']):'';
-			$profile_post['availabe_days_time'] = ($profile_post['availabe_days_time'])?implode(",",$profile_post['availabe_days_time']):'';
-			//$profile_post['video_calling_feature'] = ($profile_post['video_calling_feature'])?implode(",",$profile_post['video_calling_feature']):'';
+			if(isset($profile_post['languages'])){
+				$profile_post['languages'] = implode(",",$profile_post['languages']);
+			}
+			if(isset($profile_post['area_of_experience'])){
+				$profile_post['area_of_experience'] = implode(",",$profile_post['area_of_experience']);
+			}
+			if(isset($profile_post['availabe_days_time'])){
+				$profile_post['availabe_days_time'] = implode(",",$profile_post['availabe_days_time']);
+			}
+			if(isset($profile_post['preferred_contact_method'])){
+				$profile_post['preferred_contact_method'] = implode(",",$profile_post['preferred_contact_method']);
+			}
 			unset($update_data);
 		}
-		
+		//print_r($_FILES['profile_pic']);
 		if(isset($_FILES['profile_pic'])){
 			$profile_pic = ci_base_url() . 'public/upload/profilepic_'.$this->ciauth->get_user_id().'.png';
 			move_uploaded_file($_FILES['profile_pic']['tmp_name'],FCPATH .'public/upload/profilepic_'.$this->ciauth->get_user_id().'.png');
 			$update_data['profile_pic'] = $profile_pic;
 		}
+		$work_samples = array();
+		if(isset($_FILES['work_samples'])){
+			foreach($_FILES['work_samples']['name'] as $k => $v){
+				if(!file_exists(FCPATH .'public/upload/ws/'.$this->ciauth->get_user_id())){
+					@mkdir(FCPATH .'public/upload/ws/'.$this->ciauth->get_user_id(),0777);
+				}
+				if(move_uploaded_file($_FILES['work_samples']['tmp_name'][$k],FCPATH .'public/upload/ws/'.$this->ciauth->get_user_id().'/'.$v)){
+					$work_samples[] = ci_base_url() . 'public/upload/ws/'.$this->ciauth->get_user_id().'/'.$v;
+				} else {
+					echo $v . ' not saved';
+				}
+			}
+		}
+
+		$oldws = isset($_POST['oldws'])?$_POST['oldws']:'';
+		$rmws = isset($_POST['rmws']) && $_POST['rmws'] ?$_POST['rmws']:'';
+		if(isset($_POST['oldws'])){
+			$profile_post['work_samples'] = $oldws . implode(',',$work_samples);
+		}
+		if($rmws){
+			$rmws = explode(",",$rmws);
+			array_walk($rmws,function($rws){
+				$rws_path = str_replace(ci_base_url(),'',$rws);
+				unlink(FCPATH.$rws_path);
+			});
+		}
 		
+		print_r($profile_post);
 		
 		if (!$validate || $val->run()){
 			if($update_data && count($update_data) > 0){

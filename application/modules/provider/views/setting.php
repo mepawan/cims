@@ -7,8 +7,8 @@ $this->load->view('part/head');
 	if($user_profile) { $languages = explode(',', $user_profile['languages']); }
 	if($user_profile) { $area_of_experience = explode(',', $user_profile['area_of_experience']); }
 	if($user_profile) { $availabe_days_time = explode(',', $user_profile['availabe_days_time']); }
-	//if($user_profile) { $video_calling_feature = explode(',', $user_profile['video_calling_feature']); }
-
+	if($user_profile) { $preferred_contact_method = explode(',', $user_profile['preferred_contact_method']); }
+	if($user_profile) { $work_samples = ($user_profile['work_samples']) ? explode(',', $user_profile['work_samples']) : ''; }
 
 ?>
 <body>
@@ -319,16 +319,14 @@ $this->load->view('part/head');
 												<div class="col-md-8 right ">
 													<div class="view-section">
 														<div class="col-md-10">
-															<label class="view-item"> 
-																<?php 
-																	$aoe = $user_profile['area_of_experience'];
-																	$aoe = ($aoe)?str_replace(";",',',$aoe):'';
-																	$aoe = ($aoe)?ucwords(str_replace("_", " ",$aoe)):'';
-																	echo $aoe;
-																?> 
-															</label>
-															<label class="view-item"> <?php echo $user_profile['years_of_experience']; ?> Years</label>
+														
+															<label class="view-item"> <?php echo $user_profile['languages'] ; ?> </label>
 															<label class="view-item"> <?php echo $user_profile['education'] ; ?> </label>
+															<?php
+																if($user_profile['have_license_certification'] == 'yes'){
+																	echo '<label class="view-item"> Have license/certification </label>';
+																}
+															?>
 														</div>
 														<div class="col-md-2">
 															<a class="edit-setting-btn" href="javascript:void(0);"> Edit </a>
@@ -339,32 +337,16 @@ $this->load->view('part/head');
 														<div class="col-md-10">
 															<span class="msg-wrap"></span>
 															<form method="post" action="#" name="form-validation" class="setting-form" id="form_personal_info" enctype="multipart/form-data">
+																
 																<div class="form-group">
-																	<label for="area_of_experience" class="form-label col-sm-4">Area of Experience </label>
+																	<label for="bio" class="form-label col-sm-4">Bio </label>
 																	<div class="col-sm-8">
-																		<select name="profile[area_of_experience][]" multiple >
-																			<option value="ability_to_work_under_pressure" <?php if($user_profile && in_array('ability_to_work_under_pressure',$area_of_experience)) { echo "selected";} ?> >Ability to work under pressure</option>
-																			<option value="adaptability" <?php if($user_profile && in_array('adaptability',$area_of_experience)) { echo "selected";} ?> >Adaptability</option>
-																			<option value="administering_medication" <?php if($user_profile && in_array('administering_medication',$area_of_experience)) { echo "selected";} ?> >Administering medication</option>
-																			<option value="advising_people" <?php if($user_profile && in_array('advising_people',$area_of_experience)) { echo "selected";} ?> >Advising people</option>
-																		</select>
+																		<textarea name="profile[bio]" ><?php echo $user_profile['bio']; ?></textarea>
 																	</div>
 																	<div class="clearfix clear"></div>
 																</div>
-																<div class="form-group">
-																	<label for="area_of_experience_other" class="form-label col-sm-4">Area of Experience other </label>
-																	<div class="col-sm-8">
-																		<input type="text" placeholder="Area of Experience other" name="profile[area_of_experience_other]" class="" id="area_of_experience_other" value="<?php if($user_profile) echo $user_profile['area_of_experience_other'];  ?>" />
-																	</div>
-																	<div class="clearfix clear"></div>
-																</div>
-																<div class="form-group">
-																	<label for="years_of_experience" class="form-label col-sm-4">Years of Experience </label>
-																	<div class="col-sm-8">
-																		<input type="text"  placeholder="Years of Experience" name="profile[years_of_experience]" class="" id="years_of_experience" value="<?php if($user_profile) echo $user_profile['years_of_experience']; ?>" />
-																	</div>
-																	<div class="clearfix clear"></div>
-																</div>
+																
+																
 																<div class="form-group">
 																	<label for="education" class="form-label col-sm-4">Education </label>
 																	<div class="col-sm-8">
@@ -429,20 +411,26 @@ $this->load->view('part/head');
 																	<label for="languages" class="form-label col-sm-4">Languages Spoken</label>
 																	<div  class="col-sm-8">
 																		<select name="profile[languages][]" multiple id="languages">
-																		  <option value="akan" <?php if($profile && in_array('akan',$languages)) { echo "selected";} ?>>Akan</option>
-																		  <option value="amharic" <?php if($profile && in_array('amharic',$languages)) { echo "selected";} ?>>Amharic</option>
-																		  <option value="arabic" <?php if($profile && in_array('arabic',$languages)) { echo "selected";} ?>>Arabic</option>
-																		  <option value="assamese" <?php if($profile && in_array('assamese',$languages)) { echo "selected";} ?>>Assamese</option>
+																		  <option value="akan" <?php if($user_profile && in_array('akan',$languages)) { echo "selected";} ?>>Akan</option>
+																		  <option value="amharic" <?php if($user_profile && in_array('amharic',$languages)) { echo "selected";} ?>>Amharic</option>
+																		  <option value="arabic" <?php if($user_profile && in_array('arabic',$languages)) { echo "selected";} ?>>Arabic</option>
+																		  <option value="assamese" <?php if($user_profile && in_array('assamese',$languages)) { echo "selected";} ?>>Assamese</option>
 																
 																		</select>
 																	</div>
 																</div>
 																
-																
-																
-																
-																
-																
+																<div class="form-group ">
+																	<label for="preferred_contact_method" class="form-label col-sm-4">Preferred Contact Method?</label>
+																	<div  class="col-sm-8">
+																		<select name="profile[preferred_contact_method][]" multiple id="preferred_contact_method">
+																			<option value="facetime" <?php if($user_profile && in_array('facetime',$preferred_contact_method)){ echo "selected";} ?>>Face Time</option>
+																			<option value="tango" <?php if($user_profile && in_array('tango',$preferred_contact_method)) { echo "selected";} ?>>Tango</option>
+																			<option value="skype" <?php if($user_profile && in_array('skype',$preferred_contact_method)) { echo "selected";} ?>>Skype</option>
+																			<option value="android_video_calling" <?php if($user_profile && in_array('android_video_calling',$preferred_contact_method)) { echo "selected";} ?>>Android Video Calling</option>
+																		</select>
+																	</div>
+																</div>
 															
 																<div class="form-group text-center">
 																	<button class="btn btn-primary width-150" type="submit">Save</button>
@@ -457,6 +445,116 @@ $this->load->view('part/head');
 												</div>
 												<div class="clearfix clear"></div>
 											</div> <!-- end setting-row -->
+											
+											
+											
+											<div class="setting-row">
+												<div class="col-md-4 left">
+													<h3> Work Experience </h3>
+												</div>
+												<div class="col-md-8 right ">
+													<div class="view-section">
+														<div class="col-md-10">
+															<label class="view-item"> 
+																<?php 
+																	$aoe = $user_profile['area_of_experience'];
+																	$aoe = ($aoe)?str_replace(";",',',$aoe):'';
+																	$aoe = ($aoe)?ucwords(str_replace("_", " ",$aoe)):'';
+																	echo $aoe;
+																?> 
+															</label>
+															<label class="view-item"> <?php echo $user_profile['years_of_experience']; ?> Years</label>
+															
+														</div>
+														<div class="col-md-2">
+															<a class="edit-setting-btn" href="javascript:void(0);"> Edit </a>
+														</div>
+														<div class="clearfix clear"></div>
+													</div>
+													<div class="form-section">
+														<div class="col-md-10">
+															
+															<span class="msg-wrap"></span>
+															<form method="post" action="#" name="form-validation" class="setting-form" id="form_work_samples" enctype="multipart/form-data">
+																<div class="form-group">
+																	<label for="area_of_experience" class="form-label col-sm-4">Area of Experience </label>
+																	<div class="col-sm-8">
+																		<select name="profile[area_of_experience][]" multiple >
+																			<option value="ability_to_work_under_pressure" <?php if($user_profile && in_array('ability_to_work_under_pressure',$area_of_experience)) { echo "selected";} ?> >Ability to work under pressure</option>
+																			<option value="adaptability" <?php if($user_profile && in_array('adaptability',$area_of_experience)) { echo "selected";} ?> >Adaptability</option>
+																			<option value="administering_medication" <?php if($user_profile && in_array('administering_medication',$area_of_experience)) { echo "selected";} ?> >Administering medication</option>
+																			<option value="advising_people" <?php if($user_profile && in_array('advising_people',$area_of_experience)) { echo "selected";} ?> >Advising people</option>
+																		</select>
+																	</div>
+																	<div class="clearfix clear"></div>
+																</div>
+																<div class="form-group">
+																	<label for="area_of_experience_other" class="form-label col-sm-4">Area of Experience other </label>
+																	<div class="col-sm-8">
+																		<input type="text" placeholder="Area of Experience other" name="profile[area_of_experience_other]" class="" id="area_of_experience_other" value="<?php if($user_profile) echo $user_profile['area_of_experience_other'];  ?>" />
+																	</div>
+																	<div class="clearfix clear"></div>
+																</div>
+																<div class="form-group">
+																	<label for="years_of_experience" class="form-label col-sm-4">Years of Experience </label>
+																	<div class="col-sm-8">
+																		<input type="text"  placeholder="Years of Experience" name="profile[years_of_experience]" class="" id="years_of_experience" value="<?php if($user_profile) echo $user_profile['years_of_experience']; ?>" />
+																	</div>
+																	<div class="clearfix clear"></div>
+																</div>
+																<div class="form-group">
+																	<label for="work_samples" class="form-label col-sm-4">Work Samples </label>
+																	<div class="col-sm-8">
+																		<?php 
+																			if($work_samples){
+																				foreach($work_samples as $ws){
+																		?>
+																					<div class="work-sample-wrap" data-val="<?php echo $ws;?>">
+																						<div class="ws-item col-sm-10">
+																							<img style="max-width:80%;" src="<?php echo $ws;?>" />
+																						</div>
+																						<div class="ws-action col-sm-2">
+																							<a href="javascript:void(0);" class="btn btn-danger ws-rm" > x </a>
+																						</div>
+																						<div class="clearfix clear"></div>
+																					</div>
+																		<?php 
+																				}
+																			}
+																		?>
+																		<input type="hidden" id="oldws" name="oldws" value="<?php echo $user_profile['work_samples'];?>" />
+																		<input type="hidden" id="rmws" name="rmws" />
+																		<div class="work-sample-wrap">
+																			<div class="ws-item col-sm-10">
+																				<input type="file" name="work_samples[]" />
+																			</div>
+																			<div class="ws-action col-sm-2">
+																				<a href="javascript:void(0);" class="btn btn-success ws-add" > + </a>
+																			</div>
+																			<div class="clearfix clear"></div>
+																		</div>
+																	</div>
+																	<div class="clearfix clear"></div>
+																</div>
+																
+																
+																
+																<div class="form-group text-center">
+																	<button class="btn btn-primary width-150" type="submit">Save</button>
+																</div>
+															</form>
+														</div>
+														<div class="col-md-2">
+															<button class="btn btn-warning width-150 close-form-view-btn" type="button">Cancel</button>
+														</div>
+													</div>
+												</div>
+												<div class="clearfix clear"></div>
+											</div>
+											
+											
+											
+											
 											
 										</div>
 									
@@ -477,6 +575,22 @@ $this->load->view('part/head');
 	</div>
 	<script>
 		jQuery(document).ready(function(e){
+			
+			init_remove_ws();
+			jQuery(".ws-add").click(function(e){
+				var prt = jQuery(this).parents('.work-sample-wrap');
+				var nrow = '<div class="work-sample-wrap">';
+				 nrow += '<div class="ws-item col-sm-10">';
+				nrow += '<input type="file" name="work_samples[]" />';
+				nrow += '</div>';
+				nrow += '<div class="ws-action col-sm-2">';
+				nrow += '<a href="javascript:void(0);" class="btn btn-danger ws-rm" > x </a>';
+				nrow += '</div>';
+				nrow += '<div class="clearfix clear"></div>';
+				nrow += '</div>';
+				jQuery(prt).after(nrow);
+				init_remove_ws();
+			});
 			jQuery(".add-new-card-btn").click(function(e){
 				e.preventDefault();
 				jQuery("#cards-modal .modal-title").html('Add New Card');
@@ -579,9 +693,9 @@ $this->load->view('part/head');
 				e.preventDefault();
 				var dis = jQuery(this);
 				jQuery('button[type="submit"]',jQuery(dis)).html('Please wait...');
-				if(jQuery(this).attr('id') == 'form_profile_pic'){
-					var formData = new FormData();
-					formData.append('profile_pic', jQuery('#profile_pic')[0].files[0]); 
+				if(jQuery(this).attr('id') == 'form_profile_pic' || jQuery(this).attr('id') == 'form_work_samples'){
+					var formData = new FormData(this);
+					//formData.append('profile_pic', jQuery('#profile_pic')[0].files[0]); 
 					jQuery.ajax({
 						url: ci_base_url+'provider/save-setting',
 						type: "POST",
@@ -595,12 +709,24 @@ $this->load->view('part/head');
 								msgtype = 'error';
 							} 
 							if(resp.status == 'success'){
-								var reader = new FileReader();
-								reader.onload = function(e) {
-									jQuery('#profilepic').attr('src', e.target.result);
-									jQuery('#profilepic2').attr('src', e.target.result);
+								if(jQuery(this).attr('id') == 'form_profile_pic'){
+									var reader = new FileReader();
+									reader.onload = function(e) {
+										jQuery('#profilepic').attr('src', e.target.result);
+										jQuery('#profilepic2').attr('src', e.target.result);
+									}
+									reader.readAsDataURL(jQuery('#profile_pic')[0].files[0]);
+								} else if(jQuery(this).attr('id') == 'form_work_samples'){
+									var wscnt = 0;
+									jQuery('.work-sample-wrap input[type="file"]').each(function(){
+										var img = jQuery('<img style="max-width:80%;">');
+										var reader = new FileReader();
+										reader.onload = function(e) {
+											img.attr('src', e.target.result);
+										}
+										reader.readAsDataURL(jQuery(this)[0].files[0]);
+									});
 								}
-								reader.readAsDataURL(jQuery('#profile_pic')[0].files[0]);
 							}
 							if(resp.msg != undefined){
 								jQuery(dis).prev('.msg-wrap').html('<div class="alert alert-'+msgtype+'"> <a href="#" class="close" data-dismiss="alert">&times;</a><strong>'+msgtype.toUpperCase()+'!</strong> '+resp.msg+'  </div>');
@@ -679,6 +805,29 @@ $this->load->view('part/head');
 			jQuery("#country").trigger("change");
 			
 		});
+		
+		function init_remove_ws(){
+			jQuery(".ws-rm").unbind('click').bind('click',function(e){
+				var prt = jQuery(this).parents('.work-sample-wrap');
+				var vl = jQuery(prt).attr('data-val');
+				if(vl){
+					var oldws = jQuery('#oldws').val();
+					oldws = oldws.replace(vl+',','');
+					oldws = oldws.replace(vl,'');
+					jQuery('#oldws').val(oldws);
+					
+					var rmws = jQuery('#rmws').val();
+					if(rmws){
+						rmws =+ ',' + vl;
+					} else {
+						rmws = vl;
+					}
+					jQuery('#rmws').val(rmws);
+				}
+				jQuery(prt).remove();
+				
+			});
+		}
 	</script>
 
 </body>
