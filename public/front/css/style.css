@@ -1630,6 +1630,16 @@ div#top_move p {
     padding: 10px 20px;
         border-bottom: 1px solid #e0d5c8;
     border-top: 1px solid #e0d5c8;
+        float: left;
+    width: 100%;
+}
+.sugg_result p {
+    font-size: 14px !important;
+    word-wrap: break-word;
+    font-weight: normal;
+}
+.sugg_result h4 {
+    margin: 10px 0;
 }
 .left-section{
 	

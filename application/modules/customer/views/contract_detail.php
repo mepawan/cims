@@ -47,7 +47,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 														<div class="suggestion_data">
 															<?php 
 																foreach($providers as $provider){  
-																	$yrs = ($provider['years_of_experience'])? '('.$provider['years_of_experience'].')':'';
+																	$yrs = ($provider['years_of_experience'])? '( '.$provider['years_of_experience'].' years )':'';
 																	$exp = ($provider['area_of_experience'])? '('.$provider['area_of_experience'].')':'';
 																	$exp = ($exp)?explode(',', $exp):array();
 																	$exp_str = '';
@@ -57,17 +57,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 																	$exp_str = ($exp_str)?rtrim($exp_str,","):'';
 																	
 															?>
-																<div class="sugg_result">
-																	<div class="col-md-6">
-																		<p><strong><?php echo $provider['first_name']." ".$provider['last_name'] . $yrs; ?></strong></p>
+																	<div class="col-md-4 sugg_result">
+																		<?php if(!empty($provider['profile_pic'])){ ?>
+																			<a href="<?php echo ci_base_url('customer/provider/'.$provider['id']); ?>"><img src="<?php echo $provider['profile_pic']; ?>" height="100px" width="100%"></a>
+																		<?php } else { ?>
+																			<a href="<?php echo ci_base_url('customer/provider/'.$provider['id']); ?>"><img src="<?php echo ci_base_url('public/upload'); ?>/default_profile_pic.png" height="100px" width="100%"></a>
+																		<?php } ?>
+																		<a href="<?php echo ci_base_url('customer/provider/'.$provider['id']); ?>"><h4><strong><?php echo $provider['first_name']." ".$provider['last_name'] . $yrs; ?></strong></h4></a>
 																		<p><?php echo $exp_str;?></p>
 																		
 																	</div>
-																	<div class="col-md-6">
-																		<?php if(!empty($provider['phone'])){ ?><span><strong>Phone:</strong> <?php echo $provider['phone']; ?></span> <?php } ?>
-																	</div>
-																	<div class="clearfix clear"></div>
-																</div>
+																
 															
 															<?php } ?>
 														</div>

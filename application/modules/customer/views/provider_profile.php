@@ -40,9 +40,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 															<p><?php echo $prv['bio']; ?></p>
 														</div>
 													<?php } ?>
-												</div>
-												<div class="col-md-3">
-												</div>
 												<div class="clearfix clear"></div>
 												
 												<div class="col-md-6">
@@ -89,6 +86,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 														 <p><?php echo ucwords(str_replace(",", ", ", $prv['languages'])); ?></p>
 													<?php } ?>
 												</div>
+											</div>
+											<div class="col-md-3">
+												<a href="#" class="btn btn-warning pull-right">Contact</a>
+											</div>
 												
 											</div> <!-- end setting-row -->
 										</div>

@@ -263,8 +263,13 @@ class Customer extends MX_Controller {
 		if($id){
 			$contract = $this->Util_model->read('contract', array('where' => array('id'=> $id)) );
 			$this->data['contract']  = ($contract)?$contract[0]:'';
+			$yearofexp = explode("-", $this->data['contract']['years_of_experience']);
+			//echo "<pre>"; print_r($yearofexp); die;
 			
-			$provider_sql = "select u.*, pf.* from users u left join provider_profile pf on (u.id=pf.uid) where area_of_experience like '*%".$this->data['contract']['area_of_experience']."%*'";
+			$where = "pf.years_of_experience BETWEEN ".$yearofexp[0]." AND ".$yearofexp[1]."";
+			
+			
+			$provider_sql = "select u.*, pf.* from users u left join provider_profile pf on (u.id=pf.uid) where pf.area_of_experience like '%".$this->data['contract']['area_of_experience']."%' AND ".$where."";
 			$providers = $this->Util_model->custom_query($provider_sql);
 			$this->data['providers']  = $providers;
 			$this->data['heading'] = ($this->data['contract'])?$this->data['contract']['title'] : "Not Found";
