@@ -74,8 +74,7 @@ class Welcome extends MX_Controller {
 	public function paypalipn(){
 		
 		
-		$test_id = $this->Util_model->create('test',array('data' => json_encode($_POST)));
-		echo 'test id:' . $test_id;
+		$ddd = $_POST;
 		
 		$item_name = $_POST['item_name'];
 		$item_number = $_POST['item_number'];
@@ -89,7 +88,9 @@ class Welcome extends MX_Controller {
 		
 		$txn = $this->Util_model->read('transactions', array('where' => array('id'=> $item_number ),'single_row' => 'yes'));
 		if($txn){
-			$user = $this->Util_model->read('users', array('where' => array('id'=> $txn['uid'] ),'single_row' => 'yes'));
+			$ddd['custom']['uid'] = $txn['uid'];
+			$user = $this->Util_model->read('users', array('where' => array('id' => $txn['uid'] ),'single_row' => 'yes'));
+			$ddd['custom']['user'] = $user ;
 			$txn_data = array(
 				'id' => $txn ['id'],
 				'txn_id' => $txn_id,
@@ -102,16 +103,21 @@ class Welcome extends MX_Controller {
 				$txn_data['balance'] = $user['balance'] + ($payment_amount - $payment_fee);
 			}
 			$this->Util_model->update('transactions', $txn_data);
-			if($user){
+			if($payment_status == 'Completed' && $user){
 				$user_data = array(
 					'id' => $user['id'],
 					'balance' => $user['balance'] + ($payment_amount - $payment_fee)
 				);
-				$this->Util_model->update('users', $user_data);
+				$ddd['custom']['user_data'] = $user_data ;
+				$rsub = $this->Util_model->update('users', $user_data);
+				$ddd['custom']['user_balance_update'] = $rsub ;
 			}
 		}else {
-			echo 'txn not found';
+			$ddd['custom']['error'] = 'txn not found';
 		}
+		
+		$test_id = $this->Util_model->create('test',array('data' => json_encode($ddd)));
+		echo 'test id:' . $test_id;
 		
 		echo 'done';
 		die;
