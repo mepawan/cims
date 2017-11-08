@@ -75,6 +75,7 @@ class Welcome extends MX_Controller {
 		
 		
 		$ddd = $_POST;
+		$custom = array();
 		
 		$item_name = $_POST['item_name'];
 		$item_number = $_POST['item_number'];
@@ -88,9 +89,9 @@ class Welcome extends MX_Controller {
 		
 		$txn = $this->Util_model->read('transactions', array('where' => array('id'=> $item_number ),'single_row' => 'yes'));
 		if($txn){
-			$ddd['custom']['uid'] = $txn['uid'];
+			$custom['uid'] = $txn['uid'];
 			$user = $this->Util_model->read('users', array('where' => array('id' => $txn['uid'] ),'single_row' => 'yes'));
-			$ddd['custom']['user'] = $user ;
+			$custom['user'] = $user ;
 			$txn_data = array(
 				'id' => $txn ['id'],
 				'txn_id' => $txn_id,
@@ -98,25 +99,30 @@ class Welcome extends MX_Controller {
 				'receiver_email' => $receiver_email,
 				'payment_status' => $payment_status,
 			);
+			
 			if($payment_status == 'Completed'){
 				$txn_data['status'] = 'completed';
 				$txn_data['balance'] = $user['balance'] + ($payment_amount - $payment_fee);
 			}
-			$this->Util_model->update('transactions', $txn_data);
+			$custom['txn_data'] = $txn_data ;
+			$rstxn = $this->Util_model->update('transactions', $txn_data);
+			$custom['txn_udated'] = $rstxn ;
 			if($payment_status == 'Completed' && $user){
 				$user_data = array(
 					'id' => $user['id'],
 					'balance' => $user['balance'] + ($payment_amount - $payment_fee)
 				);
-				$ddd['custom']['user_data'] = $user_data ;
+				$custom['user_data'] = $user_data ;
 				$rsub = $this->Util_model->update('users', $user_data);
-				$ddd['custom']['user_balance_update'] = $rsub ;
+				$custom['user_balance_update'] = $rsub ;
+				$user2 = $this->Util_model->read('users', array('where' => array('id' => $txn['uid'] ),'single_row' => 'yes'));
+				$custom['new_user'] = $user2 ;
 			}
 		}else {
-			$ddd['custom']['error'] = 'txn not found';
+			$custom['error'] = 'txn not found';
 		}
 		
-		$test_id = $this->Util_model->create('test',array('data' => json_encode($ddd)));
+		$test_id = $this->Util_model->create('paypal_ipn_history',array('data' => json_encode($ddd),'custom' => json_encode($custom)));
 		echo 'test id:' . $test_id;
 		
 		echo 'done';
