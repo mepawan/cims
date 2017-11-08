@@ -362,7 +362,7 @@ class Customer extends MX_Controller {
 		$this->data['entity'] = 'balance';
 		$this->data['heading'] = 'Credit Balance';
 		$this->data['icon'] = 'icmn-home2';
-		$user = $this->Util_model->read('users',array('where' => array('id' => $this->ciauth->get_user_id())));
+		$user = $this->Util_model->read('users',array('where' => array('id' => $this->ciauth->get_user_id()),'single_row' => 'yes'));
 		$this->data['user'] = $user;
 		$this->load->view('customer/success', $this->data);
 	}
@@ -370,9 +370,17 @@ class Customer extends MX_Controller {
 		$this->data['entity'] = 'balance';
 		$this->data['heading'] = 'Credit Balance';
 		$this->data['icon'] = 'icmn-home2';
-		$user = $this->Util_model->read('users',array('where' => array('id' => $this->ciauth->get_user_id())));
+		$user = $this->Util_model->read('users',array('where' => array('id' => $this->ciauth->get_user_id()),'single_row' => 'yes'));
 		$this->data['user'] = $user;
 		$this->load->view('customer/cancel', $this->data);
+	}
+	public function transactions(){
+		$this->data['entity'] = 'balance';
+		$this->data['heading'] = 'Transactions';
+		$this->data['icon'] = 'icmn-home2';
+		//$user = $this->Util_model->read('users',array('where' => array('id' => $this->ciauth->get_user_id()),'single_row' => 'yes'));
+		//$this->data['user'] = $user;
+		$this->load->view('customer/transactions', $this->data);
 	}
 	
 }

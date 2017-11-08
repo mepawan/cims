@@ -26,11 +26,14 @@ if($user_profile) { $preferred_contact_method = explode(',', $user_profile['pref
 										<?php } ?>
 										<div class="content-wrap">
 											<div class="setting-row">
-												<div class="col-md-12 left">
+												<div class="col-md-9 left">
 													<?php
 														$bal = (float) ($user['balance'])?$user['balance']:'0';
 													?>
 													<h3> Available Credit Balance: $<?php echo $bal;?> </h3>
+												</div>
+												<div class="col-md-9 left">
+													<a class="edit-setting-btn" href="<?php echo ci_base_url();?>customer/transactions"> View Transactions </a>
 												</div>
 
 												<div class="clearfix clear"></div>	
