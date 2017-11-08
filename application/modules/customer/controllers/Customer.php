@@ -325,7 +325,7 @@ class Customer extends MX_Controller {
 		$this->data['entity'] = 'balance';
 		$this->data['heading'] = 'Credit Balance';
 		$this->data['icon'] = 'icmn-home2';
-		$user = $this->Util_model->read('users',array('where' => array('id' => $this->ciauth->get_user_id())));
+		$user = $this->Util_model->read('users',array('where' => array('id' => $this->ciauth->get_user_id()),'single_row' => 'yes'));
 		$this->data['user'] = $user;
 		$this->load->view('customer/balance', $this->data);
 	}
