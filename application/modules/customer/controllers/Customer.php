@@ -41,7 +41,7 @@ class Customer extends MX_Controller {
 			if($where_kw){
 				$where .= ' AND ' . $where_kw;
 			}
-			$sql = 'select u.*,pp.* from users u left join provider_profile pp on (u.id=pp.uid) '. $where. ' ';
+			$sql = 'select u.*,pp.area_of_experience,pp.years_of_experience from users u left join provider_profile pp on (u.id=pp.uid) '. $where. ' ';
 			$this->data['providers'] = $this->Util_model->custom_query($sql);
 						
 		}
@@ -263,8 +263,13 @@ class Customer extends MX_Controller {
 		if($id){
 			$contract = $this->Util_model->read('contract', array('where' => array('id'=> $id)) );
 			$this->data['contract']  = ($contract)?$contract[0]:'';
+			$yearofexp = explode("-", $this->data['contract']['years_of_experience']);
+			//echo "<pre>"; print_r($yearofexp); die;
 			
-			$provider_sql = "select u.*, pf.* from users u left join provider_profile pf on (u.id=pf.uid) where area_of_experience like '*%".$this->data['contract']['area_of_experience']."%*'";
+			$where = "pf.years_of_experience BETWEEN ".$yearofexp[0]." AND ".$yearofexp[1]."";
+			
+			
+			$provider_sql = "select u.*, pf.* from users u left join provider_profile pf on (u.id=pf.uid) where pf.area_of_experience like '%".$this->data['contract']['area_of_experience']."%' AND ".$where."";
 			$providers = $this->Util_model->custom_query($provider_sql);
 			$this->data['providers']  = $providers;
 			$this->data['heading'] = ($this->data['contract'])?$this->data['contract']['title'] : "Not Found";
@@ -302,18 +307,53 @@ class Customer extends MX_Controller {
 			die;
 			
 	}
-	public function provider($id = ""){
-		if(isset($id)){
+	public function provider($uid = ""){
+		if(isset($uid)){
 			$this->data['entity'] = 'provider';
 			$this->data['heading'] = 'Provider Profile';
 			$this->data['icon'] = 'icmn-home2';
-			$where = ' where pp.id= '.$id;
-			$sql = 'select u.*,pp.* from provider_profile pp left join users u on (u.id=pp.uid) '. $where. ' ';
+			$where = ' where u.id= '.$uid;
+			$sql = 'select u.*,pp.* from users u left join provider_profile pp on (u.id=pp.uid) '. $where. ' ';
 			$this->data['providers'] = $this->Util_model->custom_query($sql);
 			
 			$this->load->view('customer/provider_profile', $this->data);
+		} else {
+			
 		}
 	}
-	
+	public function balance(){
+		$this->data['entity'] = 'balance';
+		$this->data['heading'] = 'Credit Balance';
+		$this->data['icon'] = 'icmn-home2';
+		$user = $this->Util_model->read('users',array('where' => array('id' => $this->ciauth->get_user_id())));
+		$this->data['user'] = $user;
+		$this->load->view('customer/balance', $this->data);
+	}
+	public function process_payment(){
+		$this->data['entity'] = 'balance';
+		$this->data['heading'] = 'Credit Balance';
+		$this->data['icon'] = 'icmn-home2';
+		
+		$amt = $this->input->post('amount');
+		$txn_data = array(
+			'uid' => $this->ciauth->get_user_id(),
+			'direction' => 'cr',
+			'amount' => $amt,
+			'method' => 'paypal',
+			'summary' => 'Started deposit with paypal'
+		);
+		$txn_id = $this->Util_model->create('transactions',$txn_data);
+		
+		$this->load->library('paypal');
+		
+		$this->paypal->add_field('business', 'pawan.developers-facilitator@gmail.com');
+		$this->paypal->add_field('item_number',$txn_id);
+		$this->paypal->add_field('item_name', 'Hands Across Hands Deposit');
+		$this->paypal->add_field('amount', $amt);
+
+		$this->load->view('customer/process_payment', $this->data);
+		
+		
+	}
 	
 }

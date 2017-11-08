@@ -1522,7 +1522,7 @@ div#top_move p {
     font-weight: normal;
 }
 .setting-row{
-	border-top: 1px solid;
+	border-top: 1px solid #999;
 	padding: 15px 0;
 }
 
@@ -1754,4 +1754,15 @@ border-bottom: 1px solid #eee;
 .work-sample-wrap{
 	margin:10px 0;
 }
-
+.content-wrap .content-left{
+	border-right:1px solid #999;
+}
+#content .content-wrap p{
+	font-size:14px;
+	font-weight:normal;
+	font-family: 'Source Sans Pro', sans-serif;
+}
+.sidebar ul{
+	list-style:none;
+	padding:0;
+}

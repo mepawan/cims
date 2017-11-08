@@ -47,11 +47,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | controller and method URI segments.
 |
 | Examples:	my-controller/index	-> my_controller/index
-|		my-controller/my-method	-> my_controller/my_method
+| my-controller/my-method	-> my_controller/my_method
 */
 
 $route['default_controller'] = 'welcome';
 $route['preview'] = 'welcome/preview';
+$route['paypalipn'] = 'Welcome/paypalipn';
+$route['paypal-success'] = 'Welcome/paypal-success';
+$route['paypal-cancel'] = 'Welcome/cancel';
+
+
 $route['preview/(:any)'] = 'welcome/preview/$1';
 $route['auth'] = 'welcome/auth';
 $route['auth/(:any)'] = 'welcome/auth/$1';

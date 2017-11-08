@@ -65,8 +65,11 @@ class Util_model extends CI_Model{
 		}
 
 		$query = $this->db->get($tbl);
-
-		return $query->num_rows()? $query->result_array():false;
+		if(isset($params['single_row']) && $params['single_row'] == 'yes'){
+			return $query->num_rows()? $query->row_array():false;
+		} else {
+			return $query->num_rows()? $query->result_array():false;
+		}
 	}
 	
 	public function update($tbl, $data, $idx = 'id'){

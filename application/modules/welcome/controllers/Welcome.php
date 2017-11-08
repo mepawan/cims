@@ -13,6 +13,7 @@ class Welcome extends MX_Controller {
 		$menus = $this->Util_model->read('menus', array( 'where' => array( 'slug' => 'main_menu')));
 		$this->data['menus'] = $this->Util_model->read('menus_items', array( 'where' => array( 'menu_id' => $menus[0]['id'])));
 		$this->load->helper('form');
+
 	}
 	public function index()
 	{
@@ -22,6 +23,7 @@ class Welcome extends MX_Controller {
 		
 		$this->load->view('home', $this->data);
 	}
+
 	public function preview($alias = "")
 	{
 		$url = strtolower(str_replace("_", "-", $alias));
@@ -67,6 +69,52 @@ class Welcome extends MX_Controller {
 		}
 		echo json_encode($resp);
 		die;
+		
+	}
+	public function paypalipn(){
+		
+		
+		$this->Util_model->create('test',array('data' => json_incode($_POST)));
+		$item_name = $_POST['item_name'];
+		$item_number = $_POST['item_number'];
+		$payment_status = $_POST['payment_status'];
+		$payment_amount = $_POST['mc_gross'];
+		$payment_currency = $_POST['mc_currency'];
+		$txn_id = $_POST['txn_id'];
+		$receiver_email = $_POST['receiver_email'];
+		$payer_email = $_POST['payer_email'];
+		
+		$txn = $this->Util_model->read('transactions', array('where' => array('id'=> $item_number ),'single_row' => 'yes'));
+		if($txn){
+			$user = $this->Util_model->read('users', array('where' => array('id'=> $txn['uid'] ),'single_row' => 'yes'));
+			$txn_data = array(
+				'id' => $txn ['id'],
+				'txn_id' => $txn_id,
+				'payer_email' => $payer_email,
+				'receiver_email' => $receiver_email,
+				'payment_status' => $payment_status,
+			);
+			if($payment_status == 'Completed'){
+				$txn_data['status'] = 'completed';
+				$txn_data['balance'] = $user['balance'] + $payment_amount;
+			}
+			$this->Util_model->update('transactions', $txn_data);
+			if($user){
+				$user_data = array(
+					'id' => $user['id'],
+					'balance' => $user['balance'] + $payment_amount
+				);
+				$this->Util_model->update('users', $txn_data);
+			}
+		}
+		
+		echo 'done';
+		die;
+	}
+	public function paypal_success(){
+		
+	}
+	public function paypal_cancel(){
 		
 	}
 }
