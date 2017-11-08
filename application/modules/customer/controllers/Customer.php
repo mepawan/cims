@@ -372,7 +372,7 @@ class Customer extends MX_Controller {
 		$this->data['icon'] = 'icmn-home2';
 		$user = $this->Util_model->read('users',array('where' => array('id' => $this->ciauth->get_user_id())));
 		$this->data['user'] = $user;
-		$this->load->view('customer/success', $this->data);
+		$this->load->view('customer/cancel', $this->data);
 	}
 	
 }
