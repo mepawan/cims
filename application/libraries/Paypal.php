@@ -174,7 +174,7 @@ class Paypal {
 		
 		
 		foreach ($this->fields as $name => $value) {
-			echo '<input type="hidden" name="'.$name.'" value="'.$value.'">';
+			echo '<input data-d="" type="hidden" name="'.$name.'" value="'.$value.'">';
 		}
 		echo '<p>Click on button below if not redirected in 10 second.</p>';
 		echo '<input type="submit" value="Pay Now" />';

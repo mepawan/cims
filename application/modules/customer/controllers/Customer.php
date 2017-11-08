@@ -351,8 +351,8 @@ class Customer extends MX_Controller {
 		$this->paypal->add_field('item_name', 'Hands Across Hands Deposit');
 		$this->paypal->add_field('amount', $amt);
 		$this->paypal->add_field('notify_url',ci_base_url().'welcome/paypalipn');
-		$this->paypal->add_field('notify_url',ci_base_url().'customer/paypal-success');
-		$this->paypal->add_field('notify_url',ci_base_url().'customer/paypal_cancel');
+		$this->paypal->add_field('return',ci_base_url().'customer/paypal-success');
+		$this->paypal->add_field('cancel_return',ci_base_url().'customer/paypal_cancel');
 
 		$this->load->view('customer/process_payment', $this->data);
 		
