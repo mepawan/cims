@@ -74,7 +74,9 @@ class Welcome extends MX_Controller {
 	public function paypalipn(){
 		
 		
-		$this->Util_model->create('test',array('data' => json_encode($_POST)));
+		$test_id = $this->Util_model->create('test',array('data' => json_encode($_POST)));
+		echo 'test id:' . $test_id;
+		
 		$item_name = $_POST['item_name'];
 		$item_number = $_POST['item_number'];
 		$payment_status = $_POST['payment_status'];
@@ -106,6 +108,8 @@ class Welcome extends MX_Controller {
 				);
 				$this->Util_model->update('users', $txn_data);
 			}
+		}else {
+			echo 'txn not found';
 		}
 		
 		echo 'done';
