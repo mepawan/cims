@@ -74,7 +74,7 @@ class Welcome extends MX_Controller {
 	public function paypalipn(){
 		
 		
-		$this->Util_model->create('test',array('data' => json_incode($_POST)));
+		$this->Util_model->create('test',array('data' => json_encode($_POST)));
 		$item_name = $_POST['item_name'];
 		$item_number = $_POST['item_number'];
 		$payment_status = $_POST['payment_status'];

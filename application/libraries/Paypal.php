@@ -122,6 +122,9 @@ class Paypal {
 			$this->ipn_log = $params['ipn_log'];
 		}
 	}
+	function set($key, $val){
+		$this->$key = $val;
+	}
 	function add_field($field, $value) {
       
 		// adds a key=>value pair to the fields array, which is what will be 

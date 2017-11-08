@@ -350,10 +350,29 @@ class Customer extends MX_Controller {
 		$this->paypal->add_field('item_number',$txn_id);
 		$this->paypal->add_field('item_name', 'Hands Across Hands Deposit');
 		$this->paypal->add_field('amount', $amt);
+		$this->paypal->add_field('notify_url',ci_base_url().'welcome/paypalipn');
+		$this->paypal->add_field('notify_url',ci_base_url().'customer/paypal-success');
+		$this->paypal->add_field('notify_url',ci_base_url().'customer/paypal_cancel');
 
 		$this->load->view('customer/process_payment', $this->data);
 		
 		
+	}
+	public function paypal_success(){
+		$this->data['entity'] = 'balance';
+		$this->data['heading'] = 'Credit Balance';
+		$this->data['icon'] = 'icmn-home2';
+		$user = $this->Util_model->read('users',array('where' => array('id' => $this->ciauth->get_user_id())));
+		$this->data['user'] = $user;
+		$this->load->view('customer/success', $this->data);
+	}
+	public function paypal_cancel(){
+		$this->data['entity'] = 'balance';
+		$this->data['heading'] = 'Credit Balance';
+		$this->data['icon'] = 'icmn-home2';
+		$user = $this->Util_model->read('users',array('where' => array('id' => $this->ciauth->get_user_id())));
+		$this->data['user'] = $user;
+		$this->load->view('customer/success', $this->data);
 	}
 	
 }
