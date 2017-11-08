@@ -80,8 +80,8 @@ class Welcome extends MX_Controller {
 		$item_name = $_POST['item_name'];
 		$item_number = $_POST['item_number'];
 		$payment_status = $_POST['payment_status'];
-		$payment_amount = $_POST['payment_gross'];
-		$payment_fee = $_POST['payment_fee'];
+		$payment_amount = $_POST['mc_gross'];
+		$payment_fee = $_POST['mc_fee'];
 		$payment_currency = $_POST['mc_currency'];
 		$txn_id = $_POST['txn_id'];
 		$receiver_email = $_POST['receiver_email'];
