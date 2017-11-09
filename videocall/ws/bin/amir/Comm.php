@@ -35,7 +35,7 @@ class Comm implements MessageComponentInterface {
      */
     public function onOpen(ConnectionInterface $conn) {
         // Store the new connection
-		echo 'opened';
+		//echo 'opened';
         $this->clients->attach($conn);
     }
 
