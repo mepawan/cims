@@ -115,7 +115,7 @@ print_r($this->ciauth->get_user());
 			</main>
 		</div>
 		<?php $this->load->view('part/footer'); ?>
-
+		<?php $this->load->view('videocall/wrapper'); ?>
 	</div>
 	<script>
 		jQuery(document).ready(function(e){
