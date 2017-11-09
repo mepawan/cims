@@ -35,6 +35,7 @@ class Comm implements MessageComponentInterface {
      */
     public function onOpen(ConnectionInterface $conn) {
         // Store the new connection
+		echo 'opened';
         $this->clients->attach($conn);
     }
 
@@ -140,7 +141,7 @@ class Comm implements MessageComponentInterface {
      * @param \Exception $e
      */
     public function onError(ConnectionInterface $conn, \Exception $e) {
-        //echo "An error has occurred: {$e->getMessage()}\n";
+        echo "An error has occurred: {$e->getMessage()}\n";
 
         $conn->close();
     }

@@ -1,6 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 //echo "<pre>"; print_r($providers[0]); die;
+
+print_r($this->ciauth->get_user());
+
 ?>
 
 <?php $this->load->view('part/head'); ?>
