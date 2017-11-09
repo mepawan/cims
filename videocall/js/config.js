@@ -6,7 +6,7 @@
 'use strict';
 
 
-const appRoot = setAppRoot('cims/video-call', 'cims/video-call');
+const appRoot = setAppRoot('cims/videocall', 'cims/videocall');
 const spinnerClass = 'fa fa-spinner faa-spin animated';
 
 function setAppRoot(devFolderName, prodFolderName){
