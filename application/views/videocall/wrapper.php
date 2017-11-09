@@ -21,7 +21,7 @@
 	<div class="container-fluid">
 		<div class="row">
 			<!-- Remote Video -->
-			<video id="peerVid" poster="<?php echo ci_public('videocall'); ?>img/vidbg.png" playsinline autoplay></video>
+			<video id="peerVid"  playsinline autoplay></video>
 			<!-- Remote Video -->
 		</div>
 		
@@ -47,7 +47,7 @@
 		<!-- Local Video -->
 		<div class="row">
 			<div class="col-sm-12">
-				<video id="myVid" poster="<?php echo ci_public('videocall'); ?>img/vidbg.png" muted autoplay></video>
+				<video id="myVid"  muted autoplay></video>
 			</div>
 		</div>
 		<!-- Local Video -->
