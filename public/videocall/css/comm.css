@@ -221,7 +221,11 @@
 
 /* VIDEO */
 #peerVid{
-    position: fixed;
+	display:none;
+}
+.show #peerVid, #peerVid.show{
+	display:inline-block;
+    position: absolute;
     top: 50%;
     left: 50%;
     min-width: 100%;
@@ -236,17 +240,19 @@
     /*background: url(../img/vidbg.png) no-repeat;
     background-size: cover;*/
 	background:transparent;
-	border:1px solid #eee;
 }
 
 #myVid{
+	display:none;
+}
+.show #myVid, #myVid.show{
+	display:inline-block;
     width: 300px;
     height: 200px;
     bottom: 0;
     position: fixed;
     right: 0;
 	background:transparent;
-	border:1px solid #eee;
 }
 
 

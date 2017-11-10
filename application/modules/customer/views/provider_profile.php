@@ -117,8 +117,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$this->load->view('videocall/wrapper'); 
 		?>
 	</div>
+	<script type="text/javascript" src="<?php echo ci_public('front'); ?>js/base64.js"></script>
 	<script>
 		var chrm = '<?php echo base64_encode($this->ciauth->get_user_id() . '_' . $provider['id']);?>';
+		var chrm_text = '<?php echo $this->ciauth->get_user_id() . '_' . $provider['id'];?>';
+		
+		var connectivity = 0;
+		var myunique = '<?php echo base64_encode($this->ciauth->get_user_id());?>';
+		var remote_end = 'customer';
+		
 		var chsrvsts = 0;
 		var chremotename = '<?php echo $provider['first_name'];?>';
 		jQuery(document).ready(function(e){

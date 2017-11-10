@@ -58,6 +58,7 @@ window.addEventListener('load', function(){
 		showSnackBar("Connected to the chat server!", 5000);
 		document.getElementById('chat-server-status').innerHTML =  '<span class="on">Onlne</span>';
         
+		
     };
     
     /*
@@ -85,7 +86,6 @@ window.addEventListener('load', function(){
     
     wsChat.onmessage = function(e){
         var data = JSON.parse(e.data);
-        
         if(data.room === room){
             //above check is not necessary since all messages coming to this user are for the user's current room
             //but just to be on the safe side
@@ -192,6 +192,11 @@ window.addEventListener('load', function(){
                     break;
                     
                 case 'newSub':
+					
+					
+					check_connectivity();
+				
+				
                     setRemoteStatus('online');
 
                     //once the other user joined and current user has been notified, current user should also send a signal
@@ -216,9 +221,7 @@ window.addEventListener('load', function(){
                     enableCallBtns();
                     break;
             }  
-        }
-        
-        else if(data.action === "subRejected"){
+        } else if(data.action === "subRejected"){
             //subscription on this device rejected cos user has subscribed on another device/browser
             showSnackBar("Maximum of two users allowed in room. Communication disallowed", 5000);
         }
@@ -973,6 +976,21 @@ function setRemoteStatus(status){
         $("#remoteStatusTxt").css({color:'red'}).html("(Offline)");
     }
 }
+
+function check_connectivity(){
+		var roomd = Base64.decode(room);
+		var roomar = roomd.split('_');
+		
+		console.log('------------- new user --------- ');
+		console.log(roomar);
+		console.log('remote end:'+remote_end);
+		console.log(myunique);
+		
+		if(remote_end == 'customer' && myunique == roomar[0] && ){
+			
+		}
+}
+
 
 
 /*

@@ -80,7 +80,8 @@ window.addEventListener('load', function(){
     
     wsChat.onmessage = function(e){
         var data = JSON.parse(e.data);
-        
+		
+		
         if(data.room === room){
             //above check is not necessary since all messages coming to this user are for the user's current room
             //but just to be on the safe side
