@@ -143,7 +143,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					alert("Message/Video call server is down. \nPlease contact to administrator");
 					return false;
 				} else {
-					
+					jQuery(".chat-window").toggleClass('show');
 				}
 			});
 		});
