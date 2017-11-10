@@ -1,9 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-//echo "<pre>"; print_r($providers[0]); die;
-
-//print_r($this->ciauth->get_user());
-
+//print_r($me);
 ?>
 
 <?php $this->load->view('part/head'); ?>
@@ -30,74 +27,74 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="setting-row provider_pro">
 												
 											<div class="col-md-9 content-left">
-													<?php foreach($providers as $prv){ ?>
-														<div class="col-md-3">
-															<?php if(!empty($prv['profile_pic'])){ ?>
-																<img src="<?php echo $prv['profile_pic']; ?>" height="100px" width="100%">
-															<?php } else { ?>
-																<img src="<?php echo ci_base_url('public/upload'); ?>/default_profile_pic.png" height="100px" width="100%">
-															<?php } ?>
-														</div>
-														<div class="col-md-9">
-															<h3><?php echo $prv['first_name'] . ' ' . $prv['last_name'];?> </h3>
-															<p><?php echo $prv['bio']; ?></p>
-														</div>
+													
+												<div class="col-md-3">
+													<?php if(!empty($provider['profile_pic'])){ ?>
+														<img src="<?php echo $provider['profile_pic']; ?>" height="100px" width="100%">
+													<?php } else { ?>
+														<img src="<?php echo ci_base_url('public/upload'); ?>/default_profile_pic.png" height="100px" width="100%">
 													<?php } ?>
+												</div>
+												<div class="col-md-9">
+													<h3><?php echo $provider['first_name'] . ' ' . $provider['last_name'];?> </h3>
+													<p><?php echo $provider['bio']; ?></p>
+												</div>
+													
 												<div class="clearfix clear"></div>
 												
 												<div class="col-md-6">
 													<h4>Areas of Expertise</h4>
 													<ul>
-													 <?php $areaexp = explode(",", $prv['area_of_experience']); 
+													 <?php $areaexp = explode(",", $provider['area_of_experience']); 
 														foreach($areaexp as $areaexp){ 
 													 ?>
 														<li><?php echo ucfirst(str_replace("_", " ", $areaexp)); ?> </li>
 													<?php } ?>
-													<?php if(!empty($prv['area_of_experience_other'])){ ?>
-														 <li><?php echo $prv['area_of_experience_other']; ?></li>
+													<?php if(!empty($provider['area_of_experience_other'])){ ?>
+														 <li><?php echo $provider['area_of_experience_other']; ?></li>
 													<?php } ?>
 													 </ul>
 													
-													<?php if(!empty($prv['availabe_days_time'])){ ?>
+													<?php if(!empty($provider['availabe_days_time'])){ ?>
 														<h4>Days and Times available</h4>
 														 <ul>
-													 <?php $day_time = explode(",", $prv['availabe_days_time']); 
+													 <?php $day_time = explode(",", $provider['availabe_days_time']); 
 														foreach($day_time as $day_time){ 
 													 ?>
 														<li><?php echo ucfirst(str_replace("_", " ", $day_time)); ?> </li>
 													<?php } ?>
 													 </ul>
 													<?php } ?>
-													<?php if(!empty($prv['preferred_contact_method'])){ ?>
+													<?php if(!empty($provider['preferred_contact_method'])){ ?>
 														<h4>Preferred Contact Method</h4>
-														 <p><?php echo ucwords(str_replace(",", ", ", $prv['preferred_contact_method'])); ?></p>
+														 <p><?php echo ucwords(str_replace(",", ", ", $provider['preferred_contact_method'])); ?></p>
 													<?php } ?>
 													 
 												</div>
 												<div class="col-md-6">
 													
-													<?php if(!empty($prv['years_of_experience'])){ ?>
+													<?php if(!empty($provider['years_of_experience'])){ ?>
 														<h4>Years Of Experience</h4>
-														 <p><?php echo $prv['years_of_experience']; ?> years</p>
+														 <p><?php echo $provider['years_of_experience']; ?> years</p>
 													<?php } ?>
-													<?php if(!empty($prv['education'])){ ?>
+													<?php if(!empty($provider['education'])){ ?>
 														<h4>Education</h4>
-														 <p><?php echo $prv['education']; ?></p>
+														 <p><?php echo $provider['education']; ?></p>
 													<?php } ?>
-													<?php if(!empty($prv['languages'])){ ?>
+													<?php if(!empty($provider['languages'])){ ?>
 														<h4>Languages</h4>
-														 <p><?php echo ucwords(str_replace(",", ", ", $prv['languages'])); ?></p>
+														 <p><?php echo ucwords(str_replace(",", ", ", $provider['languages'])); ?></p>
 													<?php } ?>
 												</div>
 											</div>
 											<div class="col-md-3 sidebar">
 												<ul>
 													<li>
-														<a href="javascript:void(0);" class="btn btn-warning text-center provider-contact-btn">Contact to <?php echo $prv['first_name'];?></a> <br />
-														<span style="color:#ddd;">Your Credit Balance $<span id="credit_balance"><?php echo $this->ciauth->get_user('balance');?></span></span>
+														<a href="javascript:void(0);" class="btn btn-warning text-center provider-contact-btn">Contact to <?php echo $provider['first_name'];?></a> <br />
+														<span style="color:#ddd;">Your Credit Balance $<span id="credit_balance"><?php echo $me['balance'];?></span></span>
 													</li>
 													<li>
-														
+														<div class="chat-server-status-wrap"><span>Server Status: <span id="chat-server-status">Connecting<span class="load-dots">....</span></span></div>
 													</li>
 												</ul>
 											</div>
@@ -115,10 +112,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</main>
 		</div>
 		<?php $this->load->view('part/footer'); ?>
-		<?php $this->load->view('videocall/wrapper'); ?>
+		<?php 
+
+			$this->load->view('videocall/wrapper'); 
+		?>
 	</div>
 	<script>
+		var chrm = '<?php echo base64_encode($this->ciauth->get_user_id() . '_' . $provider['id']);?>';
+		var chsrvsts = 0;
+		var chremotename = '<?php echo $provider['first_name'];?>';
 		jQuery(document).ready(function(e){
+			jQuery('.load-dots').start_load_dots();
 			jQuery(".pref-item").change(function(e){
 				e.preventDefault();
 				var key = jQuery(this).attr('name');
@@ -135,12 +139,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				if(cb <= 5 ){
 					alert("You don't have enough credit balance to contact to provider");
 					return false;
-				}else {
+				} else if(chsrvsts != 1){
+					alert("Message/Video call server is down. \nPlease contact to administrator");
+					return false;
+				} else {
 					
 				}
 			});
 		});
+		
 	</script>
-
+	
+	<?php $this->load->view('videocall/parts/assets');?>
+	
 </body>
 </html>

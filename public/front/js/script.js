@@ -134,7 +134,34 @@ function pvn_notify(msg,type,title){
 		'</div>' */
 	});
 }
-
+jQuery.fn.extend({
+	start_load_dots: function(spd,lngt) {
+		var dis = jQuery(this);
+		if(spd == undefined){spd = 500;}
+		if(lngt == undefined){lngt = 3;}
+		var sts = jQuery(dis).attr('status');
+		if(sts == undefined || sts == ''){
+			jQuery(dis).attr('status','on');
+			sts = 'on';
+		}
+		var dots = jQuery(dis).html();
+		if(dots.length >= lngt){
+			dots = '';
+		} else {
+			dots = dots+'.';
+		}
+		jQuery(dis).html(dots);
+		setTimeout(function(){
+			sts = jQuery(dis).attr('status');
+			if(sts == 'on'){
+				jQuery(dis).start_load_dots(spd,lngt);
+			}
+		},spd);
+	},
+	stop_load_dots: function() {
+		jQuery(this).attr('status','off');
+	}
+});
 jQuery(document).ready(function(){
 	jQuery("#frm-top-login, #frm-main-login").submit(function(e){
 		e.preventDefault();

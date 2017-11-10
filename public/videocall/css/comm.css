@@ -1,11 +1,18 @@
 .videocall-wrap{
 	z-index:999999;
 }
-
+.on{
+	color:green;
+}
+.off{
+	color:red;
+}
 .text-center{
     text-align: center;
 }
-
+.call-btns-wrap{
+	display:inline-block;
+}
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */

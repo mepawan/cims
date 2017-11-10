@@ -314,8 +314,14 @@ class Customer extends MX_Controller {
 			$this->data['icon'] = 'icmn-home2';
 			$where = ' where u.id= '.$uid;
 			$sql = 'select u.*,pp.* from users u left join provider_profile pp on (u.id=pp.uid) '. $where. ' ';
-			$this->data['providers'] = $this->Util_model->custom_query($sql);
+			$providers = $this->Util_model->custom_query($sql);
+			$this->data['me'] = $this->Util_model->read('users',array('where' => array('id'=>$this->ciauth->get_user_id()),'single_row' => 'yes'));
+			$this->data['provider'] = $providers[0];
 			
+			$chat_config = array(
+				'remote' => $this->data['provider']['first_name'],
+			);
+			$this->data['chat_config'] = $chat_config;
 			$this->load->view('customer/provider_profile', $this->data);
 		} else {
 			

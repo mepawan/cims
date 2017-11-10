@@ -66,6 +66,12 @@ body {
 .red{
 	color:red;
 }
+.on{
+	color:green;
+}
+.off{
+	color:red;
+}
 /*--------------Header nav start---------------*/
 #nav-primary {
 	float: right;

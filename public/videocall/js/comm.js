@@ -2,8 +2,8 @@
 
 /**
  * 
- * @author Amir <amirsanni@gmail.com>
- * @date 24-Dec-2016
+ * @author pawan developers <pawan.developers@gmail.com>
+ * @date 11-Nov-2017
  */
 
 
@@ -19,12 +19,11 @@ var awaitingResponse;
 var streamConstraints;
 var myMediaStream;
 
-const room = getRoom();
+const room = chrm;//getRoom();
 const wsChat = new WebSocket("ws://35.192.96.70:8080/comm");
 
 window.addEventListener('load', function(){
-    startCounter();//shows the time spent in room
-    
+    //startCounter();//shows the time spent in room
     /*
     ********************************************************************************************************************************
     ********************************************************************************************************************************
@@ -54,8 +53,11 @@ window.addEventListener('load', function(){
             action: 'subscribe',
             room: room
         }));
+		chsrvsts = 1;
+		console.log('connected');
+		showSnackBar("Connected to the chat server!", 5000);
+		document.getElementById('chat-server-status').innerHTML =  '<span class="on">Onlne</span>';
         
-        showSnackBar("Connected to the chat server!", 5000);
     };
     
     /*
@@ -67,7 +69,10 @@ window.addEventListener('load', function(){
     */
     
     wsChat.onerror = function(){
-        showSnackBar("Unable to connect to the chat server! Kindly refresh", 20000);
+		console.log('not connected');
+		showSnackBar("Unable to connect to the chat server! Kindly refresh", 20000);
+		document.getElementById('chat-server-status').innerHTML = '<span class="off">Offline</span>';
+        
     };
     
     /*
@@ -171,7 +176,7 @@ window.addEventListener('load', function(){
 
                 case 'typingStatus':
                     if(data.status){
-                        document.getElementById("typingInfo").innerHTML = "Remote is typing";
+                        document.getElementById("typingInfo").innerHTML = chremotename+" is typing";
                     }
                     
                     else{
@@ -196,7 +201,7 @@ window.addEventListener('load', function(){
                         room: room
                     }));
 
-                    showSnackBar("Remote entered room", 10000);
+                    showSnackBar(chremotename+" is online now", 10000);
                     
                     break;
                     
@@ -207,7 +212,7 @@ window.addEventListener('load', function(){
                 case 'imOffline':
                     setRemoteStatus('offline');
         
-                    showSnackBar("Remote left room", 10000);
+                    showSnackBar(chremotename+" gone offline", 10000);
                     enableCallBtns();
                     break;
             }  
@@ -331,7 +336,7 @@ window.addEventListener('load', function(){
         
         wsChat.send(JSON.stringify({
             action: 'callRejected',
-            msg: "Call rejected by Remote",
+            msg: "Call rejected by " + chremotename,
             room: room
         }));
         
@@ -353,7 +358,7 @@ window.addEventListener('load', function(){
     document.getElementById("endCall").addEventListener('click', function(e){
         e.preventDefault();
         
-        endCall("Call ended by remote", false);
+        endCall("Call ended by "+chremotename, false);
         
         //enable call buttons
         enableCallBtns();
@@ -367,9 +372,8 @@ window.addEventListener('load', function(){
     ********************************************************************************************************************************
     */
     //TO MAXIMISE/MINIMISE THE CHAT PANE
-    $('.chat-pane').on('click', '.icon_minim', function (e) {
-        var $this = $(this);
-        
+    jQuery('.chat-pane').on('click', '.icon_minim', function (e) {
+        var $this = jQuery(this);
         if (!$this.hasClass('panel-collapsed')) {
             $this.parents('.panel').find('.panel-body').slideUp();
             $this.addClass('panel-collapsed');
@@ -468,7 +472,7 @@ function initCall(){
 
         //set message to display on the call dialog
         callerInfo.style.color = 'black';
-        callerInfo.innerHTML = callType === 'Video' ? 'Video call to Remote' : 'Audio call to Remote';
+        callerInfo.innerHTML = callType === 'Video' ? 'Video call to ' + chremotename : 'Audio call to ' + chremotename;
 
         //start calling tone
         document.getElementById('callerTone').play();
@@ -476,7 +480,7 @@ function initCall(){
         //notify callee that we're calling. Don't call startCall yet
         wsChat.send(JSON.stringify({
             action: 'initCall',
-            msg: callType === 'Video' ? "Video call from remote" : "Audio call from remote",
+            msg: callType === 'Video' ? "Video call from " + chremotename : "Audio call from " + chremotename,
             room: room
         }));
 
@@ -530,7 +534,7 @@ function answerCall(){
         //inform caller and current user (i.e. receiver) that he cannot use webrtc, then dismiss modal after a while
         wsChat.send(JSON.stringify({
             action: 'callRejected',
-            msg: "Remote's device does not have the necessary requirements to make call",
+            msg: chremotename+"'s device does not have the necessary requirements to make call",
             room: room
         }));
 
@@ -721,7 +725,7 @@ function addRemoteChat(msg, date){
         newlyCreatedNode.innerHTML = '<div class="col-sm-10 col-xs-10">\
                 <div class="messages msg_receive">\
                     <p>'+msg+'</p>\
-                    <time>Remote • '+date+'</time>\
+                    <time>'+chremotename+' • '+date+'</time>\
                 </div>\
             </div>';
         
@@ -777,7 +781,6 @@ function addLocalChat(msg, date, sendToPartner){
             sendChatToSocket(msg, date, msgId);
         }
     });
-    
     
     fixChatScrollBarToBottom();
 }
@@ -938,7 +941,7 @@ function handleCallTermination(){
     myPC ? myPC.close() : "";//close connection as well
                     
     //tell user that remote terminated call
-    showSnackBar("Call terminated by remote", 10000);
+    showSnackBar("Call terminated by " + chremotename, 10000);
 
     //remove streams and free media devices
     stopMediaStream();
