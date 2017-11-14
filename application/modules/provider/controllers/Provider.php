@@ -136,9 +136,7 @@ class Provider extends MX_Controller {
 				unlink(FCPATH.$rws_path);
 			});
 		}
-		
-		print_r($profile_post);
-		
+			
 		if (!$validate || $val->run()){
 			if($update_data && count($update_data) > 0){
 				$this->Util_model->update('users',$update_data);

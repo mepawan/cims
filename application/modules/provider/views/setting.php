@@ -346,6 +346,23 @@ $this->load->view('part/head');
 																	<div class="clearfix clear"></div>
 																</div>
 																
+																<div class="form-group">
+																	<label for="bio" class="form-label col-sm-4">Timezone </label>
+																	<div class="col-sm-8">
+																	<?php 
+																		$zones = get_timezones();
+																	?>
+																		<select name="profile[timezone]">
+																		<?php
+																			foreach($zones as $k => $v){
+																				$sel = ($user_profile && $user_profile['timezone'] == $k)?' selected="selected" ':'';
+																				echo '<option value="'.$k.'" '.$sel.'>' . $k . ' '.$v.'</option>';
+																			}
+																		?>
+																		</select>
+																	</div>
+																	<div class="clearfix clear"></div>
+																</div>
 																
 																<div class="form-group">
 																	<label for="education" class="form-label col-sm-4">Education </label>

@@ -313,19 +313,41 @@ class Customer extends MX_Controller {
 			$this->data['heading'] = 'Provider Profile';
 			$this->data['icon'] = 'icmn-home2';
 			$where = ' where u.id= '.$uid;
-			$sql = 'select u.*,pp.* from users u left join provider_profile pp on (u.id=pp.uid) '. $where. ' ';
+			$sql = 'select u.*,pp.area_of_experience,pp.area_of_experience_other,pp.years_of_experience ,pp.education,pp.bio,pp.uid,pp.languages,pp.resume,pp.work_samples,pp.availabe_days_time,pp.have_license_certification from users u left join provider_profile pp on (u.id=pp.uid) '. $where. ' ';
+			//echo $sql;
 			$providers = $this->Util_model->custom_query($sql);
 			$this->data['me'] = $this->Util_model->read('users',array('where' => array('id'=>$this->ciauth->get_user_id()),'single_row' => 'yes'));
 			$this->data['provider'] = $providers[0];
+			$this->data['conversation'] = $this->Util_model->read('conversation',array('where' => array('uid1'=>$this->ciauth->get_user_id(),'uid2' => $this->data['provider']['id']),'single_row' => 'yes'));
 			
 			$chat_config = array(
 				'remote' => $this->data['provider']['first_name'],
 			);
+			
 			$this->data['chat_config'] = $chat_config;
 			$this->load->view('customer/provider_profile', $this->data);
 		} else {
 			
 		}
+	}
+	function start_conv(){
+		$uid2 = $this->input->post('uid2');
+		$conversation = $this->Util_model->read('conversation',array('where' => array('uid1'=>$this->ciauth->get_user_id(),'uid2' => $uid2),'single_row' => 'yes'));
+			
+		//reopened
+		$conv_data = array(
+			'uid1' => $this->ciauth->get_user_id(),
+			'uid2' => $uid2
+		);
+		if($conversation){
+			$conv_data['id'] = $conversation['id'];
+			$conv_data['status'] = 'reopened';
+			$rs = $this->Util_model->upate('conversation',$conv_data);
+		} else {
+			$rs = $this->Util_model->create('conversation',$conv_data);
+		}
+		echo json_encode(array('rs' => $rs));
+		die;
 	}
 	public function balance(){
 		$this->data['entity'] = 'balance';

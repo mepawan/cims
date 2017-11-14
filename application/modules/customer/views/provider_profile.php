@@ -90,12 +90,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-md-3 sidebar">
 												<ul>
 													<li>
-														<a href="javascript:void(0);" class="btn btn-warning text-center provider-contact-btn">Contact to <?php echo $provider['first_name'];?></a> <br />
-														<span style="color:#ddd;">Your Credit Balance $<span id="credit_balance"><?php echo $me['balance'];?></span></span>
+														<?php  ?>
 													</li>
 													<li>
-														<div class="chat-server-status-wrap"><span>Server Status: <span id="chat-server-status">Connecting<span class="load-dots">....</span></span></div>
+														<?php 
+															if(!$conversation){
+																echo '<a href="javascript:void(0);" class="btn btn-warning text-center start-cong-btn">Contact to '.$provider['first_name'].'</a> <br />';
+																echo '<span style="color:#ddd;"></span>';
+															} else if($conversation && ($conversation['status'] == 'pending' || $conversation['status'] == 'reopened') ){
+																echo '<a href="javascript:void(0);" class="btn btn-warning text-center ">Contact to '.$provider['first_name'].'</a> <br />';
+																echo '<span style="color:#ddd;">Your request is pending</span>';
+															} else if($conversation && $conversation['status'] == 'rejected'){
+																echo '<a href="javascript:void(0);" class="btn btn-danger text-center start-cong-btn">Contact to '.$provider['first_name'].'</a> <br />';
+																echo '<span style="color:#ddd;">Provider rejected your request</span>';
+															} else if($conversation && ($conversation['status'] == 'closed1' || $conversation['status'] == 'closed2')){
+																echo '<a href="javascript:void(0);" class="btn btn-warning text-center start-cong-btn">Contact to '.$provider['first_name'].'</a> <br />';
+																echo '<span style="color:#ddd;">Conversations is closed. </span>';
+															} else {
+																echo '<a href="javascript:void(0);" class="btn btn-success text-center provider-contact-btn">Contact to '.$provider['first_name'].'</a> <br />';
+																echo '<span style="color:#ddd;">Your Credit Balance $<span id="credit_balance">'.$me['balance'].'</span></span>';
+															}
+														?>
+														
 													</li>
+													<?php 
+														if($conversation && $conversation['status'] == 'active'){
+													?>
+															<li>
+																<div class="chat-server-status-wrap"><span>Server Status: <span id="chat-server-status">Connecting<span class="load-dots">....</span></span></div>
+															</li>
+													<?php } ?>
 												</ul>
 											</div>
 												
@@ -117,11 +141,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$this->load->view('videocall/wrapper'); 
 		?>
 	</div>
+
 	<script type="text/javascript" src="<?php echo ci_public('front'); ?>js/base64.js"></script>
 	<script>
+		var provider_id = '<?php echo $provider['id'];?>';
 		var chrm = '<?php echo base64_encode($this->ciauth->get_user_id() . '_' . $provider['id']);?>';
 		var chrm_text = '<?php echo $this->ciauth->get_user_id() . '_' . $provider['id'];?>';
-		
+		var conversation = '<?php echo ($conversation)?'1':'0';?>';
 		var connectivity = 0;
 		var myunique = '<?php echo base64_encode($this->ciauth->get_user_id());?>';
 		var remote_end = 'customer';
@@ -129,7 +155,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		var chsrvsts = 0;
 		var chremotename = '<?php echo $provider['first_name'];?>';
 		jQuery(document).ready(function(e){
-			jQuery('.load-dots').start_load_dots();
+			if(jQuery('.load-dots').length > 0) { jQuery('.load-dots').start_load_dots(); }
 			jQuery(".pref-item").change(function(e){
 				e.preventDefault();
 				var key = jQuery(this).attr('name');
@@ -152,6 +178,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				} else {
 					jQuery(".chat-window").toggleClass('show');
 				}
+			});
+			jQuery(".start-cong-btn").click(function(e){
+				var dis = jQuery(this);
+				jQuery.post(ci_base_url+'customer/start_conv',{uid2:provider_id}, function(resp){
+					console.log(resp.rs);
+					if(resp.rs){
+						jQuery(dis).next().next('span').html('Request sent successfully');
+						jQuery(dis).removeClass('start-cong-btn');
+						jQuery(dis).unbind('click');
+					}
+				},'json');
 			});
 		});
 		

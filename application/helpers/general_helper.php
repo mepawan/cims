@@ -341,4 +341,26 @@ function ci_email($to, $subject, $msg, $from = ''){
     }
 }
 
+function get_timezones(){
+	$o = array();
+	$t_zones = timezone_identifiers_list();
+	foreach($t_zones as $a){
+		$t = '';
+		try{
+			//this throws exception for 'US/Pacific-New'
+			$zone = new DateTimeZone($a);
+			$seconds = $zone->getOffset( new DateTime("now" , $zone) );
+			$hours = sprintf( "%+02d" , intval($seconds/3600));
+			$minutes = sprintf( "%02d" , ($seconds%3600)/60 );
+			//$t = $a ."  [ $hours:$minutes ]" ;
+			$t = $hours.':'.$minutes ;
+			$o[$a] = $t;
+		}catch(Exception $e){
+			//die("Exception : " . $e->getMessage() . '<br />');
+			//what to do in catch ? , nothing just relax
+		}
+	}
+	natsort($o);
+	return $o;
+} 
 
