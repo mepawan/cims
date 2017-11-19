@@ -313,7 +313,7 @@ class Customer extends MX_Controller {
 			$this->data['heading'] = 'Provider Profile';
 			$this->data['icon'] = 'icmn-home2';
 			$where = ' where u.id= '.$uid;
-			$sql = 'select u.*,pp.area_of_experience,pp.area_of_experience_other,pp.years_of_experience ,pp.education,pp.bio,pp.uid,pp.languages,pp.resume,pp.work_samples,pp.availabe_days_time,pp.have_license_certification from users u left join provider_profile pp on (u.id=pp.uid) '. $where. ' ';
+			$sql = 'select u.*,pp.area_of_experience,pp.area_of_experience_other,pp.years_of_experience ,pp.education,pp.bio,pp.uid,pp.languages,pp.resume,pp.work_samples,pp.availabe_days_time,pp.have_license_certification,pp.timezone FROM users u left join provider_profile pp on (u.id=pp.uid) '. $where. ' ';
 			//echo $sql;
 			$providers = $this->Util_model->custom_query($sql);
 			$this->data['me'] = $this->Util_model->read('users',array('where' => array('id'=>$this->ciauth->get_user_id()),'single_row' => 'yes'));
@@ -331,6 +331,7 @@ class Customer extends MX_Controller {
 		}
 	}
 	function start_conv(){
+		global $ci_settings;
 		$uid2 = $this->input->post('uid2');
 		$conversation = $this->Util_model->read('conversation',array('where' => array('uid1'=>$this->ciauth->get_user_id(),'uid2' => $uid2),'single_row' => 'yes'));
 			
@@ -345,6 +346,37 @@ class Customer extends MX_Controller {
 			$rs = $this->Util_model->upate('conversation',$conv_data);
 		} else {
 			$rs = $this->Util_model->create('conversation',$conv_data);
+		}
+		if($rs){
+			$user2 = $this->Util_model->read('users', array('where' => array('id' => $uid2),'single_row' => 'yes'));
+			
+			$to = '';
+			$subject = '';
+			$message = '';//provider_contact_request
+			
+			
+			$email_templates = $this->ci->config->item('ciauth_email_template');
+			$msg = $email_templates['provider_contact_request'];
+			$name2 = ($user2['first_name'])?$user2['first_name']. ' ' . $user2['last_name']:$user2['username'];
+			$name = $this->ciauth->get_user('first_name') . ' ' . $this->ciauth->get_user('last_name');
+			
+			$msg = str_replace(
+				array('{name}','{name2}','{site_name}'),
+				array($name,$name2, $ci_settings['site_name']),
+				$msg
+			);
+			$mail = ci_email($user['email'], 'Reset Password - '.$ci_settings['site_name'],$msg);
+			if($mail['status'] == 'success'){
+				$this->data['status'] = 'success';
+				$this->data['msg'] = 'Contact request sent successfully';
+			} else {
+				$this->data['status'] = 'success';
+				$this->data['msg'] = 'Contact request sent successfully (email notification not sent)';
+			}
+			
+		} else {
+			$this->data['status'] = 'fail';
+			$this->data['msg'] = 'Unable to process request';
 		}
 		echo json_encode(array('rs' => $rs));
 		die;

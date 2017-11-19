@@ -85,6 +85,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 														<h4>Languages</h4>
 														 <p><?php echo ucwords(str_replace(",", ", ", $provider['languages'])); ?></p>
 													<?php } ?>
+													
+													
+														<h4>Timezone</h4>
+														 <?php if(!empty($provider['timezone'])){ ?>
+															<p><?php echo $provider['timezone']; ?></p>
+														 <?php } else { echo 'Not Available';} ?>
+													
 												</div>
 											</div>
 											<div class="col-md-3 sidebar">
@@ -114,7 +121,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 														
 													</li>
 													<?php 
-														if($conversation && $conversation['status'] == 'active'){
+														if(1==2 && $conversation && $conversation['status'] == 'active'){
 													?>
 															<li>
 																<div class="chat-server-status-wrap"><span>Server Status: <span id="chat-server-status">Connecting<span class="load-dots">....</span></span></div>
@@ -135,10 +142,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</section>
 			</main>
 		</div>
-		<?php $this->load->view('part/footer'); ?>
 		<?php 
-
-			$this->load->view('videocall/wrapper'); 
+			$this->load->view('part/footer'); 
+			//if($conversation && $conversation['status'] == 'active'){
+			//	$this->load->view('videocall/wrapper'); 
+			//}
 		?>
 	</div>
 
@@ -155,7 +163,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		var chsrvsts = 0;
 		var chremotename = '<?php echo $provider['first_name'];?>';
 		jQuery(document).ready(function(e){
-			if(jQuery('.load-dots').length > 0) { jQuery('.load-dots').start_load_dots(); }
+			//if(jQuery('.load-dots').length > 0) { jQuery('.load-dots').start_load_dots(); }
 			jQuery(".pref-item").change(function(e){
 				e.preventDefault();
 				var key = jQuery(this).attr('name');
@@ -176,17 +184,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					alert("Message/Video call server is down. \nPlease contact to administrator");
 					return false;
 				} else {
-					jQuery(".chat-window").toggleClass('show');
+					//jQuery(".chat-window").toggleClass('show');
+					window.location = ci_base_url + 'customer/conversation/'+provider_id;
 				}
 			});
 			jQuery(".start-cong-btn").click(function(e){
 				var dis = jQuery(this);
 				jQuery.post(ci_base_url+'customer/start_conv',{uid2:provider_id}, function(resp){
-					console.log(resp.rs);
-					if(resp.rs){
+					if(resp.status == 'success'){
 						jQuery(dis).next().next('span').html('Request sent successfully');
 						jQuery(dis).removeClass('start-cong-btn');
 						jQuery(dis).unbind('click');
+					} else {
+						alert(resp.msg);
 					}
 				},'json');
 			});
@@ -194,7 +204,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		
 	</script>
 	
-	<?php $this->load->view('videocall/parts/assets');?>
+	<?php 
+		
+		//if($conversation && $conversation['status'] == 'active'){
+		//	$this->load->view('videocall/parts/assets');
+		//}
+	?>
 	
 </body>
 </html>
