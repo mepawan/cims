@@ -172,7 +172,7 @@ class Util_model extends CI_Model{
 		 * Paging
 		 */
 		if ( isset( $filters['length'] ) && $filters['length'] ){
-			$this->db->limit(intval( $filters['start'] ), intval( $filters['length'] ));
+			$this->db->limit( intval( $filters['length'] ), intval( $filters['start'] ));
 		}
 		
 		$query = $this->db->get();

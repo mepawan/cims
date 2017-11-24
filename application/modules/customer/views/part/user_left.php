@@ -4,6 +4,7 @@
 		<li><a class="<?php if(isset($entity) && ($entity == 'contract'  || $entity == 'contracts')) { echo 'active'; } ?>" href="<?php echo ci_base_url();?>customer/contracts">Contracts</a></li>
 		<li><a class="<?php if(isset($entity) && $entity == 'preferences') { echo 'active'; } ?>" href="<?php echo ci_base_url();?>customer/preferences">Preferences </a></li>
 		<li><a class="<?php if(isset($entity) && $entity == 'setting') { echo 'active'; } ?>" href="<?php echo ci_base_url();?>customer/setting">Setting</a></li>
+		<li><a class="<?php if(isset($entity) && $entity == 'messages') { echo 'active'; } ?>" href="<?php echo ci_base_url();?>customer/messages">Messages</a></li>
 		<li><a class="<?php if(isset($entity) && $entity == 'balance') { echo 'active'; } ?>" href="<?php echo ci_base_url();?>customer/balance">Credit Balance</a></li>
 		<li><a class="<?php if(isset($entity) && $entity == 'logout') { echo 'active'; } ?>" href="<?php echo ci_base_url();?>auth/logout_user">Logout</a></li>
 	</ul>

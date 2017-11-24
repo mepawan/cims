@@ -1,4 +1,9 @@
-var lp = './img/';
+var editor;
+function init_grapjs(content,style){
+	console.log(content);
+	console.log('-------------------');
+	console.log(style);
+	var lp = './img/';
       var plp = 'http://placehold.it/350x250/';
       var images = [
         lp+'team1.jpg', lp+'team2.jpg', lp+'team3.jpg', plp+'78c5d6/fff/image1.jpg', plp+'459ba8/fff/image2.jpg', plp+'79c267/fff/image3.jpg',
@@ -6,10 +11,12 @@ var lp = './img/';
         lp+'work-desk.jpg', lp+'phone-app.png', lp+'bg-gr-v.png'
       ];
 
-      var editor  = grapesjs.init({
+      editor  = grapesjs.init({
 
       height: '100%',
       container : '#gjs',
+	  components:'',
+	  style: '',
       fromElement: 1,
       showOffsets: 1,
       plugins: [
@@ -31,8 +38,8 @@ var lp = './img/';
       
       
       storageManager:{
-        storeComponents: 1,
-        storeStyles: 1,
+        storeComponents: 0,
+        storeStyles: 0,
       },
 
       // Configure style
@@ -322,6 +329,8 @@ var lp = './img/';
 
     );
 
+	editor.setComponents(content);
+	
    /* var cmdm = editor.Commands;
     cmdm.add('open-github', {
       run: function(em, sender){
@@ -378,7 +387,7 @@ var lp = './img/';
      });
      
      
-     
+}
      
 
 

@@ -177,26 +177,6 @@ $(function(){
 	   }
 	});
 	
-	$(".update-button").click( function(event){
-		event.preventDefault();
-		const html = editor.getHtml();
-		  const css = editor.getCss();
-		  var title = $("#title").val();
-		  var id = $("#id").val();
-		  
-		  if(title == ""){ $("#title").focus(); }
-		  else{
-			 $.ajax({
-					url: ci_base_url+'/admin/pages/update',
-					type: "POST",
-					data:  {html: html, css:css, title:title, id:id},
-					 
-					success: function(data){
-					  window.location = ci_base_url+"/admin/pages";
-					},
-					error: function(){} 	        
-			   });
-	   }
-	});
+	
 
 });

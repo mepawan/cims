@@ -354,8 +354,8 @@ class Customer extends MX_Controller {
 			$subject = '';
 			$message = '';//provider_contact_request
 			
-			
-			$email_templates = $this->ci->config->item('ciauth_email_template');
+			//$this->load->config('ciauth');
+			$email_templates = $this->config->item('ciauth_email_template');
 			$msg = $email_templates['provider_contact_request'];
 			$name2 = ($user2['first_name'])?$user2['first_name']. ' ' . $user2['last_name']:$user2['username'];
 			$name = $this->ciauth->get_user('first_name') . ' ' . $this->ciauth->get_user('last_name');
@@ -378,7 +378,7 @@ class Customer extends MX_Controller {
 			$this->data['status'] = 'fail';
 			$this->data['msg'] = 'Unable to process request';
 		}
-		echo json_encode(array('rs' => $rs));
+		echo json_encode($this->data);
 		die;
 	}
 	public function balance(){

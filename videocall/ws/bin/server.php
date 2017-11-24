@@ -15,7 +15,7 @@ use Amir\Comm;
 $allowed_origins = ['localhost','35.192.96.70', '127.0.0.1'];
 
 // Run the server application through the WebSocket protocol on port 8080
-$app = new Ratchet\App('35.192.96.70', 8080, '0.0.0.0');//App(hostname, port, 'whoCanConnectIP', '')
+$app = new Ratchet\App('127.0.0.1', 8080, '0.0.0.0');//App(hostname, port, 'whoCanConnectIP', '')
 
 //create socket routes
 //route(uri, classInstance, arrOfAllowedOrigins)

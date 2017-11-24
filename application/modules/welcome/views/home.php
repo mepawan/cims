@@ -7,8 +7,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="contain_wrapper">
 		<?php $this->load->view('part/header', $menus); ?>
 		
-		<?php print_r($page[0]['content']); ?>
-  
+		<div class="dynamic-content">
+			<?php print_r($page[0]['content']); ?>
+		</div>
 		
 		
 		<?php $this->load->view('part/footer'); ?>

@@ -41,7 +41,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													});
 											?>
 													<div class="active-conv-list-wrap">
-														<h3> Active Conversations</h3>
+														<h4> Active Conversations</h4>
 														<?php
 															if($active_convs){
 																echo '<ul>';
@@ -53,7 +53,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 														?>
 													</div>
 													<div class="active-conv-list-wrap">
-														<h3> Conversation Pending Requests</h3>
+														<h4> Pending Requests</h4>
 														<?php
 															if($pending_convs){
 																echo '<ul>';
@@ -69,7 +69,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 														
 													}
 												} else {
-													
+													echo 'There are no conversations';
 												}
 											?>
 										</div>

@@ -144,12 +144,14 @@ class Pages extends MX_Controller {
 						'title' => $_POST['title'],
 						'content' => $_POST['html'],
 						'content_css' => $_POST['css'],
-						'updated_date_time' => date("Y-m-d h:i:s"),
-						);
-			
+						'updated_date_time' => date("Y-m-d H:i:s"),
+				);
+
 			$rs = $this->Util_model->update('pages', $data);
 			
-			redirect('admin/pages');
+			//redirect('admin/pages');
+			echo json_encode(array('rs' => $rs));
+			die;
 		//}
 	}
 	

@@ -190,6 +190,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			});
 			jQuery(".start-cong-btn").click(function(e){
 				var dis = jQuery(this);
+				var dis_text = jQuery(dis).html();
+				jQuery(dis).html('please wait...');
 				jQuery.post(ci_base_url+'customer/start_conv',{uid2:provider_id}, function(resp){
 					if(resp.status == 'success'){
 						jQuery(dis).next().next('span').html('Request sent successfully');
@@ -198,6 +200,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					} else {
 						alert(resp.msg);
 					}
+					jQuery(dis).html(dis_text);
 				},'json');
 			});
 		});
