@@ -36,7 +36,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 															$pending_convs .= '<li><span class="pending-conv"> '.$conv['first_name'] . ' ' . $conv['last_name'].'</span>';
 															$pending_convs .= '<a class="btn btn-danger deny-conv" href="'.ci_base_url().'customer/messages/cancel/'.$conv['id'].'">Cancel</a></li>';
 														} else if($conv['status'] == 'active'){
-															$active_convs .= '<li><a class="active-conv" href="'..ci_base_url().'/customer/provider/'.$conv['uid2'].'">'.$conv['first_name'] . ' ' . $conv['last_name'].'</a></li>';
+															$active_convs .= '<li><a class="active-conv" href="'.ci_base_url().'/customer/provider/'.$conv['uid2'].'">'.$conv['first_name'] . ' ' . $conv['last_name'].'</a></li>';
 														} 
 													});
 											?>
