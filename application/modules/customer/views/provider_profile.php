@@ -121,10 +121,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 														
 													</li>
 													<?php 
-														if(1==2 && $conversation && $conversation['status'] == 'active'){
+														if($conversation && $conversation['status'] == 'active'){
 													?>
 															<li>
 																<div class="chat-server-status-wrap"><span>Server Status: <span id="chat-server-status">Connecting<span class="load-dots">....</span></span></div>
+															</li>
+															<li>
+																<div class="call-btns-wrap" >
+																	<button class="btn btn-success btn-sm initCall" id="initAudio"><i class="fa fa-phone"></i></button>
+																	<button class="btn btn-info btn-sm initCall" id="initVideo"><i class="fa fa-video-camera"></i></button>
+																</div>
+															</li>
+															<li>
+																<button type="button" class="btn btn-danger btn-sm" id='endCall' style="display:none;">
+																	<i class="fa fa-times-circle"></i> End Call
+																</button>
 															</li>
 													<?php } ?>
 												</ul>
@@ -145,7 +156,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<?php 
 			$this->load->view('part/footer'); 
 			if($conversation && $conversation['status'] == 'active'){
-				$this->load->view('videocall/wrapper'); 
+				//$this->load->view('videocall/wrapper'); 
+		?>
+					<div class="video-on-call-wrap">
+						<!-- Remote Video -->
+							<div class="remote-video-wrap">
+								<video id="peerVid"  playsinline autoplay></video>
+							</div>
+						<!-- Remote Video -->
+						
+						<!-- Local Video -->
+							<div class="local-video-wrap">
+								<video id="myVid"  muted autoplay></video>
+							</div>
+						<!-- Local Video -->
+						<button class="btn btn-danger btn-sm" id="terminateCall" disabled><i class="fa fa-phone-square"></i></button>	
+					</div>
+		<?php
 			}
 		?>
 	</div>
@@ -163,7 +190,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		var chsrvsts = 0;
 		var chremotename = '<?php echo $provider['first_name'];?>';
 		jQuery(document).ready(function(e){
-			//if(jQuery('.load-dots').length > 0) { jQuery('.load-dots').start_load_dots(); }
+			if(jQuery('.load-dots').length > 0) { jQuery('.load-dots').start_load_dots(); }
 			jQuery(".pref-item").change(function(e){
 				e.preventDefault();
 				var key = jQuery(this).attr('name');

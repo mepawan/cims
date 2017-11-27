@@ -116,7 +116,8 @@ window.addEventListener('load', function(){
                     document.getElementById("callerInfo").innerHTML = data.msg;
 
                     setTimeout(function(){
-                        document.getElementById("callModal").style.display = 'none';
+                        //document.getElementById("callModal").style.display = 'none';
+						document.getElementById("endCall").style.display = 'none';
                     }, 3000);
                     
                     //stop tone
@@ -145,7 +146,8 @@ window.addEventListener('load', function(){
                 case 'startCall':
                     startCall(false);//to start call when callee gives the go ahead (i.e. answers call)
                     
-                    document.getElementById("callModal").style.display = 'none';//hide call modal
+                    //document.getElementById("callModal").style.display = 'none';//hide call modal
+					document.getElementById("endCall").style.display = 'none';
                     
                     clearTimeout(awaitingResponse);//clear timeout
                     
@@ -502,7 +504,8 @@ function initCall(){
     }
 
 
-    document.getElementById("callModal").style.display = 'block';
+    //document.getElementById("callModal").style.display = 'block';
+	document.getElementById("endCall").style.display = 'block';
 }
 
 /*
@@ -839,14 +842,16 @@ function endCall(msg, setTimeOut){
         document.getElementById.innerHTML = "<i class='fa fa-exclamation-triangle'></i> No response";
         
         setTimeout(function(){
-            document.getElementById("callModal").style.display = 'none';
+            //document.getElementById("callModal").style.display = 'none';
+			document.getElementById("endCall").style.display = 'none';
         }, 3000);
         
         enableCallBtns();
     }
     
     else{
-        document.getElementById("callModal").style.display = 'none';
+        //document.getElementById("callModal").style.display = 'none';
+		document.getElementById("endCall").style.display = 'none';
     }
     
     clearTimeout(awaitingResponse);
@@ -986,9 +991,6 @@ function check_connectivity(){
 		console.log('remote end:'+remote_end);
 		console.log(myunique);
 		
-		//if(remote_end == 'customer' && myunique == roomar[0] && ){
-			
-		//}
 }
 
 
