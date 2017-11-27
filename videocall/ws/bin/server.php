@@ -19,7 +19,7 @@ $app = new Ratchet\App('35.192.96.70', 8888, '0.0.0.0');//App(hostname, port, 'w
 
 //create socket routes
 //route(uri, classInstance, arrOfAllowedOrigins)
-$app->route('/comm', new Comm, $allowed_origins);
+$app->route('/wss2', new Comm, $allowed_origins);
 
 //run websocket
 $app->run();
