@@ -144,9 +144,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div>
 		<?php 
 			$this->load->view('part/footer'); 
-			//if($conversation && $conversation['status'] == 'active'){
-			//	$this->load->view('videocall/wrapper'); 
-			//}
+			if($conversation && $conversation['status'] == 'active'){
+				$this->load->view('videocall/wrapper'); 
+			}
 		?>
 	</div>
 
@@ -209,9 +209,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	
 	<?php 
 		
-		//if($conversation && $conversation['status'] == 'active'){
-		//	$this->load->view('videocall/parts/assets');
-		//}
+		if($conversation && $conversation['status'] == 'active'){
+			$this->load->view('videocall/parts/assets');
+		}
 	?>
 	
 </body>
