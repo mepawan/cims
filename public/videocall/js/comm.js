@@ -986,9 +986,9 @@ function check_connectivity(){
 		console.log('remote end:'+remote_end);
 		console.log(myunique);
 		
-		if(remote_end == 'customer' && myunique == roomar[0] && ){
+		//if(remote_end == 'customer' && myunique == roomar[0] && ){
 			
-		}
+		//}
 }
 
 
