@@ -20,7 +20,7 @@ var streamConstraints;
 var myMediaStream;
 
 const room = getRoom();
-const wsChat = new WebSocket("wss://35.192.96.70:8080/comm");
+const wsChat = new WebSocket("wss://35.192.96.70:8888/comm");
 
 window.addEventListener('load', function(){
     startCounter();//shows the time spent in room
